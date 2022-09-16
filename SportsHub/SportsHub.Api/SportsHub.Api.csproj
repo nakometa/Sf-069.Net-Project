@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SportsHub.Application\SportsHub.AppService.csproj" />
     <ProjectReference Include="..\SportsHub.Core\SportsHub.Domain.csproj" />
+    <ProjectReference Include="..\SportsHub.DAL\SportsHub.DAL.csproj" />
   </ItemGroup>
 
 </Project>

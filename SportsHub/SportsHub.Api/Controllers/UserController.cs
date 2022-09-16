@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
+using SportsHub.Domain.Repository;
 using System.Security.Claims;
 
 namespace SportsHub.Api.Controllers
@@ -10,6 +11,28 @@ namespace SportsHub.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUnitOfWork unitOfWork;
+
+        public UserController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
+
+        [HttpGet("GetUserByPassword")]
+        public IActionResult GetUserByPassword(string password)
+        {
+            var user = unitOfWork.Users.GetByPassword(password);
+
+            if (user != null)
+            {
+                return Ok($"User: {user.Username} has password: {password}");
+            }
+            else
+            {
+                return Ok($"No user with password: {password}");
+            }
+        }
+
         [HttpGet("Public")]
         public IActionResult Public()
         {

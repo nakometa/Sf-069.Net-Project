@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SportsHub.Domain.Repository
+﻿namespace SportsHub.Domain.Repository
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
+        IUserRepository Users { get; }
+        Task SaveChangesAsync();
     }
 }

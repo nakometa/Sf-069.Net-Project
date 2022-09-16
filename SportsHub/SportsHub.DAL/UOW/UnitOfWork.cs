@@ -1,16 +1,29 @@
-﻿using SportsHub.Domain.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SportsHub.DAL.Data;
+using SportsHub.DAL.Repository;
+using SportsHub.Domain.Repository;
 
 namespace SportsHub.DAL.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        // dont forget to register dependency in program
-        // implement end-point (get-user) and call (uow) it in the service layer
-        // get-all users method
+        private readonly ApplicationDbContext context;
+
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            this.context = context;
+            Users = new UserRepository(this.context);
+        }
+
+        public IUserRepository Users { get; private set; }
+
+        public Task SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
+        }
     }
 }

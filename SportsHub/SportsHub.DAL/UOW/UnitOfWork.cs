@@ -16,7 +16,7 @@ namespace SportsHub.DAL.UOW
 
         public IUserRepository Users { get; private set; }
 
-        public Task SaveChangesAsync()
+        public Task<int> SaveChangesAsync()
         {
             return context.SaveChangesAsync();
         }

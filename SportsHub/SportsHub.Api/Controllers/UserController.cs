@@ -29,7 +29,7 @@ namespace SportsHub.Api.Controllers
             }
             else
             {
-                return Ok($"No user with password: {password}");
+                return BadRequest($"No user with password: {password}");
             }
         }
 

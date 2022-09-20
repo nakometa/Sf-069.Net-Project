@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
-using SportsHub.DAL.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

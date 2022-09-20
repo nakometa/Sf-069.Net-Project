@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
-using SportsHub.Domain.Repository;
+using SportsHub.Domain.UOW;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,6 +76,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString")));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

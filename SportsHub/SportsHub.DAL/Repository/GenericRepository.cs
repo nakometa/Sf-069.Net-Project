@@ -1,10 +1,11 @@
-﻿using SportsHub.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportsHub.DAL.Data;
 using SportsHub.Domain.Repository;
 
 namespace SportsHub.DAL.Repository
 {
-    public class GenericRepository<T> : IGenericRepository<T>
-        where T : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
+        where TEntity : class
     {
         protected readonly ApplicationDbContext context;
 
@@ -13,24 +14,26 @@ namespace SportsHub.DAL.Repository
             this.context = context;
         }
 
-        public void Add(T entity)
+        public void Add(TEntity entity)
         {
-            context.Set<T>().Add(entity);
+            context.Set<TEntity>().Add(entity);
         }
 
-        public void Delete(T entity)
+        public void Delete(TEntity entity)
         {
-            context.Set<T>().Remove(entity);
+            context.Set<TEntity>().Remove(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
-            return context.Set<T>().ToList();
+            return context.Set<TEntity>().ToList();
         }
 
-        public T? GetById(int id)
+        public TEntity? GetById(int id)
         {
-            return context.Set<T>().Find(id);
+            return context.Set<TEntity>().Find(id);
         }
+
+        protected DbSet<TEntity> DbSet => context.Set<TEntity>();
     }
 }

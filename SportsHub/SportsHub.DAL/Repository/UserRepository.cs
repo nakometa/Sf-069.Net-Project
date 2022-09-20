@@ -10,10 +10,10 @@ namespace SportsHub.DAL.Repository
         {
         }
 
-        public User? GetByPassword(string password)
+        public User? GetByUsername(string username)
         {
             return context.Users
-                .FirstOrDefault(x => x.Password == password);
+                .FirstOrDefault(x => x.Username == username);
         }
     }
 }

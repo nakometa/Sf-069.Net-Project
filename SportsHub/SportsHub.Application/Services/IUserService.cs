@@ -4,6 +4,6 @@ namespace SportsHub.AppService.Services
 {
     public interface IUserService
     {
-        User GetByPassword();
+        User? GetByUsername(string username);
     }
 }

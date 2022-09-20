@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
-using SportsHub.Domain.Repository;
 using System.Security.Claims;
 
 namespace SportsHub.Api.Controllers
@@ -11,25 +11,25 @@ namespace SportsHub.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUserService service;
 
-        public UserController(IUnitOfWork unitOfWork)
+        public UserController(IUserService service)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
         }
 
-        [HttpGet("GetUserByPassword")]
-        public IActionResult GetUserByPassword(string password)
+        [HttpGet("GetUserByUsername")]
+        public IActionResult GetUserByPassword(string username)
         {
-            var user = unitOfWork.Users.GetByPassword(password);
+            var user = service.GetByUsername(username);
 
             if (user != null)
             {
-                return Ok($"User: {user.Username} has password: {password}");
+                return Ok($"User: {user.Username}");
             }
             else
             {
-                return BadRequest($"No user with password: {password}");
+                return BadRequest($"No such user");
             }
         }
 

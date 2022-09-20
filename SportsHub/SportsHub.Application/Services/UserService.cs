@@ -1,18 +1,20 @@
 ﻿using SportsHub.Domain.Models;
-using SportsHub.Domain.Repository;
+using SportsHub.Domain.UOW;
 
 namespace SportsHub.AppService.Services
 {
     public class UserService : IUserService
     {
-        public UserService(IUnitOfWork uow)
-        {
+        private readonly IUnitOfWork unitOfWork;
 
+        public UserService(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
         }
 
-        public User GetByPassword()
+        public User? GetByUsername(string username)
         {
-            throw new NotImplementedException();
+            return unitOfWork.UserRepository.GetByUsername(username);
         }
     }
 }

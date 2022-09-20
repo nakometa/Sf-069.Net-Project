@@ -1,6 +1,7 @@
 ﻿using SportsHub.DAL.Data;
 using SportsHub.DAL.Repository;
 using SportsHub.Domain.Repository;
+using SportsHub.Domain.UOW;
 
 namespace SportsHub.DAL.UOW
 {
@@ -11,10 +12,10 @@ namespace SportsHub.DAL.UOW
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
-            Users = new UserRepository(this.context);
+            UserRepository = new UserRepository(this.context);
         }
 
-        public IUserRepository Users { get; private set; }
+        public IUserRepository UserRepository { get; private set; }
 
         public Task<int> SaveChangesAsync()
         {

@@ -1,11 +1,11 @@
 ﻿namespace SportsHub.Domain.Repository
 {
-    public interface IGenericRepository<T>
-        where T : class
+    public interface IGenericRepository<TEntity>
+        where TEntity : class
     {
-        T? GetById(int id);
-        IEnumerable<T> GetAll();
-        void Add(T entity);
-        void Delete(T entity);
+        TEntity? GetById(int id);
+        IEnumerable<TEntity> GetAll();
+        void Add(TEntity entity);
+        void Delete(TEntity entity);
     }
 }

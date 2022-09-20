@@ -4,6 +4,6 @@ namespace SportsHub.Domain.Repository
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        public User? GetByPassword(string password);
+        public User? GetByUsername(string username);
     }
 }

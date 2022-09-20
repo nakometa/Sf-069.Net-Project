@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
+using SportsHub.Domain.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace SportsHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         [HttpGet("Public")]
@@ -17,7 +19,6 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("Admins")]
-        [Authorize]
         public IActionResult AdminsEndpoint()
         {
             var currentUser = GetCurrentUser();

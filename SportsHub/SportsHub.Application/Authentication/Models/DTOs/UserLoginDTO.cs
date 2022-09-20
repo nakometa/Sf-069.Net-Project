@@ -1,4 +1,4 @@
-﻿namespace SportsHub.Api.DTOs
+﻿namespace SportsHub.AppService.Authentication.Models.DTOs
 {
     public class UserLoginDTO
     {

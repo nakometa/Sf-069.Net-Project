@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SportsHub.AppService.Authentication;
+using SportsHub.AppService.Authentication.Models.Options;
+using SportsHub.DAL.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,6 +69,11 @@ builder.Services.AddSwaggerGen(c => {
         }
     });
 });
+
+builder.Services.Configure<JsonTokenOptions>(
+    builder.Configuration.GetSection(JsonTokenOptions.Jwt));
+
+builder.Services.AddScoped<IJsonTokenService, JsonTokenService>();
 
 var app = builder.Build();
 

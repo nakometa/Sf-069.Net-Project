@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportsHub.Api.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
@@ -12,10 +14,12 @@ namespace SportsHub.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService service;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, IMapper mapper)
         {
             this.service = service;
+            _mapper = mapper;
         }
 
         [HttpGet("GetUserByUsername")]
@@ -23,14 +27,10 @@ namespace SportsHub.Api.Controllers
         {
             var user = service.GetByUsername(username);
 
-            if (user != null)
-            {
-                return Ok($"User: {user.Username}");
-            }
-            else
-            {
-                return BadRequest($"No such user");
-            }
+            if (user == null) return BadRequest($"No such user");
+
+            UserResponseDTO userResponseDto = _mapper.Map<UserResponseDTO>(user);
+            return Ok($"User: {userResponseDto.Username}");
         }
 
         [HttpGet("Public")]
@@ -44,7 +44,9 @@ namespace SportsHub.Api.Controllers
         public IActionResult AdminsEndpoint()
         {
             var currentUser = GetCurrentUser();
-            return Ok($"Hi, {currentUser.Username}, you are an Admin");
+            UserResponseDTO adminUserDto = _mapper.Map<UserResponseDTO>(currentUser);
+
+            return Ok($"Hi, {adminUserDto.Username}, you are an Admin");
         }
 
         private User GetCurrentUser()

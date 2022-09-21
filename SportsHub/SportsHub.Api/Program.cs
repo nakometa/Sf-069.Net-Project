@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.Api;
+using SportsHub.Api.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
@@ -78,6 +79,10 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
+
+//Adding AutoMapper
+//Looks in the assembly the file is located for mapping profiles.
+builder.Services.AddAutoMapper(typeof(UserResponseDTO));
 
 var app = builder.Build();
 

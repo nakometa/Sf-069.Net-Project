@@ -16,22 +16,22 @@ namespace SportsHub.DAL.Repository
 
         public void Add(TEntity entity)
         {
-            context.Set<TEntity>().Add(entity);
+            DbSet.Add(entity);
         }
 
         public void Delete(TEntity entity)
         {
-            context.Set<TEntity>().Remove(entity);
+            DbSet.Remove(entity);
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            return context.Set<TEntity>().ToList();
+            return DbSet.ToList();
         }
 
         public TEntity? GetById(int id)
         {
-            return context.Set<TEntity>().Find(id);
+            return DbSet.Find(id);
         }
 
         protected DbSet<TEntity> DbSet => context.Set<TEntity>();

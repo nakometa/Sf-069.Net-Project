@@ -19,7 +19,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetUserByUsername")]
-        public IActionResult GetUserByPassword(string username)
+        public IActionResult GetUserByUsername(string username)
         {
             var user = service.GetByUsername(username);
 

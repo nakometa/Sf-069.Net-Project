@@ -1,4 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using SportsHub.Api;
+using SportsHub.Api.DTOs;
+using SportsHub.AppService.Services;
+using SportsHub.DAL.Data;
+using SportsHub.DAL.UOW;
+using SportsHub.Domain.UOW;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.AppService.Authentication;
@@ -7,6 +16,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
+
+configuration
+    .AddJsonFile("appsettings.json", false);
 
 // Add services to the container.
 
@@ -39,7 +51,8 @@ builder.Services.AddMvc();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "JWTToken_Auth_API",
@@ -67,6 +80,13 @@ builder.Services.AddSwaggerGen(c => {
     });
 });
 
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IUserService, UserService>();
+
+//Adding AutoMapper
+//Looks in the assembly the file is located for mapping profiles.
+builder.Services.AddAutoMapper(typeof(UserResponseDTO));
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));
 

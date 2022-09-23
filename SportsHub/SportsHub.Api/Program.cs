@@ -4,14 +4,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.Api;
 using SportsHub.Api.DTOs;
+using SportsHub.AppService.Authentication;
+using SportsHub.AppService.Authentication.Models.Options;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.UOW;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using SportsHub.AppService.Authentication;
-using SportsHub.AppService.Authentication.Models.Options;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

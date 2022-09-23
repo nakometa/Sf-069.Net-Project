@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace SportsHub.Api
+﻿namespace SportsHub.Api
 {
     public static class SportsHubConstants
     {

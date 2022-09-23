@@ -13,7 +13,7 @@ namespace SportsHub.AppService.Authentication
                                 .FirstOrDefault(u => u.Username.ToLower() == userLogin.Username.ToLower() && u.Password == userLogin.Password);
 
 
-            return currentUser != null ? currentUser : null;
+            return currentUser;
         }
     }
 }

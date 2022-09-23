@@ -10,7 +10,6 @@ namespace SportsHub.AppService.Authentication
 {
     public class JsonTokenService : IJsonTokenService
     {
-
         private JsonTokenOptions _tokenOptions;
 
         public JsonTokenService(IOptions<JsonTokenOptions> tokenOptions)

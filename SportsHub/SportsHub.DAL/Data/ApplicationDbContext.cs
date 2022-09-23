@@ -10,7 +10,6 @@ namespace SportsHub.DAL.Data
     {
         public ApplicationDbContext()
         {
-
         }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)

@@ -40,9 +40,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidAudience = configuration["Jwt:Audience"],
-        ValidIssuer = configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+        ValidAudience = configuration[SportsHubConstants.JwtAudience],
+        ValidIssuer = configuration[SportsHubConstants.JwtIssuer],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[SportsHubConstants.JwtKey]))
     };
 });
 

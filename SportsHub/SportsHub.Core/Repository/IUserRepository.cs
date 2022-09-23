@@ -4,6 +4,6 @@ namespace SportsHub.Domain.Repository
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        public User? GetByUsername(string username);
+        public Task<User?> GetByUsernameAsync(string username);
     }
 }

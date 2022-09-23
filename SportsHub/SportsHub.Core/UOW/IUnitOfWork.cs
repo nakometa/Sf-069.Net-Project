@@ -5,6 +5,6 @@ namespace SportsHub.Domain.UOW
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository UserRepository { get; }
-        Task<int> SaveChangesAsync();
+        Task SaveChangesAsync();
     }
 }

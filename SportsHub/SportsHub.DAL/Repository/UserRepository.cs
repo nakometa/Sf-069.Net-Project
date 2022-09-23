@@ -1,4 +1,5 @@
-﻿using SportsHub.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SportsHub.DAL.Data;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Repository;
 
@@ -10,10 +11,10 @@ namespace SportsHub.DAL.Repository
         {
         }
 
-        public User? GetByUsername(string username)
+        public async Task<User?> GetByUsernameAsync(string username)
         {
-            return context.Users
-                .FirstOrDefault(x => x.Username == username);
+            return await context.Users
+                .FirstOrDefaultAsync(x => x.Username == username);
         }
     }
 }

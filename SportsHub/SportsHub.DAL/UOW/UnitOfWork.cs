@@ -5,26 +5,26 @@ using SportsHub.Domain.UOW;
 
 namespace SportsHub.DAL.UOW
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
         public UnitOfWork(ApplicationDbContext context)
         {
-            this.context = context;
-            UserRepository = new UserRepository(this.context);
+            _context = context;
+            UserRepository = new UserRepository(_context);
         }
 
-        public IUserRepository UserRepository { get; private set; }
+        public IUserRepository UserRepository { get; }
 
-        public Task<int> SaveChangesAsync()
+        public Task SaveChangesAsync()
         {
-            return context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            context.Dispose();
+            _context.Dispose();
         }
     }
 }

@@ -23,9 +23,9 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetUserByUsername")]
-        public IActionResult GetUserByUsername(string username)
+        public async Task<IActionResult> GetUserByUsernameAsync(string username)
         {
-            var user = service.GetByUsername(username);
+            var user = await service.GetByUsernameAsync(username);
 
             if (user == null) return BadRequest($"No such user");
 

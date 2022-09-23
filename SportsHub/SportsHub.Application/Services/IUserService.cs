@@ -4,6 +4,6 @@ namespace SportsHub.AppService.Services
 {
     public interface IUserService
     {
-        User? GetByUsername(string username);
+        public Task<User?> GetByUsernameAsync(string username);
     }
 }

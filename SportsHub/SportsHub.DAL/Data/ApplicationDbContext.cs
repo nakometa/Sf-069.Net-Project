@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols;
 using SportsHub.DAL.Data.Configurations;
 using SportsHub.Domain.Models;
 
@@ -8,6 +10,7 @@ namespace SportsHub.DAL.Data
     {
         public ApplicationDbContext()
         {
+
         }
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
@@ -19,10 +22,7 @@ namespace SportsHub.DAL.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString());
-            }
+            // Need to move connection string to appsettings and set the connection through API Layer.
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -18,13 +18,11 @@ namespace SportsHub.DAL.Data.Configurations
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
+            user.HasIndex(x => x.Username)
+                .IsUnique();
+
             user.Property(x => x.DisplayName)
                 .IsRequired(true)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
-            user.Property(x => x.Pseudonym)
-                .IsRequired(false)
                 .HasMaxLength(50)
                 .IsUnicode(false);
 

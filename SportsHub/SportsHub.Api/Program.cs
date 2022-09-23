@@ -8,6 +8,10 @@ using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.UOW;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using SportsHub.AppService.Authentication;
+using SportsHub.AppService.Authentication.Models.Options;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -83,6 +87,10 @@ builder.Services.AddTransient<IUserService, UserService>();
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
 builder.Services.AddAutoMapper(typeof(UserResponseDTO));
+builder.Services.Configure<JsonTokenOptions>(
+    builder.Configuration.GetSection(JsonTokenOptions.Jwt));
+
+builder.Services.AddScoped<IJsonTokenService, JsonTokenService>();
 
 var app = builder.Build();
 

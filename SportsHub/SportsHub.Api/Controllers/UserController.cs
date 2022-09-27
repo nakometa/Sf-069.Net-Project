@@ -54,7 +54,8 @@ namespace SportsHub.Api.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var currentUser = UserControllerHelper.GetCurrentUser(identity);
-            return Ok($"Hi, {currentUser.Username}, you are an Admin");
+
+            return currentUser;
         }
     }
 }

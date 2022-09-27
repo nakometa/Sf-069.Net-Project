@@ -80,6 +80,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.

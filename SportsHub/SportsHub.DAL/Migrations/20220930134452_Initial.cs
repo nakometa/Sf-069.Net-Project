@@ -31,7 +31,6 @@ namespace SportsHub.DAL.Migrations
                     Email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Username = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     DisplayName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    Pseudonym = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     FirstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "varchar(60)", unicode: false, maxLength: 60, nullable: false),
@@ -53,6 +52,12 @@ namespace SportsHub.DAL.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -12,7 +12,7 @@ using SportsHub.DAL.Data;
 namespace SportsHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220905103221_Initial")]
+    [Migration("20220930134452_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,11 +84,6 @@ namespace SportsHub.DAL.Migrations
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("Pseudonym")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -101,6 +96,9 @@ namespace SportsHub.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

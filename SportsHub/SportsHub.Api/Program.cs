@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.Api;
-using SportsHub.Api.DTOs;
+using SportsHub.Api.Mapping;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
 using SportsHub.AppService.Services;
@@ -85,7 +85,8 @@ builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
-builder.Services.AddAutoMapper(typeof(UserResponseDTO));
+builder.Services.AddAutoMapper(typeof(UserMapping));
+
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));
 

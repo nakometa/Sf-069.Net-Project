@@ -2,7 +2,7 @@
 using SportsHub.Api.DTOs;
 using SportsHub.Domain.Models;
 
-namespace SportsHub.Api.Profiles;
+namespace SportsHub.Api.Mapping;
 
 /// <summary>
 /// Class <c>UserMapping</c> acts as a mapping profile for the <c>User</c> entity.

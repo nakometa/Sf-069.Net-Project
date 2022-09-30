@@ -6,16 +6,17 @@ namespace SportsHub.AppService.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IUserService service;
+        private readonly IUserService userService;
 
         public AuthenticationService(IUserService service)
         {
-            this.service = service;
+            userService = service;
         }
 
         public async Task<User?> Authenticate(UserLoginDTO userLogin)
         {
-            var currentUser = await service.GetByUsernameAsync(userLogin.UsernameOrEmail) ?? await service.GetByEmailAsync(userLogin.UsernameOrEmail);
+            var currentUser = await userService.GetByUsernameAsync(userLogin.UsernameOrEmail)
+                ?? await userService.GetByEmailAsync(userLogin.UsernameOrEmail);
 
             if (currentUser?.Password == userLogin.Password)
             {

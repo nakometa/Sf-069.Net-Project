@@ -12,6 +12,11 @@ namespace SportsHub.AppService.Services
             this.unitOfWork = unitOfWork;
         }
 
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+            return await unitOfWork.UserRepository.GetByEmailAsync(email);
+        }
+
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await unitOfWork.UserRepository.GetByUsernameAsync(username);

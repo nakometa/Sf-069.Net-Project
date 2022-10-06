@@ -1,19 +1,29 @@
 ﻿using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
-using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.AppService.Authentication
 {
     public class AuthenticationService : IAuthenticationService
     {
-        public User Authenticate(UserLoginDTO userLogin)
+        private readonly IUserService userService;
+
+        public AuthenticationService(IUserService service)
         {
-            var currentUser = UserConstants
-                                .Users
-                                .FirstOrDefault(u => u.Username.ToLower() == userLogin.Username.ToLower() && u.Password == userLogin.Password);
+            userService = service;
+        }
 
+        public async Task<User?> Authenticate(UserLoginDTO userLogin)
+        {
+            var currentUser = await userService.GetByUsernameAsync(userLogin.UsernameOrEmail)
+                ?? await userService.GetByEmailAsync(userLogin.UsernameOrEmail);
 
-            return currentUser;
+            if (currentUser?.Password == userLogin.Password)
+            {
+                return currentUser;
+            }
+
+            return null;
         }
     }
 }

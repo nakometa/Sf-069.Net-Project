@@ -21,9 +21,9 @@ namespace SportsHub.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Login([FromBody] UserLoginDTO userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLoginDTO userLogin)
         {
-            var user = _authenticationService.Authenticate(userLogin);
+            var user = await _authenticationService.Authenticate(userLogin);
 
             if (user != null)
             {

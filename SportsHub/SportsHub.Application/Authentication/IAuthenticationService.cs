@@ -5,6 +5,6 @@ namespace SportsHub.AppService.Authentication
 {
     public interface IAuthenticationService
     {
-        public User Authenticate(UserLoginDTO userLogin);
+        public Task<User?> Authenticate(UserLoginDTO userLogin);
     }
 }

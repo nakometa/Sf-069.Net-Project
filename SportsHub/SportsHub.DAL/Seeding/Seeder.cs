@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using SportsHub.DAL.Data;
+﻿using SportsHub.DAL.Data;
 using SportsHub.Domain.Models;
+using System.Text.Json;
 
 namespace SportsHub.DAL.Seeding
 {
@@ -19,7 +19,7 @@ namespace SportsHub.DAL.Seeding
 
         private async Task SeedUsersAsync(ApplicationDbContext context)
         {
-            IEnumerable<User> users = JsonConvert.DeserializeObject<List<User>>(_users);
+            IEnumerable<User> users = JsonSerializer.Deserialize<List<User>>(_users);
 
             context.Users.AddRange(users);
             await context.SaveChangesAsync();
@@ -27,7 +27,7 @@ namespace SportsHub.DAL.Seeding
 
         private async Task SeedRolesAsync(ApplicationDbContext context)
         {
-            IEnumerable<Role?> roles = JsonConvert.DeserializeObject<List<Role?>>(_roles);
+            IEnumerable<Role> roles = JsonSerializer.Deserialize<List<Role?>>(_roles);
 
             context.Roles.AddRange(roles);
             await context.SaveChangesAsync();

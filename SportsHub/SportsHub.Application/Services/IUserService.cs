@@ -6,5 +6,6 @@ namespace SportsHub.AppService.Services
     {
         public Task<User?> GetByUsernameAsync(string username);
         public Task<User?> GetByEmailAsync(string email);
+        public Task SaveUserAsync(User user);
     }
 }

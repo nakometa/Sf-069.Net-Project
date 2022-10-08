@@ -1,5 +1,6 @@
 ﻿using SportsHub.Domain.Models;
 using SportsHub.Domain.UOW;
+using System.ComponentModel;
 
 namespace SportsHub.AppService.Services
 {
@@ -20,6 +21,12 @@ namespace SportsHub.AppService.Services
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await unitOfWork.UserRepository.GetByUsernameAsync(username);
+        }
+
+        public async Task SaveUserAsync(User user)
+        {
+            await unitOfWork.UserRepository.SaveUserAsync(user);
+            await unitOfWork.SaveChangesAsync();
         }
     }
 }

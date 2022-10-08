@@ -38,7 +38,7 @@ namespace SportsHub.DAL.Data.Configurations
 
             user.Property(x => x.Password)
                 .IsRequired(true)
-                .HasMaxLength(60)
+                .HasMaxLength(75)
                 .IsUnicode(false);
 
             user.Property(x => x.ProfilePicture)

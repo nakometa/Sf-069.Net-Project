@@ -7,28 +7,28 @@ namespace SportsHub.AppService.Authentication.PasswordHasher
 { 
     public sealed class PasswordHasher : IPasswordHasher
     {
-        private const int SaltSize = 16; // 128 bit 
-        private const int KeySize = 32; // 256 bit
+        private const int saltSize = 16; // 128 bit 
+        private const int keySize = 32; // 256 bit
 
-        public PasswordHasher(IOptions<HashingOptions> options)
+        public PasswordHasher(IOptions<PasswordHashingOptions> options)
         {
-            Options = options.Value;
+            _options = options.Value;
         }
 
-        private HashingOptions Options { get; }
+        private PasswordHashingOptions _options { get; }
 
         public string Hash(string password)
         {
             using (var algorithm = new Rfc2898DeriveBytes(
                      password,
-                     SaltSize,
-                     Options.Iterations,
+                     saltSize,
+                     _options.Iterations,
                      HashAlgorithmName.SHA256))
             {
-                var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+                var key = Convert.ToBase64String(algorithm.GetBytes(keySize));
                 var salt = Convert.ToBase64String(algorithm.Salt);
 
-                return $"{Options.Iterations}.{salt}.{key}";
+                return $"{_options.Iterations}.{salt}.{key}";
             }
         }
 
@@ -46,7 +46,7 @@ namespace SportsHub.AppService.Authentication.PasswordHasher
             var salt = Convert.FromBase64String(parts[1]);
             var key = Convert.FromBase64String(parts[2]);
 
-            var needsUpgrade = iterations != Options.Iterations;
+            var needsUpgrade = iterations != _options.Iterations;
 
             using (var algorithm = new Rfc2898DeriveBytes(
               password,
@@ -54,7 +54,7 @@ namespace SportsHub.AppService.Authentication.PasswordHasher
               iterations,
               HashAlgorithmName.SHA256))
             {
-                var keyToCheck = algorithm.GetBytes(KeySize);
+                var keyToCheck = algorithm.GetBytes(keySize);
 
                 var verified = keyToCheck.SequenceEqual(key);
 

@@ -11,6 +11,7 @@ using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.UOW;
 using System.Text;
+using SportsHub.Api.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -82,6 +83,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
+builder.Services.AddTransient<ExceptionHandler>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
@@ -100,6 +102,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.UseHttpsRedirection();
 

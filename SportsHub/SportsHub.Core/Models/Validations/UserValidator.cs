@@ -7,9 +7,9 @@ using FluentValidation;
 
 namespace SportsHub.Domain.Models.Validations
 {
-    public class UserValidation : AbstractValidator<User>
+    public class UserValidator : AbstractValidator<User>
     {
-        public UserValidation()
+        public UserValidator()
         {
             RuleFor(t => t.Email).EmailAddress();
             RuleFor(t => t.Username).NotEmpty();

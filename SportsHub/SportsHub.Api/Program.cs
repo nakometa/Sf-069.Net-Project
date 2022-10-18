@@ -6,13 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.Api;
 using SportsHub.Api.Mapping;
+using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
-using SportsHub.Domain.Models;
-using SportsHub.Domain.Models.Validations;
 using SportsHub.Domain.UOW;
 using System.Text;
 

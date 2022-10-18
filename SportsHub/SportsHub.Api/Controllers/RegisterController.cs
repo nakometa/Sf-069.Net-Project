@@ -10,6 +10,7 @@ namespace SportsHub.Api.Controllers
     public class RegisterController : ControllerBase
     {
         private IAuthenticationService _authenticationService;
+
         public RegisterController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
@@ -19,7 +20,7 @@ namespace SportsHub.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegisterDTO userInput)
         {
-            bool registerSuccesful = await _authenticationService.RegisterUser(userInput);
+            bool registerSuccesful = await _authenticationService.RegisterUserAsync(userInput);
 
             if (registerSuccesful)
             {

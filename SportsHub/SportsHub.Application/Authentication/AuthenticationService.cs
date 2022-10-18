@@ -34,14 +34,23 @@ namespace SportsHub.AppService.Authentication
             return null;
         }
 
-        public async Task<bool> RegisterUser(UserRegisterDTO userInput)
+        public async Task<bool> RegisterUserAsync(UserRegisterDTO userInput)
         {
-            //Returns false if user with the same username exists.
             var usernameExists = await userService.GetByUsernameAsync(userInput.Username) != null;
-            if (usernameExists) { return false; }
-            //Returns false if user with the same email exists.
+
+            if (usernameExists) 
+            {
+                //Returns false if user with the same username exists.
+                return false; 
+            }
+
             var emailExists = await userService.GetByEmailAsync(userInput.Email) != null;
-            if (emailExists) { return false; }
+
+            if (emailExists) 
+            {
+                //Returns false if user with the same email exists.
+                return false; 
+            }
 
             var passwordHash = passwordHasher.Hash(userInput.Password);
 

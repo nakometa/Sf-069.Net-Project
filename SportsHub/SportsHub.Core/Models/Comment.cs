@@ -6,7 +6,7 @@
         public string Content { get; set; }
         public DateTime PostedOn { get; set; }
 
-        public int NewsId { get; set; }
+        public int ArticleId { get; set; }
         public virtual Article Article { get; set; }
 
         public int AuthorId { get; set; }

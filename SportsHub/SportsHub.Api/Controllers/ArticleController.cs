@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.DTOs;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 
@@ -31,7 +32,8 @@ namespace SportsHub.Api.Controllers
                 return BadRequest($"No such article");
             }
 
-            return Ok($"Article: {article.Title}");
+            ArticleResponseDTO articleResponse = mapper.Map<ArticleResponseDTO>(article);
+            return Ok($"Article: {articleResponse.Title}");
         }
     }
 }

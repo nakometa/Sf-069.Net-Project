@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SportsHub.Api;
+using SportsHub.Api.Exceptions;
 using SportsHub.Api.Mapping;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
@@ -11,7 +12,6 @@ using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.UOW;
 using System.Text;
-using SportsHub.Api.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -88,6 +88,7 @@ builder.Services.AddTransient<ExceptionHandler>();
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
 builder.Services.AddAutoMapper(typeof(UserMapping));
+builder.Services.AddAutoMapper(typeof(ArticleMapping));
 
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));

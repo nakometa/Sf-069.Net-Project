@@ -25,6 +25,14 @@ namespace SportsHub.DAL.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Article>> GetByStateAsync(string state)
+        {
+            return await DbSet
+                .Include(x => x.State)
+                .Where(x => x.State.Name == state)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Article>> GetByCategoryAsync(string category)
         {
             return await DbSet

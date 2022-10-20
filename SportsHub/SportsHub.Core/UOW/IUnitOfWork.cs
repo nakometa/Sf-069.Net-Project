@@ -6,6 +6,7 @@ namespace SportsHub.Domain.UOW
     {
         IUserRepository UserRepository { get; }
         IArticleRepository ArticleRepository { get; }
+        ICommentRepository CommentRepository { get; }
         Task SaveChangesAsync();
     }
 }

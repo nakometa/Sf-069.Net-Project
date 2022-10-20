@@ -17,8 +17,9 @@ namespace SportsHub.Api.Controllers.ControllerHelpers
                     Username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
                     Email = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
                     FirstName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
-                    LastName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value,
-                    Role = UserConstants.Users.FirstOrDefault(u => u.Username.ToLower() == ClaimTypes.NameIdentifier)?.Role
+                    LastName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value
+                    // Should we retrieve the user from the DB in order to return his role inside the JWT Token as well?
+                    //Role = UserConstants.Users.FirstOrDefault(u => u.Username.ToLower() == ClaimTypes.NameIdentifier)?.Role
                 };
             }
 

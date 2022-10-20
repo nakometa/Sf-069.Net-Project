@@ -32,7 +32,7 @@ namespace SportsHub.AppService.Authentication.PasswordHasher
             }
         }
 
-        public (bool Verified, bool NeedsUpgrade) Check(string hash, string password)
+        public IPasswordCheckResult Check(string hash, string password)
         {
             var parts = hash.Split('.', 3);
 
@@ -58,7 +58,7 @@ namespace SportsHub.AppService.Authentication.PasswordHasher
 
                 var verified = keyToCheck.SequenceEqual(key);
 
-                return (verified, needsUpgrade);
+                return new PasswordCheckResult(verified, needsUpgrade);
             }
         }
     }

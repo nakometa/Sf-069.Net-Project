@@ -18,8 +18,7 @@ namespace SportsHub.AppService.Authentication
 
         public async Task<User?> Authenticate(UserLoginDTO userLogin)
         {
-            var currentUser = await userService.GetByUsernameAsync(userLogin.UsernameOrEmail)
-                ?? await userService.GetByEmailAsync(userLogin.UsernameOrEmail);
+            var currentUser = await userService.GetByEmailOrUsernameAsync(userLogin.UsernameOrEmail);
             
             if (currentUser != null)
             {

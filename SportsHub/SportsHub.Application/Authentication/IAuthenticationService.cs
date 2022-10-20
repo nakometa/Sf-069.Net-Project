@@ -1,5 +1,6 @@
 ﻿using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
+using System.Security.Claims;
 
 namespace SportsHub.AppService.Authentication
 {

@@ -2,6 +2,6 @@
 {
     public sealed class PasswordHashingOptions
     {
-        public int Iterations { get; set; } = 10000;
+        public int Iterations { get; } = 10000;
     }
 }

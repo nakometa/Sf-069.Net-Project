@@ -10,7 +10,6 @@ namespace SportsHub.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService service;

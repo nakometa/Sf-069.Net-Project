@@ -8,7 +8,9 @@ namespace SportsHub.Api.Mapping
     {
         public ArticleMapping()
         {
-            CreateMap<Article, ArticleResponseDTO>();
+            CreateMap<Article, ArticleResponseDTO>()
+                .ForMember(dest => dest.StateName, act => act.MapFrom(a => a.State.Name))
+                .ForMember(dest => dest.CategoryName, act => act.MapFrom(a => a.Category.Name));
         }
     }
 }

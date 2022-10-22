@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
+using System.Text.Json;
 
 namespace SportsHub.Api.Controllers
 {
@@ -29,7 +30,7 @@ namespace SportsHub.Api.Controllers
             }
 
             ArticleResponseDTO articleResponse = mapper.Map<ArticleResponseDTO>(article);
-            return Ok($"Article: {articleResponse.Title}");
+            return Ok($"{JsonSerializer.Serialize(articleResponse)}");
         }
     }
 }

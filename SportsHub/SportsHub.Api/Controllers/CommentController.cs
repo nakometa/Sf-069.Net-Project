@@ -28,7 +28,7 @@ namespace SportsHub.Api.Controllers
                 return BadRequest($"No comments for this article");
             }
 
-            return Ok($"Commnets: {JsonSerializer.Serialize(comments)}");
+            return Ok($"{JsonSerializer.Serialize(comments)}");
         }
     }
 }

@@ -1,15 +1,13 @@
-﻿using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
-using SportsHub.Domain.Models;
 using SportsHub.Domain.UOW;
 using Xunit;
 
 namespace UnitTests.Services;
 
-public class TestUserService: IDisposable
+public class TestUserService : IDisposable
 {
     private readonly ApplicationDbContext _context;
     private IUnitOfWork _unitOfWork;
@@ -19,9 +17,11 @@ public class TestUserService: IDisposable
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
-         _context = new ApplicationDbContext(options);
+        _context = new ApplicationDbContext(options);
         _context.Database.EnsureCreated();
-        
+        _context.Users.AddRange(MockData.UsersMockData.GetUsers());
+        _unitOfWork = new UnitOfWork(_context);
+        _unitOfWork.SaveChangesAsync();
     }
 
     [Theory]
@@ -29,17 +29,10 @@ public class TestUserService: IDisposable
     [InlineData("seconduser@mail.com")]
     public async Task GetByEmailAsync_Should_Work_Properly(string email)
     {
-        //Arrange
-        _context.Users.AddRange(MockData.UsersMockData.GetUsers());
-        _unitOfWork = new UnitOfWork(_context);
-        _unitOfWork.SaveChangesAsync();        
-
         var sut = new UserService(_unitOfWork);
 
-        //Act
         var result = await sut.GetByEmailAsync(email);
-        
-        //Assert
+
         Assert.Equal(email, result.Email);
     }
 
@@ -48,36 +41,22 @@ public class TestUserService: IDisposable
     [InlineData(null)]
     public async Task GetByEmailAsync_Should_Return_Null(string email)
     {
-        //Arrange
-        _context.Users.AddRange(MockData.UsersMockData.GetUsers());
-        _unitOfWork = new UnitOfWork(_context);
-        _unitOfWork.SaveChangesAsync();        
-
         var sut = new UserService(_unitOfWork);
 
-        //Act
         var result = await sut.GetByEmailAsync(email);
-        
-        //Assert
-        result.Should().BeNull();
+
+        Assert.Null(result);
     }
-    
+
     [Theory]
     [InlineData("gogo")]
     [InlineData("niki")]
     public async Task GetByUsernameAsync_Should_Work_Properly(string userName)
     {
-        //Arrange
-        _context.Users.AddRange(MockData.UsersMockData.GetUsers());
-        _unitOfWork = new UnitOfWork(_context);
-        _unitOfWork.SaveChangesAsync();        
-
         var sut = new UserService(_unitOfWork);
 
-        //Act
         var result = await sut.GetByUsernameAsync(userName);
-        
-        //Assert
+
         Assert.Equal(userName, result.Username);
     }
 
@@ -85,20 +64,13 @@ public class TestUserService: IDisposable
     [InlineData("peshkata")]
     public async Task GetByUsernameAsync_Should_Return_Null(string userName)
     {
-        //Arrange
-        _context.Users.AddRange(MockData.UsersMockData.GetUsers());
-        _unitOfWork = new UnitOfWork(_context);
-        _unitOfWork.SaveChangesAsync();        
-
         var sut = new UserService(_unitOfWork);
 
-        //Act
         var result = await sut.GetByUsernameAsync(userName);
-        
-        //Assert
-        result.Should().BeNull();
+
+        Assert.Null(result);
     }
-    
+
     public void Dispose()
     {
         _context.Database.EnsureDeleted();

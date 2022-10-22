@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.10" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="Moq" Version="4.18.2" />
@@ -15,10 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\SportsHub.Api\SportsHub.Api.csproj" />
     <ProjectReference Include="..\SportsHub.Application\SportsHub.AppService.csproj" />
     <ProjectReference Include="..\SportsHub.Core\SportsHub.Domain.csproj" />
     <ProjectReference Include="..\SportsHub.DAL\SportsHub.DAL.csproj" />

@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportsHub.Api.DTOs;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
-using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Controllers
 {

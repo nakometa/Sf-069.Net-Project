@@ -29,5 +29,12 @@ namespace SportsHub.DAL.Repository
         {
             await context.Users.AddAsync(user);
         }
+
+        public async Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail)
+        {
+            return await context.Users
+                .Where(x => x.Username == usernameOrEmail || x.Email == usernameOrEmail)
+                .FirstOrDefaultAsync();
+        }
     }
 }

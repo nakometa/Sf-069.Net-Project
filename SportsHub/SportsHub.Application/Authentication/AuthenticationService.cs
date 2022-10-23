@@ -1,6 +1,7 @@
 ﻿using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.PasswordHasher;
 
 namespace SportsHub.AppService.Authentication
@@ -62,7 +63,7 @@ namespace SportsHub.AppService.Authentication
                 Email = userInput.Email,
                 Password = passwordHash,
                 ProfilePicture = null,
-                RoleId = 1
+                RoleId = (int) RoleEnums.User
             };
 
             await userService.SaveUserAsync(user);

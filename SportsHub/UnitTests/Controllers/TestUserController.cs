@@ -33,7 +33,7 @@ public class TestUserController
     }
 
     [Fact]
-    public async Task GetByUserNamelAsync_Should_Work_Properly()
+    public async Task GetByUserNamelAsync_WithCorrectUser_ReturnsOkStatus()
     {
         var user = UserMockData.GetUser();
         _userService.Setup(service => service.GetByUsernameAsync("gogo")).Returns(Task.FromResult<User?>(user));
@@ -45,7 +45,7 @@ public class TestUserController
     }
 
     [Fact]
-    public async Task GetByuserNameAsync_ShouldReturn_BadRequest()
+    public async Task GetByuserNameAsync_WithNull_ReturnsBadRequest()
     {
         _userService.Setup(service => service.GetByUsernameAsync("gogo")).Returns(Task.FromResult<User?>(null));
 

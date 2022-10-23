@@ -10,7 +10,7 @@ namespace UnitTests.Services;
 public class TestUserService : IDisposable
 {
     private readonly ApplicationDbContext _context;
-    private IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
     public TestUserService()
     {
@@ -27,7 +27,7 @@ public class TestUserService : IDisposable
     [Theory]
     [InlineData("firstuser@mail.com")]
     [InlineData("seconduser@mail.com")]
-    public async Task GetByEmailAsync_Should_Work_Properly(string email)
+    public async Task GetByEmailAsync_WithCorrectEmail_ReturnsCorrectUser(string email)
     {
         var sut = new UserService(_unitOfWork);
 
@@ -39,7 +39,7 @@ public class TestUserService : IDisposable
     [Theory]
     [InlineData("email@email.com")]
     [InlineData(null)]
-    public async Task GetByEmailAsync_Should_Return_Null(string email)
+    public async Task GetByEmailAsync_WithIncorrectEmail_ReturnsNull(string email)
     {
         var sut = new UserService(_unitOfWork);
 
@@ -51,7 +51,7 @@ public class TestUserService : IDisposable
     [Theory]
     [InlineData("gogo")]
     [InlineData("niki")]
-    public async Task GetByUsernameAsync_Should_Work_Properly(string userName)
+    public async Task GetByUsernameAsync_WithCorrectUsername_ReturnsCorrectUser(string userName)
     {
         var sut = new UserService(_unitOfWork);
 
@@ -62,7 +62,7 @@ public class TestUserService : IDisposable
 
     [Theory]
     [InlineData("peshkata")]
-    public async Task GetByUsernameAsync_Should_Return_Null(string userName)
+    public async Task GetByUsernameAsync_WithIncorrectUsername_ReturnsNull(string userName)
     {
         var sut = new UserService(_unitOfWork);
 

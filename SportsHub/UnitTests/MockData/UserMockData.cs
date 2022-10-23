@@ -9,7 +9,7 @@ public class UserMockData
         return new User
         {
             Id = 8, 
-            Email = "firstuser@mail.com",
+            Email = "goshko88@mail.bg",
             Username = "gogo", 
             FirstName = "Georgi", 
             LastName = "Ivanov",

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.DAL.Data.Configurations
 {
@@ -10,12 +11,12 @@ namespace SportsHub.DAL.Data.Configurations
         {
             user.Property(x => x.Email)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(UserConstants.EmailLength)
                 .IsUnicode(false);
 
             user.Property(x => x.Username)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(UserConstants.UsernameLength)
                 .IsUnicode(false);
 
             user.HasIndex(x => x.Username)
@@ -23,22 +24,22 @@ namespace SportsHub.DAL.Data.Configurations
 
             user.Property(x => x.DisplayName)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(UserConstants.DisplayNameLength)
                 .IsUnicode(false);
 
             user.Property(x => x.FirstName)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(UserConstants.FirstNameLength)
                 .IsUnicode(false);
 
             user.Property(x => x.LastName)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(UserConstants.LastNameLength)
                 .IsUnicode(false);
 
             user.Property(x => x.Password)
                 .IsRequired(true)
-                .HasMaxLength(60)
+                .HasMaxLength(UserConstants.PasswordLength)
                 .IsUnicode(false);
 
             user.Property(x => x.ProfilePicture)

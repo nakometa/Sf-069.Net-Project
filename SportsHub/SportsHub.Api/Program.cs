@@ -9,9 +9,11 @@ using SportsHub.Api.Mapping;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
+using SportsHub.AppService.Authentication.PasswordHasher;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
+using SportsHub.Domain.PasswordHasher;
 using SportsHub.Domain.UOW;
 using System.Text;
 using SportsHub.Api.Exceptions;
@@ -83,6 +85,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
+builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();

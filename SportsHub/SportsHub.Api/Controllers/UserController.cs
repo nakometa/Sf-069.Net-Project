@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
-using SportsHub.Domain.Models.Constants;
-using SportsHub.Api.Controllers.ControllerHelpers;
 using System.Security.Claims;
 
 namespace SportsHub.Api.Controllers
@@ -42,18 +40,18 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("Admins")]
-        public IActionResult AdminsEndpoint()
+        public async Task<IActionResult> AdminsEndpoint()
         {
-            var currentUser = GetCurrentUser();
+            var currentUser = await GetCurrentUserByClaimsAsync();
             UserResponseDTO adminUserDto = _mapper.Map<UserResponseDTO>(currentUser);
 
             return Ok($"Hi, {adminUserDto.Username}, you are an Admin");
         }
 
-        private User GetCurrentUser()
+        private async Task<User?> GetCurrentUserByClaimsAsync()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var currentUser = UserControllerHelper.GetCurrentUser(identity);
+            var currentUser = await service.GetUserByClaimsAsync(identity);
 
             return currentUser;
         }

@@ -1,4 +1,5 @@
-﻿using SportsHub.Domain.Models;
+﻿using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Models;
 using SportsHub.Domain.UOW;
 
 namespace SportsHub.AppService.Services
@@ -30,6 +31,31 @@ namespace SportsHub.AppService.Services
         public async Task<IEnumerable<Article>> GetByCategoryAsync(string category)
         {
             return await unitOfWork.ArticleRepository.GetByCategoryAsync(category);
+        }
+
+        public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
+        {
+            var articleExists = await GetByTitleAsync(adminInput.Title) != null;
+
+            if(articleExists)
+            {
+                return false;
+            }
+
+            var article = new Article()
+            {
+                Title = adminInput.Title,
+                CategoryId = adminInput.CategoryId,
+                StateId = adminInput.StateId,
+                Content = adminInput.Content,
+                ArticlePicture = adminInput.ArticlePicture,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            await unitOfWork.ArticleRepository.AddArticleAsync(article);
+            await unitOfWork.SaveChangesAsync();
+
+            return true;
         }
     }
 }

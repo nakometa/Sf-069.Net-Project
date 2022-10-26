@@ -1,4 +1,5 @@
-﻿using SportsHub.Domain.Models;
+﻿using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Models;
 
 namespace SportsHub.AppService.Services
 {
@@ -8,5 +9,6 @@ namespace SportsHub.AppService.Services
         Task<IEnumerable<Article>> GetByAuthorAsync(string author);
         Task<IEnumerable<Article>> GetByStateAsync(string state);
         Task<IEnumerable<Article>> GetByCategoryAsync(string category);
+        Task<bool> CreateArticleAsync(CreateArticleDTO adminInput);
     }
 }

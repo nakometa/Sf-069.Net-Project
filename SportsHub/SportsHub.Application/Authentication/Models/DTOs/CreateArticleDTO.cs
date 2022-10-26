@@ -1,6 +1,4 @@
-﻿using SportsHub.Domain.Models;
-
-namespace SportsHub.AppService.Authentication.Models.DTOs
+﻿namespace SportsHub.AppService.Authentication.Models.DTOs
 {
     public class CreateArticleDTO
     {

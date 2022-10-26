@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
@@ -30,6 +31,20 @@ namespace SportsHub.Api.Controllers
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
             return Ok(articleResponse);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreateArticleAsync([FromBody] CreateArticleDTO adminInput)
+        {
+            bool createdSuccessful = await _articleService.CreateArticleAsync(adminInput);
+
+            if(createdSuccessful)
+            {
+                return Ok("Article created successfully.");
+            }
+
+            return BadRequest("Unable to create article.");
         }
     }
 }

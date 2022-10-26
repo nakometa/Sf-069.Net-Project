@@ -40,5 +40,10 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.Category.Name == category)
                 .ToListAsync();
         }
+
+        public async Task AddArticleAsync(Article article)
+        {
+            await context.Articles.AddAsync(article);
+        }
     }
 }

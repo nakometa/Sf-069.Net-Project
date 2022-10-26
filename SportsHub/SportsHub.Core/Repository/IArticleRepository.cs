@@ -8,5 +8,6 @@ namespace SportsHub.Domain.Repository
         Task<IEnumerable<Article>> GetByAuthorAsync(string author);
         Task<IEnumerable<Article>> GetByStateAsync(string state);
         Task<IEnumerable<Article>> GetByCategoryAsync(string category);
+        Task AddArticleAsync(Article article);
     }
 }

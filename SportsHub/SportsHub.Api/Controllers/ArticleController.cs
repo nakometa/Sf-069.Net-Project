@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
-using System.Text.Json;
 
 namespace SportsHub.Api.Controllers
 {
@@ -10,27 +9,27 @@ namespace SportsHub.Api.Controllers
     [ApiController]
     public class ArticleController : ControllerBase
     {
-        private readonly IArticleService service;
-        private readonly IMapper mapper;
+        private readonly IArticleService _articleService;
+        private readonly IMapper _mapper;
 
         public ArticleController(IArticleService service, IMapper mapper)
         {
-            this.service = service;
-            this.mapper = mapper;
+            _articleService = service;
+            _mapper = mapper;
         }
 
         [HttpGet("GetArticleByTitle")]
         public async Task<IActionResult> GetArticleByTitleAsync(string title)
         {
-            var article = await service.GetByTitleAsync(title);
+            var article = await _articleService.GetByTitleAsync(title);
 
             if (article == null)
             {
                 return BadRequest($"No such article");
             }
 
-            ArticleResponseDTO articleResponse = mapper.Map<ArticleResponseDTO>(article);
-            return Ok($"{JsonSerializer.Serialize(articleResponse)}");
+            ArticleResponseDTO articleResponse = _mapper.Map<ArticleResponseDTO>(article);
+            return Ok(articleResponse);
         }
     }
 }

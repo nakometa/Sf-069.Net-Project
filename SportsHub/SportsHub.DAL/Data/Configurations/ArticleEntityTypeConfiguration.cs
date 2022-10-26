@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SportsHub.DAL.Data.Configurations.Constants;
 using SportsHub.Domain.Models;
 
 namespace SportsHub.DAL.Data.Configurations
@@ -8,9 +9,13 @@ namespace SportsHub.DAL.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Article> article)
         {
+            article
+                .HasIndex(x => x.Title)
+                .IsUnique();
+
             article.Property(x => x.Title)
                 .IsRequired(true)
-                .HasMaxLength(100)
+                .HasMaxLength(ConfigurationConstants.articleTitleMaxLength)
                 .IsUnicode(true);
 
             article.Property(x => x.Content)
@@ -29,6 +34,19 @@ namespace SportsHub.DAL.Data.Configurations
 
             article.Property(x => x.CategoryId)
                 .IsRequired(true);
+
+            article.HasMany(x => x.Authors)
+                .WithMany(x => x.Articles);
+
+            article.HasMany(x => x.Comments)
+                .WithOne(x => x.Article)
+                .HasForeignKey(x => x.ArticleId);
+
+            article.HasOne(x => x.Category)
+                .WithMany(x => x.Articles);
+
+            article.HasOne(x => x.State)
+                .WithMany(x => x.Articles);
         }
     }
 }

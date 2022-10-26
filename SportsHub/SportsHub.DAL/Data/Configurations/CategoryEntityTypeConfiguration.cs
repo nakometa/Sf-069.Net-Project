@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SportsHub.DAL.Data.Configurations.Constants;
 using SportsHub.Domain.Models;
 
 namespace SportsHub.DAL.Data.Configurations
@@ -10,13 +11,17 @@ namespace SportsHub.DAL.Data.Configurations
         {
             category.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.categoryNameMaxLength)
+                .IsUnicode(true);
 
             category.Property(x => x.Description)
                 .IsRequired(false)
-                .HasMaxLength(250)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.categoryDescriptionMaxLength)
+                .IsUnicode(true);
+
+            category.HasMany(x => x.Articles)
+                .WithOne(x => x.Category)
+                .HasForeignKey(x => x.CategoryId);
         }
     }
 }

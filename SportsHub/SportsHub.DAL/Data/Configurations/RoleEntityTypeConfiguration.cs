@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SportsHub.DAL.Data.Configurations.Constants;
 using SportsHub.Domain.Models;
 
 namespace SportsHub.DAL.Data.Configurations
@@ -10,8 +11,12 @@ namespace SportsHub.DAL.Data.Configurations
         {
             role.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(25)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.roleNameMaxLength)
+                .IsUnicode(true);
+
+            role.HasMany(x => x.Users)
+                .WithOne(x => x.Role)
+                .HasForeignKey(x => x.RoleId);
         }
     }
 }

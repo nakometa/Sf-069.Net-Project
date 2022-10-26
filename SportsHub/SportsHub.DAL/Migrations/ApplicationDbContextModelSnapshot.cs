@@ -76,6 +76,9 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasIndex("StateId");
 
+                    b.HasIndex("Title")
+                        .IsUnique();
+
                     b.ToTable("Articles");
                 });
 
@@ -89,14 +92,14 @@ namespace SportsHub.DAL.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(250)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(250)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -120,8 +123,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(450)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(450)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("PostedOn")
                         .ValueGeneratedOnAdd()
@@ -148,8 +151,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(25)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
@@ -167,8 +170,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -186,32 +189,32 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(60)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(60)");
+                        .HasMaxLength(75)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");
@@ -222,8 +225,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -278,7 +281,7 @@ namespace SportsHub.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("SportsHub.Domain.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -317,6 +320,11 @@ namespace SportsHub.DAL.Migrations
             modelBuilder.Entity("SportsHub.Domain.Models.State", b =>
                 {
                     b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("SportsHub.Domain.Models.User", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

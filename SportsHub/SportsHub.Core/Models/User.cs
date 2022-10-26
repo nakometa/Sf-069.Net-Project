@@ -5,6 +5,7 @@
         public User()
         {
             Articles = new HashSet<Article>();
+            Comments = new HashSet<Comment>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@
         public virtual Role Role { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

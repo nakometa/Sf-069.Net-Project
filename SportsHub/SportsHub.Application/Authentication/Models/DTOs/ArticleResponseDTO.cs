@@ -11,6 +11,6 @@ namespace SportsHub.AppService.Authentication.Models.DTOs
         public string StateName { get; set; }
         public string CategoryName { get; set; }
 
-        public virtual ICollection<User> Authors { get; set; }
+        public ICollection<User> Authors { get; set; }
     }
 }

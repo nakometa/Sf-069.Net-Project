@@ -28,7 +28,7 @@ namespace SportsHub.Api.Controllers
                 return BadRequest($"No such article");
             }
 
-            ArticleResponseDTO articleResponse = _mapper.Map<ArticleResponseDTO>(article);
+            var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
             return Ok(articleResponse);
         }
     }

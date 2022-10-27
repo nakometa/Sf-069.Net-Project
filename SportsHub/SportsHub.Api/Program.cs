@@ -79,14 +79,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-var assemblies = new List<Assembly>();
-
-foreach (string assemblyPath in Directory.GetFiles(System.AppDomain.CurrentDomain.BaseDirectory, "*.dll", SearchOption.AllDirectories))
-{
-    var assembly = System.Runtime.Loader.AssemblyLoadContext.Default.LoadFromAssemblyPath(assemblyPath);
-    assemblies.Add(assembly);
-}
-
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
@@ -98,8 +90,7 @@ builder.Services.AddTransient<ExceptionHandler>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
-builder.Services.AddAutoMapper(typeof(UserMapping));
-builder.Services.AddAutoMapper(typeof(ArticleMapping));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));

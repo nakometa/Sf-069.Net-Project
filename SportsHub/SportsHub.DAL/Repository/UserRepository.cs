@@ -34,6 +34,7 @@ namespace SportsHub.DAL.Repository
         {
             return await context.Users
                 .Where(x => x.Username == usernameOrEmail || x.Email == usernameOrEmail)
+                .Include(x => x.Role)
                 .FirstOrDefaultAsync();
         }
     }

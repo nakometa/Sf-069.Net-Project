@@ -16,20 +16,5 @@ namespace SportsHub.AppService.Services
         {
             return await unitOfWork.ArticleRepository.GetByTitleAsync(title);
         }
-
-        public async Task<IEnumerable<Article>> GetByAuthorAsync(string author)
-        {
-            return await unitOfWork.ArticleRepository.GetByAuthorAsync(author);
-        }
-
-        public async Task<IEnumerable<Article>> GetByStateAsync(string state)
-        {
-            return await unitOfWork.ArticleRepository.GetByStateAsync(state);
-        }
-
-        public async Task<IEnumerable<Article>> GetByCategoryAsync(string category)
-        {
-            return await unitOfWork.ArticleRepository.GetByCategoryAsync(category);
-        }
     }
 }

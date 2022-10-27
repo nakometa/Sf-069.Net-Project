@@ -17,20 +17,5 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.ArticleId == id)
                 .ToListAsync();
         }
-
-        public async Task<IEnumerable<Comment>> GetByAuthorAsync(int id)
-        {
-            return await DbSet
-                .Where(x => x.AuthorId == id)
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<Comment>> GetByAuthorAsync(string author)
-        {
-            return await DbSet
-                .Include(x => x.Author)
-                .Where(x => x.Author.DisplayName == author)
-                .ToListAsync();
-        }
     }
 }

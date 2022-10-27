@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Services;
-using System.Text.Json;
 
 namespace SportsHub.Api.Controllers
 {
@@ -28,7 +27,7 @@ namespace SportsHub.Api.Controllers
                 return BadRequest($"No comments for this article");
             }
 
-            return Ok($"{JsonSerializer.Serialize(comments)}");
+            return Ok(comments);
         }
     }
 }

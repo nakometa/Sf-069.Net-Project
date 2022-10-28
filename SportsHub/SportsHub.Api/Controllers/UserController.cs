@@ -13,19 +13,19 @@ namespace SportsHub.Api.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserService service;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserService service, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            this.service = service;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet("GetUserByUsername")]
         public async Task<IActionResult> GetUserByUsernameAsync(string username)
         {
-            var user = await service.GetByUsernameAsync(username);
+            var user = await _userService.GetByUsernameAsync(username);
 
             if (user == null) return BadRequest($"No such user");
 
@@ -51,7 +51,7 @@ namespace SportsHub.Api.Controllers
         private async Task<User?> GetCurrentUserByClaimsAsync()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var currentUser = await service.GetUserByClaimsAsync(identity);
+            var currentUser = await _userService.GetUserByClaimsAsync(identity);
 
             return currentUser;
         }

@@ -6,25 +6,25 @@ namespace SportsHub.AppService.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<User?> GetByEmailOrUsernameAsync(string usernameOrEmail)
         {
-            return await unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail);
+            return await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail);
         }
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await unitOfWork.UserRepository.GetByEmailAsync(email);
+            return await _unitOfWork.UserRepository.GetByEmailAsync(email);
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await unitOfWork.UserRepository.GetByUsernameAsync(username);
+            return await _unitOfWork.UserRepository.GetByUsernameAsync(username);
         }
 
         public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)
@@ -37,7 +37,7 @@ namespace SportsHub.AppService.Services
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             // Maybe throw exception if user is null in future.
-            var user = await unitOfWork.UserRepository.GetByUsernameAsync(username);
+            var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username);
 
             return new User()
             {
@@ -51,8 +51,8 @@ namespace SportsHub.AppService.Services
 
         public async Task SaveUserAsync(User user)
         {
-            await unitOfWork.UserRepository.SaveUserAsync(user);
-            await unitOfWork.SaveChangesAsync();
+            await _unitOfWork.UserRepository.SaveUserAsync(user);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

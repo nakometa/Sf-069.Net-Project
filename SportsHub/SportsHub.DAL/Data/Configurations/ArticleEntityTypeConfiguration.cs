@@ -15,7 +15,7 @@ namespace SportsHub.DAL.Data.Configurations
 
             article.Property(x => x.Title)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.articleTitleMaxLength)
+                .HasMaxLength(ConfigurationConstants.ArticleTitleMaxLength)
                 .IsUnicode(true);
 
             article.Property(x => x.Content)

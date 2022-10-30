@@ -2,12 +2,6 @@
 {
     public class User
     {
-        public User()
-        {
-            Articles = new HashSet<Article>();
-            Comments = new HashSet<Comment>();
-        }
-
         public int Id { get; set; }
         public string Email { get; set; }
         public string Username { get; set; }

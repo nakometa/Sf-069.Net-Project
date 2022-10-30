@@ -5,16 +5,16 @@ namespace SportsHub.AppService.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CommentService(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IEnumerable<Comment>> GetByArticleAsync(int id)
         {
-            return await unitOfWork.CommentRepository.GetByArticleAsync(id);
+            return await _unitOfWork.CommentRepository.GetByArticleAsync(id);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SportsHub.DAL.Data.Configurations
         {
             role.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.roleNameMaxLength)
+                .HasMaxLength(ConfigurationConstants.RoleNameMaxLength)
                 .IsUnicode(true);
 
             role.HasMany(x => x.Users)

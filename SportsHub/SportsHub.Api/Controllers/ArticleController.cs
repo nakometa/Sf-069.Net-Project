@@ -20,7 +20,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetArticleByTitle")]
-        public async Task<IActionResult> GetArticleByTitleAsync(string title)
+        public async Task<ActionResult<ArticleResponseDTO>> GetArticleByTitleAsync(string title)
         {
             var article = await _articleService.GetByTitleAsync(title);
 

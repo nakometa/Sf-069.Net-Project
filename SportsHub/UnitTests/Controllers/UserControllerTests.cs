@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
 using SportsHub.Api.DTOs;
+using SportsHub.Api.Mapping;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using UnitTests.MockData;
@@ -13,13 +14,13 @@ using Xunit;
 
 namespace UnitTests.Controllers;
 
-public class TestUserController
+public class UserControllerTests
 {
     private readonly Mock<IUserService> _userService;
     private readonly UserController _userController;
     private readonly IMapper _mapper;
 
-    public TestUserController()
+    public UserControllerTests()
     {
         if (_mapper == null)
         {
@@ -32,25 +33,33 @@ public class TestUserController
         _userController = new UserController(_userService.Object, _mapper);
     }
 
-    [Fact]
-    public async Task GetByUserNamelAsync_WithCorrectUser_ReturnsOkStatus()
+    [Theory]
+    [InlineData("gogo")]
+    public async Task GetByUserNameAsync_UserWithProvidedUsernameExists_ReturnsOkStatus(string username)
     {
+        //Arrange
         var user = UserMockData.GetUser();
-        _userService.Setup(service => service.GetByUsernameAsync("gogo")).Returns(Task.FromResult<User?>(user));
+        _userService.Setup(service => service.GetByUsernameAsync(username)).ReturnsAsync(user);
 
-        var result = await _userController.GetUserByUsernameAsync("gogo") as ObjectResult;
+        //Act
+        var result = await _userController.GetUserByUsernameAsync(username) as ObjectResult;
 
+        //Assert
         Assert.IsType<OkObjectResult>(result);
         Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)result.StatusCode);
     }
 
-    [Fact]
-    public async Task GetByuserNameAsync_WithNull_ReturnsBadRequest()
+    [Theory]
+    [InlineData("niki")]
+    public async Task GetByuserNameAsync_UserWithProvidedUsernameDoesNotExist_ReturnsBadRequest(string username)
     {
-        _userService.Setup(service => service.GetByUsernameAsync("gogo")).Returns(Task.FromResult<User?>(null));
+        //Arrange
+        _userService.Setup(service => service.GetByUsernameAsync(username)).ReturnsAsync((User?)null);
 
-        var result = await _userController.GetUserByUsernameAsync("gogo") as ObjectResult;
+        //Act
+        var result = await _userController.GetUserByUsernameAsync(username) as ObjectResult;
 
+        //Assert
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)result.StatusCode);
         Assert.IsType<BadRequestObjectResult>(result);
     }
@@ -58,20 +67,25 @@ public class TestUserController
     [Fact]
     public void Public_ReturnOkResult()
     {
+        //Act
         var result = _userController.Public() as ObjectResult;
 
+        //Assert
         Assert.IsType<OkObjectResult>(result);
     }
 
     [Fact]
     public void AdminsEndPoint_Returning_OkStatus()
     {
+        //Arrange
         var user = new ClaimsPrincipal(new ClaimsIdentity());
         _userController.ControllerContext = new ControllerContext();
         _userController.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
 
+        //Act
         var result = _userController.AdminsEndpoint() as ObjectResult;
 
+        //Assert
         Assert.IsType<OkObjectResult>(result);
     }
 }

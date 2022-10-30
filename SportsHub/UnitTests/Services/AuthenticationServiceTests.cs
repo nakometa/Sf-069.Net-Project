@@ -7,12 +7,12 @@ using Xunit;
 
 namespace UnitTests.Services;
 
-public class TestAuthenticationService
+public class AuthenticationServiceTests
 {
     private readonly Mock<IUserService> _userService;
     private readonly IAuthenticationService _authentication;
 
-    public TestAuthenticationService()
+    public AuthenticationServiceTests()
     {
         _userService = new Mock<IUserService>();
         _authentication = new AuthenticationService(_userService.Object);
@@ -24,7 +24,7 @@ public class TestAuthenticationService
         //Arrange
         var givenUser = UserMockData.GetUserWithUsername();
         var user = UserMockData.GetUser();
-        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).Returns(Task.FromResult<User?>(user));
+        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).ReturnsAsync(user);
 
         //Act
          var result = await _authentication.Authenticate(givenUser); 
@@ -40,7 +40,7 @@ public class TestAuthenticationService
     {
         //Arrange
         var givenUser = UserMockData.GetUserWithUsername();
-        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).Returns(Task.FromResult<User?>(null));
+        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).ReturnsAsync((User?)null);
 
         //Act
         var result = await _authentication.Authenticate(givenUser);
@@ -55,7 +55,7 @@ public class TestAuthenticationService
         //Arrange
         var givenUser = UserMockData.GetUserWithEmail();
         var user = UserMockData.GetUser();
-        _userService.Setup(service => service.GetByEmailAsync(givenUser.UsernameOrEmail)).Returns(Task.FromResult<User?>(user));
+        _userService.Setup(service => service.GetByEmailAsync(givenUser.UsernameOrEmail)).ReturnsAsync(user);
 
         //Act
         var result = await _authentication.Authenticate(givenUser); 
@@ -70,7 +70,7 @@ public class TestAuthenticationService
     {
         //Arrange
         var givenUser = UserMockData.GetUserWithEmail();
-        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).Returns(Task.FromResult<User?>(null));
+        _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).ReturnsAsync((User?)null);
 
         //Act
         var result = await _authentication.Authenticate(givenUser);

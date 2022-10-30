@@ -7,12 +7,12 @@ using Xunit;
 
 namespace UnitTests.Services;
 
-public class TestUserService : IDisposable
+public class UserServiceTests : IDisposable
 {
     private readonly ApplicationDbContext _context;
     private readonly IUnitOfWork _unitOfWork;
 
-    public TestUserService()
+    public UserServiceTests()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())

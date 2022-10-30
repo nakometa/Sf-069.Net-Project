@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SportsHub.DAL.Data.Configurations.Constants;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.DAL.Data.Configurations
 {
@@ -11,36 +12,36 @@ namespace SportsHub.DAL.Data.Configurations
         {
             user.Property(x => x.Email)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userEmailMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.EmailLength)
+                .IsUnicode(false);
 
             user.Property(x => x.Username)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userUsernameMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.UsernameLength)
+                .IsUnicode(false);
 
             user.HasIndex(x => x.Username)
                 .IsUnique();
 
             user.Property(x => x.DisplayName)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userDisplayNameMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.DisplayNameLength)
+                .IsUnicode(false);
 
             user.Property(x => x.FirstName)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userFirstNamelMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.FirstNameLength)
+                .IsUnicode(false);
 
             user.Property(x => x.LastName)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userLastNamelMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.LastNameLength)
+                .IsUnicode(false);
 
             user.Property(x => x.Password)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.userPasswordlMaxLenth)
-                .IsUnicode(true);
+                .HasMaxLength(UserConstants.PasswordLength)
+                .IsUnicode(false);
 
             user.Property(x => x.ProfilePicture)
                 .IsRequired(false);

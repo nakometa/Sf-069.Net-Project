@@ -17,5 +17,10 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.Title == title)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task AddArticleAsync(Article article)
+        {
+            await context.Articles.AddAsync(article);
+        }
     }
 }

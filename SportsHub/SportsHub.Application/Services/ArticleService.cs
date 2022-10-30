@@ -17,5 +17,30 @@ namespace SportsHub.AppService.Services
         {
             return await unitOfWork.ArticleRepository.GetByTitleAsync(title);
         }
+
+        public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
+        {
+            var articleExists = await GetByTitleAsync(adminInput.Title) != null;
+
+            if (articleExists)
+            {
+                return false;
+            }
+
+            var article = new Article()
+            {
+                Title = adminInput.Title,
+                CategoryId = adminInput.CategoryId,
+                StateId = adminInput.StateId,
+                Content = adminInput.Content,
+                ArticlePicture = adminInput.ArticlePicture,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            await unitOfWork.ArticleRepository.AddArticleAsync(article);
+            await unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

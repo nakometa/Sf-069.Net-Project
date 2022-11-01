@@ -11,6 +11,12 @@ namespace SportsHub.DAL.Repository
         {
         }
 
+        public async Task<IEnumerable<Article>> GetAllAsync()
+        {
+            return await DbSet
+                .ToListAsync();
+        }
+
         public async Task<Article?> GetByTitleAsync(string title)
         {
             return await DbSet

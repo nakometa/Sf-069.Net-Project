@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Controllers
 {
@@ -16,6 +17,20 @@ namespace SportsHub.Api.Controllers
         {
             _articleService = service;
             _mapper = mapper;
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetAllAsync()
+        {
+            var articles = await _articleService.GetAllAsync();
+
+            if (!articles.Any())
+            {
+                return Ok("No articles in the database.");
+            }
+
+            var articlesResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
+            return Ok(articlesResponse);
         }
 
         [HttpGet("GetArticleByTitle")]

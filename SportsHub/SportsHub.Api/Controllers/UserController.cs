@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.DTOs;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.ControllerConstants;
 using SportsHub.Domain.Models;
 using System.Security.Claims;
 
@@ -27,16 +28,16 @@ namespace SportsHub.Api.Controllers
         {
             var user = await _userService.GetByUsernameAsync(username);
 
-            if (user == null) return BadRequest($"No such user");
+            if (user == null) return BadRequest(UserControllerConstants.UserNotFound);
 
             UserResponseDTO userResponseDto = _mapper.Map<UserResponseDTO>(user);
-            return Ok($"User: {userResponseDto.Username}");
+            return Ok(string.Format(UserControllerConstants.UserFound, userResponseDto.Username));
         }
 
         [HttpGet("Public")]
         public IActionResult Public()
         {
-            return Ok("Public property");
+            return Ok(UserControllerConstants.AdminEndpoint);
         }
 
         [HttpGet("Admins")]
@@ -45,7 +46,7 @@ namespace SportsHub.Api.Controllers
             var currentUser = await GetCurrentUserByClaimsAsync();
             UserResponseDTO adminUserDto = _mapper.Map<UserResponseDTO>(currentUser);
 
-            return Ok($"Hi, {adminUserDto.Username}, you are an Admin");
+            return Ok(string.Format(UserControllerConstants.AdminEndpoint, adminUserDto.Username));
         }
 
         private async Task<User?> GetCurrentUserByClaimsAsync()

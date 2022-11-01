@@ -37,7 +37,7 @@ namespace SportsHub.Api.Controllers
         [HttpGet("Public")]
         public IActionResult Public()
         {
-            return Ok(UserControllerConstants.AdminEndpoint);
+            return Ok(UserControllerConstants.Public);
         }
 
         [HttpGet("Admins")]

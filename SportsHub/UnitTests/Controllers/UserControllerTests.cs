@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
 using SportsHub.Api.DTOs;
-using SportsHub.Api.Mapping;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using UnitTests.MockData;
@@ -28,7 +27,6 @@ public class UserControllerTests
             IMapper mapper = mappingConfig.CreateMapper();
             _mapper = mapper;
         }
-
         _userService = new Mock<IUserService>();
         _userController = new UserController(_userService.Object, _mapper);
     }

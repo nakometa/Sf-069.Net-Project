@@ -1,8 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Moq;
+﻿using Moq;
 using SportsHub.AppService.Services;
-using SportsHub.DAL.Data;
-using SportsHub.DAL.UOW;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Repository;
 using SportsHub.Domain.UOW;

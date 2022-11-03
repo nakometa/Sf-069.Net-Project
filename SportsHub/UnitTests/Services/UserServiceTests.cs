@@ -1,39 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Moq;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
+using SportsHub.Domain.Models;
+using SportsHub.Domain.Repository;
 using SportsHub.Domain.UOW;
+using UnitTests.MockData;
 using Xunit;
 
 namespace UnitTests.Services;
 
-public class UserServiceTests : IDisposable
+public class UserServiceTests 
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IUnitOfWork _unitOfWork;
-
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<IUserRepository> _repo;
+    private readonly User _user;
+    private readonly UserService _userService;
+    
     public UserServiceTests()
     {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
-        _context = new ApplicationDbContext(options);
-        _context.Database.EnsureCreated();
-        _context.Users.AddRange(MockData.UserMockData.GetUsers());
-        _unitOfWork = new UnitOfWork(_context);
-        _unitOfWork.SaveChangesAsync();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+        _repo = new Mock<IUserRepository>();
+        _unitOfWorkMock.Setup(u => u.UserRepository).Returns(_repo.Object);
+        _user = UserMockData.GetUser();
+        _userService = new UserService(_unitOfWorkMock.Object);
     }
 
     [Theory]
-    [InlineData("firstuser@mail.com")]
-    [InlineData("seconduser@mail.com")]
+    [InlineData("goshko88@mail.bg")]
     public async Task GetByEmailAsync_WithCorrectEmail_ReturnsCorrectUser(string email)
     {
         //Arrange
-        var sut = new UserService(_unitOfWork);
+        _repo.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(_user);
 
         //Act
-        var result = await sut.GetByEmailAsync(email);
+        var result = await _userService.GetByEmailAsync(email);
 
         //Assert
         Assert.Equal(email, result.Email);
@@ -45,47 +47,40 @@ public class UserServiceTests : IDisposable
     public async Task GetByEmailAsync_WithIncorrectEmail_ReturnsNull(string email)
     {
         //Arrange
-        var sut = new UserService(_unitOfWork);
-
+        _repo.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync((User?)null);
+    
         //Act
-        var result = await sut.GetByEmailAsync(email);
-
+        var result = await _userService.GetByEmailAsync(email);
+    
         //Assert
         Assert.Null(result);
     }
-
+    
     [Theory]
     [InlineData("gogo")]
-    [InlineData("niki")]
     public async Task GetByUsernameAsync_WithCorrectUsername_ReturnsCorrectUser(string userName)
     {
         //Arrange
-        var sut = new UserService(_unitOfWork);
-
+        _repo.Setup(r => r.GetByUsernameAsync(userName)).ReturnsAsync(_user);
+    
         //Act
-        var result = await sut.GetByUsernameAsync(userName);
-
+        var result = await _userService.GetByUsernameAsync(userName);
+    
         //Assert
         Assert.Equal(userName, result.Username);
     }
-
+    
     [Theory]
     [InlineData("peshkata")]
     public async Task GetByUsernameAsync_WithIncorrectUsername_ReturnsNull(string userName)
     {
         //Arrange
-        var sut = new UserService(_unitOfWork);
-
+        _repo.Setup(r => r.GetByUsernameAsync(userName)).ReturnsAsync((User?)null);
+    
         //Act
-        var result = await sut.GetByUsernameAsync(userName);
-
+        var result = await _userService.GetByUsernameAsync(userName);
+    
         //Assert
         Assert.Null(result);
-    }
-
-    public void Dispose()
-    {
-        _context.Database.EnsureDeleted();
-        _unitOfWork.Dispose();
     }
 }

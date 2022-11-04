@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
-using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Controllers
 {

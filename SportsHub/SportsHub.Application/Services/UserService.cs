@@ -15,7 +15,7 @@ namespace SportsHub.AppService.Services
 
         public async Task<User?> GetByEmailOrUsernameAsync(string usernameOrEmail)
         {
-            return await unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail);
+            return await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail);
         }
         public async Task<User?> GetByEmailAsync(string email)
         {
@@ -37,7 +37,7 @@ namespace SportsHub.AppService.Services
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             // Maybe throw exception if user is null in future.
-            var user = await unitOfWork.UserRepository.GetByUsernameAsync(username);
+            var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username);
 
             return new User()
             {
@@ -51,8 +51,8 @@ namespace SportsHub.AppService.Services
 
         public async Task SaveUserAsync(User user)
         {
-            await unitOfWork.UserRepository.SaveUserAsync(user);
-            await unitOfWork.SaveChangesAsync();
+            await _unitOfWork.UserRepository.SaveUserAsync(user);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace SportsHub.Api.Controllers
         private async Task<User?> GetCurrentUserByClaimsAsync()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var currentUser = await service.GetUserByClaimsAsync(identity);
+            var currentUser = await _service.GetUserByClaimsAsync(identity);
 
             return currentUser;
         }

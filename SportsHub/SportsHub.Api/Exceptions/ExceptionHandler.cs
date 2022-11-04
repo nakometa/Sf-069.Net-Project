@@ -21,7 +21,8 @@ public class ExceptionHandler: IMiddleware
         }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(context, ex);
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            await context.Response.WriteAsync(ex.Message);
         }
     }
 
@@ -57,10 +58,6 @@ public class ExceptionHandler: IMiddleware
                 result = exception.ToString();
                 break;
             }
-            default:
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await context.Response.WriteAsync(ex.Message);
-                break;
         }
 
         await context.Response.WriteAsync(result);

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.DTOs;
-using SportsHub.Domain.ControllerConstants;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -32,7 +32,7 @@ namespace SportsHub.Api.Controllers
                 return Ok(token);
             }
 
-            return NotFound(LoginControllerConstants.InvalidLogin);
+            return NotFound(ValidationMessages.InvalidLogin);
         }
     }
 }

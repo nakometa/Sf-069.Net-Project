@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.DTOs;
-using SportsHub.Domain.ControllerConstants;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -25,10 +25,10 @@ namespace SportsHub.Api.Controllers
 
             if (registerSuccesful)
             {
-                return Ok(RegisterControllerConstants.RegisterSuccessful);
+                return Ok(ValidationMessages.RegisterSuccessful);
             }
 
-            return BadRequest(RegisterControllerConstants.RegisterNotSuccessful);
+            return BadRequest(ValidationMessages.RegisterNotSuccessful);
         }
     }
 }

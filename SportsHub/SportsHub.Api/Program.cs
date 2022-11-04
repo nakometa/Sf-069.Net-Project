@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SportsHub.Api;
 using SportsHub.Api.Mapping;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
@@ -17,6 +16,7 @@ using SportsHub.Domain.PasswordHasher;
 using SportsHub.Domain.UOW;
 using System.Text;
 using SportsHub.Api.Exceptions;
+using SportsHub.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

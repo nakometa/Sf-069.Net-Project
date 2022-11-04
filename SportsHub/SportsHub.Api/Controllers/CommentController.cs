@@ -8,19 +8,19 @@ namespace SportsHub.Api.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly ICommentService service;
-        private readonly IMapper mapper;
+        private readonly ICommentService _service;
+        private readonly IMapper _mapper;
 
         public CommentController(ICommentService service, IMapper mapper)
         {
-            this.service = service;
-            this.mapper = mapper;
+            _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet("GetByArticle")]
         public async Task<IActionResult> GetByArticleAsync(int articleId)
         {
-            var comments = await service.GetByArticleAsync(articleId);
+            var comments = await _service.GetByArticleAsync(articleId);
 
             if (!comments.Any())
             {

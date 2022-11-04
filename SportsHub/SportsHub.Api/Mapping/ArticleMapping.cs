@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Api.Mapping.Models;
 using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Mapping

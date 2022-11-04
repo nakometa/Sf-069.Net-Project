@@ -10,7 +10,7 @@ namespace UnitTests.DataLayerTests;
 public class GenericRepositoryTests
 {
     private readonly ApplicationDbContext _db;
-    private readonly GenericRepository<User> _repo;
+    private readonly GenericRepository<User> _repository;
 
     public GenericRepositoryTests()
     {
@@ -21,7 +21,7 @@ public class GenericRepositoryTests
         _db.Database.EnsureCreated();
         _db.Users.AddRange(UserMockData.GetUsers());
         _db.SaveChanges();
-        _repo = new GenericRepository<User>(_db);
+        _repository = new GenericRepository<User>(_db);
     }
 
     [Fact]
@@ -31,9 +31,9 @@ public class GenericRepositoryTests
         var user = UserMockData.GetUser();
 
         //Act
-        _repo.Add(user);
+        _repository.Add(user);
         _db.SaveChanges();
-        var result = _repo.GetAll();
+        var result = _repository.GetAll();
 
         //Assert
         Assert.Equal(3, result.Count());
@@ -44,13 +44,13 @@ public class GenericRepositoryTests
     {
         //Arrange
         var user = UserMockData.GetUser();
-        _repo.Add(user);
+        _repository.Add(user);
         _db.SaveChanges();
         
         //Act
-        _repo.Delete(user);
+        _repository.Delete(user);
         _db.SaveChanges();
-        var result = _repo.GetAll();
+        var result = _repository.GetAll();
         
         //Assert
         Assert.Equal(2, result.Count());
@@ -62,11 +62,11 @@ public class GenericRepositoryTests
         //Arrange
         var user = UserMockData.GetUser();
         int id = user.Id;
-        _repo.Add(user);
+        _repository.Add(user);
         _db.SaveChanges();
         
         //Act
-        var result = _repo.GetById(id);
+        var result = _repository.GetById(id);
         
         //Assert
         Assert.Equal(user, result);
@@ -76,7 +76,7 @@ public class GenericRepositoryTests
     public void GetAll_ShouldReturnAll()
     {
         //Act
-        var result = _repo.GetAll();
+        var result = _repository.GetAll();
         
         //Assert
         Assert.Equal(2, result.Count());

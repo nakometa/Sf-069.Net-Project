@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moq;
 using SportsHub.DAL.Data;
-using SportsHub.DAL.Repository;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.UOW;
 using UnitTests.MockData;

@@ -2,15 +2,16 @@
 
 namespace SportsHub.Api.Exceptions.CustomExceptionModels;
 
-public class BusinessLogicException: Exception
+public class BusinessLogicException: CustomException
 {
-    public BusinessLogicException()
+    public BusinessLogicException(string message)
     {
+        Message = message;
     }
 
-    public int StatusCode { get; } = 400;
-    public string Message { get; set; }
-    
+    public int StatusCode { get; } = 400; 
+    public string Message { get; }
+
     public override string ToString()
     {
         return JsonSerializer.Serialize(this);

@@ -2,11 +2,14 @@
 
 namespace SportsHub.Api.Exceptions.CustomExceptionModels;
 
-public class NotFoundException: Exception
+public class NotFoundException: CustomException
 {
-    public NotFoundException()
+    public NotFoundException(string message)
     {
+        Message = message;
     }
+
+
 
     public int StatusCode { get; } = 404;
     public string Message { get; set; }

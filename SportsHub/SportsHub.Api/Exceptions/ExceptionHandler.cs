@@ -5,6 +5,7 @@ namespace SportsHub.Api.Exceptions;
 
 public class ExceptionHandler: IMiddleware
 {
+    private CustomException _exception;
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -35,27 +36,16 @@ public class ExceptionHandler: IMiddleware
         {
             case BusinessLogicException:
             {
-                //Maybe we need interface ICustomException so we can use it as a dependacy and create the corespond exception this way 
-                //not with a var ex = New Exception();
-                var exception = new BusinessLogicException()
-                {
-                    //Maybe we can have constants file with this messages and set them in constructor
-                    Message = "There has been error in you business logic"
-                };
-                context.Response.StatusCode = exception.StatusCode;
-                result = exception.ToString();
+                _exception = new BusinessLogicException("There has been error in you business logic");
+                context.Response.StatusCode = _exception.StatusCode;
+                result = _exception.ToString();
                 break;
             }
             case NotFoundException:
             {
-                //Maybe we need interface ICustomException so we can use it as a dependacy and create the corespond exception this way 
-                //not with a var ex = New Exception();
-                var exception = new NotFoundException()
-                {
-                    Message = "The item you need does not exist"
-                };
-                context.Response.StatusCode = exception.StatusCode;
-                result = exception.ToString();
+                _exception = new NotFoundException("The item you need does not exist");
+                context.Response.StatusCode = _exception.StatusCode;
+                result = _exception.ToString();
                 break;
             }
         }

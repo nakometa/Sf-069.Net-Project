@@ -5,7 +5,6 @@ namespace SportsHub.Api.Exceptions;
 
 public class ExceptionHandler: IMiddleware
 {
-    private CustomException _exception;
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
@@ -14,11 +13,11 @@ public class ExceptionHandler: IMiddleware
         }
         catch (BusinessLogicException ex)
         {
-            await HandleExceptionAsync(context, ex);
+            await HandleBusinessLogicExceptionAsync(context, ex);
         }
         catch (NotFoundException ex)
         {
-            await HandleExceptionAsync(context, ex);
+            await HandleNotFoundExceptionAsync(context, ex);
         }
         catch (Exception ex)
         {
@@ -27,29 +26,19 @@ public class ExceptionHandler: IMiddleware
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+    private async Task HandleNotFoundExceptionAsync(HttpContext context, NotFoundException ex)
     {
-        string result = null;
-        context.Response.ContentType = "application/json";
-        
-        switch (ex)
-        {
-            case BusinessLogicException:
-            {
-                _exception = new BusinessLogicException("There has been error in you business logic");
-                context.Response.StatusCode = _exception.StatusCode;
-                result = _exception.ToString();
-                break;
-            }
-            case NotFoundException:
-            {
-                _exception = new NotFoundException("The item you need does not exist");
-                context.Response.StatusCode = _exception.StatusCode;
-                result = _exception.ToString();
-                break;
-            }
-        }
+        context.Response.ContentType = "/application/json";
+        context.Response.StatusCode = ex.ErrorCode;
+        string result = ex.ToString();
+        await context.Response.WriteAsync(result);
+    }
 
+    private async Task HandleBusinessLogicExceptionAsync(HttpContext context, BusinessLogicException ex)
+    {
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = ex.ErrorCode;
+        string result = ex.ToString();
         await context.Response.WriteAsync(result);
     }
 }

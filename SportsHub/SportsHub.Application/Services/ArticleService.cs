@@ -1,4 +1,6 @@
-﻿using SportsHub.Domain.Models;
+﻿using SportsHub.Api.Exceptions.CustomExceptionModels;
+using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.UOW;
 
 namespace SportsHub.AppService.Services
@@ -14,7 +16,8 @@ namespace SportsHub.AppService.Services
 
         public async Task<Article?> GetByTitleAsync(string title)
         {
-            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
+            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title) ??
+                   throw new NotFoundException(404, ExceptionMessages.NotFound);
         }
     }
 }

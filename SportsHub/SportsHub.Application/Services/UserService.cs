@@ -1,6 +1,8 @@
 ﻿using SportsHub.Domain.Models;
 using SportsHub.Domain.UOW;
 using System.Security.Claims;
+using SportsHub.Api.Exceptions.CustomExceptionModels;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.AppService.Services
 {
@@ -29,15 +31,13 @@ namespace SportsHub.AppService.Services
 
         public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)
         {
-            if (identity == null)
-            {
-                return null;
-            }
+            if (identity == null) throw new BusinessLogicException(400, ExceptionMessages.BussinesError);
+            
 
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            // Maybe throw exception if user is null in future.
-            var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username);
+            var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
+                       throw new NotFoundException(404, ExceptionMessages.NotFound);
 
             return new User()
             {

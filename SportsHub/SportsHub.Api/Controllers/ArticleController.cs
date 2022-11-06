@@ -31,5 +31,13 @@ namespace SportsHub.Api.Controllers
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
             return Ok(articleResponse);
         }
+
+        public async Task<ActionResult> DeleteArticleAsync(string title)
+        {
+            bool deletedSuccessful = await _articleService.DeleteArticleAsync(title);
+            if (deletedSuccessful) return Ok("Article deleted successful");
+            
+            return BadRequest("Unable to delete article");
+        }
     }
 }

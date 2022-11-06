@@ -5,5 +5,6 @@ namespace SportsHub.AppService.Services
     public interface IArticleService
     {
         Task<Article?> GetByTitleAsync(string title);
+        Task<bool> DeleteArticleAsync(string title);
     }
 }

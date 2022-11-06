@@ -5,5 +5,6 @@ namespace SportsHub.Domain.Repository
     public interface IArticleRepository
     {
         Task<Article?> GetByTitleAsync(string title);
+        Task DeleteArticleAsync(string title);
     }
 }

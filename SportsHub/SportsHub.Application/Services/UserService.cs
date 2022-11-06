@@ -17,16 +17,19 @@ namespace SportsHub.AppService.Services
 
         public async Task<User?> GetByEmailOrUsernameAsync(string usernameOrEmail)
         {
-            return await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail);
+            return await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail)??
+                   throw new NotFoundException(404, ExceptionMessages.NotFound);
         }
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _unitOfWork.UserRepository.GetByEmailAsync(email);
+            return await _unitOfWork.UserRepository.GetByEmailAsync(email)??
+                   throw new NotFoundException(404, ExceptionMessages.NotFound);
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await _unitOfWork.UserRepository.GetByUsernameAsync(username);
+            return await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
+                   throw new NotFoundException(404, ExceptionMessages.NotFound);
         }
 
         public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -24,10 +25,10 @@ namespace SportsHub.Api.Controllers
 
             if (registerSuccesful)
             {
-                return Ok("Register successful.");
+                return Ok(ValidationMessages.RegisterSuccessful);
             }
 
-            return BadRequest("Username or Email is already in use.");
+            return BadRequest(ValidationMessages.RegisterNotSuccessful);
         }
     }
 }

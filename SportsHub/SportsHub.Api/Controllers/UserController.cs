@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.DTOs;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
 using System.Security.Claims;
 
@@ -13,30 +14,30 @@ namespace SportsHub.Api.Controllers
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _service;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserService service, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper)
         {
-            _service = service;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpGet("GetUserByUsername")]
         public async Task<IActionResult> GetUserByUsernameAsync(string username)
         {
-            var user = await _service.GetByUsernameAsync(username);
+            var user = await _userService.GetByUsernameAsync(username);
 
-            if (user == null) return BadRequest($"No such user");
+            if (user == null) return BadRequest(ValidationMessages.UserNotFound);
 
             UserResponseDTO userResponseDto = _mapper.Map<UserResponseDTO>(user);
-            return Ok($"User: {userResponseDto.Username}");
+            return Ok(string.Format(ValidationMessages.UserFound, userResponseDto.Username));
         }
 
         [HttpGet("Public")]
         public IActionResult Public()
         {
-            return Ok("Public property");
+            return Ok(ValidationMessages.Public);
         }
 
         [HttpGet("Admins")]
@@ -45,14 +46,13 @@ namespace SportsHub.Api.Controllers
             var currentUser = await GetCurrentUserByClaimsAsync();
             UserResponseDTO adminUserDto = _mapper.Map<UserResponseDTO>(currentUser);
 
-            return Ok($"Hi, {adminUserDto.Username}, you are an Admin");
+            return Ok(string.Format(ValidationMessages.AdminEndpoint, adminUserDto.Username));
         }
 
         private async Task<User?> GetCurrentUserByClaimsAsync()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var currentUser = await _service.GetUserByClaimsAsync(identity);
-
+            var currentUser = await _userService.GetUserByClaimsAsync(identity);
             return currentUser;
         }
     }

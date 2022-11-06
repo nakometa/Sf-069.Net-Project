@@ -13,27 +13,28 @@ namespace SportsHub.DAL.Repository
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await context.Users
+            return await _context.Users
                 .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Email == email);
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await context.Users
+            return await _context.Users
                 .Include(x => x.Role)
                 .FirstOrDefaultAsync(x => x.Username == username);
         }
 
         public async Task SaveUserAsync(User user)
         {
-            await context.Users.AddAsync(user);
+            await _context.Users.AddAsync(user);
         }
 
         public async Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail)
         {
-            return await context.Users
+            return await _context.Users
                 .Where(x => x.Username == usernameOrEmail || x.Email == usernameOrEmail)
+                .Include(x => x.Role)
                 .FirstOrDefaultAsync();
         }
     }

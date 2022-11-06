@@ -13,5 +13,8 @@
 
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
+
+        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SportsHub.DAL.Data.Configurations;
 using SportsHub.Domain.Models;
+using System.Reflection;
 
 namespace SportsHub.DAL.Data
 {
@@ -16,6 +16,10 @@ namespace SportsHub.DAL.Data
 
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<State> States { get; set; }
+        public virtual DbSet<Article> Articles { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,8 +27,7 @@ namespace SportsHub.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
-            new RoleEntityTypeConfiguration().Configure(modelBuilder.Entity<Role>());
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
     }
 }

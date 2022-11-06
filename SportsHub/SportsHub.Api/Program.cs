@@ -14,6 +14,7 @@ using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.PasswordHasher;
 using SportsHub.Domain.UOW;
+using System.Reflection;
 using System.Text;
 using SportsHub.Api.Exceptions;
 using SportsHub.Api;
@@ -88,13 +89,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IArticleService, ArticleService>();
+builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
-builder.Services.AddAutoMapper(typeof(UserMapping));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));

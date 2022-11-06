@@ -12,8 +12,12 @@ namespace SportsHub.DAL.Data.Configurations
         {
             role.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(RoleConstants.NameLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.RoleNameMaxLength)
+                .IsUnicode(true);
+
+            role.HasMany(x => x.Users)
+                .WithOne(x => x.Role)
+                .HasForeignKey(x => x.RoleId);
         }
     }
 }

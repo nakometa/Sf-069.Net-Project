@@ -11,7 +11,7 @@ namespace SportsHub.DAL.Data.Configurations
         {
             state.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.stateNameMaxLenth)
+                .HasMaxLength(ConfigurationConstants.StateNameMaxLenth)
                 .IsUnicode(true);
 
             state.HasMany(x => x.Articles)

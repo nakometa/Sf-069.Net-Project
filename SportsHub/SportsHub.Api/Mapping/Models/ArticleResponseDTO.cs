@@ -1,6 +1,6 @@
 ﻿using SportsHub.Domain.Models;
 
-namespace SportsHub.AppService.Authentication.Models.DTOs
+namespace SportsHub.Api.Mapping.Models
 {
     public class ArticleResponseDTO
     {

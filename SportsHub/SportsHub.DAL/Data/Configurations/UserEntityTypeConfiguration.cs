@@ -12,36 +12,36 @@ namespace SportsHub.DAL.Data.Configurations
         {
             user.Property(x => x.Email)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.EmailLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserEmailMaxLenth)
+                .IsUnicode(true);
 
             user.Property(x => x.Username)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.UsernameLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserUsernameMaxLenth)
+                .IsUnicode(true);
 
             user.HasIndex(x => x.Username)
                 .IsUnique();
 
             user.Property(x => x.DisplayName)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.DisplayNameLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserDisplayNameMaxLenth)
+                .IsUnicode(true);
 
             user.Property(x => x.FirstName)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.FirstNameLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserFirstNamelMaxLenth)
+                .IsUnicode(true);
 
             user.Property(x => x.LastName)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.LastNameLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserLastNamelMaxLenth)
+                .IsUnicode(true);
 
             user.Property(x => x.Password)
                 .IsRequired(true)
-                .HasMaxLength(UserConstants.PasswordLength)
-                .IsUnicode(false);
+                .HasMaxLength(ConfigurationConstants.UserPasswordlMaxLenth)
+                .IsUnicode(true);
 
             user.Property(x => x.ProfilePicture)
                 .IsRequired(false);

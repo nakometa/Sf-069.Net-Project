@@ -40,7 +40,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [HttpPost("AddArticle")]
         public async Task<IActionResult> CreateArticleAsync([FromBody] CreateArticleDTO adminInput)
         {
             ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);

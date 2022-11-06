@@ -54,33 +54,5 @@ namespace SportsHub.AppService.Services
             await _unitOfWork.UserRepository.SaveUserAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
-
-        public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)
-        {
-            if (identity == null)
-            {
-                return null;
-            }
-
-            var userClaims = identity.Claims;
-            var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            // Maybe throw exception if user is null in future.
-            var user = await unitOfWork.UserRepository.GetByUsernameAsync(username);
-
-            return new User()
-            {
-                Username = user.Username,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role
-            };
-        }
-
-        public async Task SaveUserAsync(User user)
-        {
-            await unitOfWork.UserRepository.SaveUserAsync(user);
-            await unitOfWork.SaveChangesAsync();
-        }
     }
 }

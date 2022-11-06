@@ -38,8 +38,8 @@ namespace SportsHub.AppService.Services
                 CreatedOn = DateTime.UtcNow
             };
 
-            await unitOfWork.ArticleRepository.AddArticleAsync(article);
-            await unitOfWork.SaveChangesAsync();
+            await _unitOfWork.ArticleRepository.AddArticleAsync(article);
+            await _unitOfWork.SaveChangesAsync();
 
             return true;
         }

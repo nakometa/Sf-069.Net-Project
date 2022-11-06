@@ -1,5 +1,6 @@
 ﻿using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
 
 namespace SportsHub.AppService.Services
@@ -31,7 +32,7 @@ namespace SportsHub.AppService.Services
             {
                 Title = adminInput.Title,
                 CategoryId = adminInput.CategoryId,
-                StateId = adminInput.StateId,
+                StateId = (int) StateEnums.Unpublished,
                 Content = adminInput.Content,
                 ArticlePicture = adminInput.ArticlePicture,
                 CreatedOn = DateTime.UtcNow

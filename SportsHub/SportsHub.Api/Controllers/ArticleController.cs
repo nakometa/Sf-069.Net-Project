@@ -7,6 +7,7 @@ using SportsHub.Api.Mapping.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
+using SportsHub.Api.Validations;
 
 namespace SportsHub.Api.Controllers
 {
@@ -17,12 +18,16 @@ namespace SportsHub.Api.Controllers
         private readonly IArticleService _articleService;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateArticleDTO> _articleValidator;
+        private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public ArticleController(IArticleService service, IMapper mapper, IValidator<CreateArticleDTO> articleValidator)
+        public ArticleController(IArticleService service, IMapper mapper, 
+                                 IValidator<CreateArticleDTO> articleValidator,
+                                 IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _articleService = service;
             _mapper = mapper;
             _articleValidator = articleValidator;
+            _generateModelStateDictionary = generateModelStateDictionary;
         }
 
         [HttpGet("GetArticleByTitle")]
@@ -46,14 +51,8 @@ namespace SportsHub.Api.Controllers
             ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);
             if(!validationResult.IsValid)
             {
-                var modelStateDictionary = new ModelStateDictionary();
-
-                foreach (ValidationFailure failure in validationResult.Errors)
-                {
-                    modelStateDictionary.AddModelError(failure.PropertyName, failure.ErrorMessage);
-                }
-
-                return ValidationProblem(modelStateDictionary);
+                var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+                return ValidationProblem(response);
             }
 
             bool createdSuccessful = await _articleService.CreateArticleAsync(adminInput);

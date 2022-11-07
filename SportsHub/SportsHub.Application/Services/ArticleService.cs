@@ -17,15 +17,12 @@ namespace SportsHub.AppService.Services
             return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
         }
 
-        public async Task<bool> DeleteArticleAsync(string title)
+        public async Task<bool> DeleteArticleAsync(int id)
         {
-            var articleExists = await GetByTitleAsync(title) != null;
+            var articleExists = await _unitOfWork.ArticleRepository.DeleteArticleAsync(id) is not null;
             if (!articleExists) return false;
-            
-            await _unitOfWork.ArticleRepository.DeleteArticleAsync(title);
             await _unitOfWork.SaveChangesAsync();
             return true;
-
         }
     }
 }

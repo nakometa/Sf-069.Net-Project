@@ -32,11 +32,10 @@ namespace SportsHub.Api.Controllers
             return Ok(articleResponse);
         }
 
-        public async Task<ActionResult> DeleteArticleAsync(string title)
+        public async Task<ActionResult> DeleteArticleAsync(int id)
         {
-            bool deletedSuccessful = await _articleService.DeleteArticleAsync(title);
+            bool deletedSuccessful = await _articleService.DeleteArticleAsync(id);
             if (deletedSuccessful) return Ok("Article deleted successful");
-            
             return BadRequest("Unable to delete article");
         }
     }

@@ -11,13 +11,9 @@ public class ExceptionHandler: IMiddleware
         {
             await next(context);
         }
-        catch (BusinessLogicException ex)
+        catch (Exception ex) when (ex is NotFoundException or BusinessLogicException) 
         {
-            await HandleBusinessLogicExceptionAsync(context, ex);
-        }
-        catch (NotFoundException ex)
-        {
-            await HandleNotFoundExceptionAsync(context, ex);
+            await HandleCustomExceptionAsync(context, ex);
         }
         catch (Exception ex)
         {
@@ -26,18 +22,16 @@ public class ExceptionHandler: IMiddleware
         }
     }
 
-    private async Task HandleNotFoundExceptionAsync(HttpContext context, NotFoundException ex)
+    private async Task HandleCustomExceptionAsync(HttpContext context, Exception ex)
     {
+        if (ex is NotFoundException)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }else if (ex is BusinessLogicException)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        }
         context.Response.ContentType = "/application/json";
-        context.Response.StatusCode = ex.ErrorCode;
-        string result = ex.ToString();
-        await context.Response.WriteAsync(result);
-    }
-
-    private async Task HandleBusinessLogicExceptionAsync(HttpContext context, BusinessLogicException ex)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = ex.ErrorCode;
         string result = ex.ToString();
         await context.Response.WriteAsync(result);
     }

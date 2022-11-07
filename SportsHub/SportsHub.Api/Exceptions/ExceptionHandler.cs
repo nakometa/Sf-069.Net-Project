@@ -27,7 +27,8 @@ public class ExceptionHandler: IMiddleware
         if (ex is NotFoundException)
         {
             context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-        }else if (ex is BusinessLogicException)
+        }
+        else if (ex is BusinessLogicException)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
         }

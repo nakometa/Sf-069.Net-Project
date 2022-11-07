@@ -43,5 +43,22 @@ namespace SportsHub.AppService.Services
 
             return true;
         }
+
+        public async Task<bool> EditArticle(CreateArticleDTO adminInput)
+        {
+            var article = GetByTitleAsync(adminInput.Title).GetAwaiter().GetResult();
+
+            if(article == null)
+            {
+                return false;
+            }
+
+            article.CategoryId = adminInput.CategoryId;
+            article.Content = adminInput.Content;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

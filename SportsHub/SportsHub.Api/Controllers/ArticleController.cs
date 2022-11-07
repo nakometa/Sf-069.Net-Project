@@ -64,5 +64,26 @@ namespace SportsHub.Api.Controllers
 
             return BadRequest("Unable to create article.");
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("EditArticle")]
+        public async Task<IActionResult> EditArticleAsync([FromBody] CreateArticleDTO adminInput)
+        {
+            ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);
+            if (!validationResult.IsValid)
+            {
+                var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+                return ValidationProblem(response);
+            }
+
+            bool editedSuccessfylly = await _articleService.EditArticle(adminInput);
+
+            if (editedSuccessfylly)
+            {
+                return Ok("Article updated successfully.");
+            }
+
+            return BadRequest("Article not found.");
+        }
     }
 }

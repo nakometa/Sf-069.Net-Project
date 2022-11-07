@@ -10,12 +10,14 @@ namespace SportsHub.Api.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IFilterService _filterService;
         private readonly IMapper _mapper;
 
-        public ArticleController(IArticleService service, IMapper mapper)
+        public ArticleController(IArticleService service, IMapper mapper, IFilterService filterService)
         {
             _articleService = service;
             _mapper = mapper;
+            _filterService = filterService;
         }
 
         [HttpGet("GetArticleByTitle")]
@@ -30,6 +32,20 @@ namespace SportsHub.Api.Controllers
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
             return Ok(articleResponse);
+        }
+
+        [HttpGet("GetArticlesBySubstring")]
+        public async Task<ActionResult> GetArticlesBySubstring(string substring)
+        {
+            var articles = await _filterService.GetListOfArticlesBySubstring(substring);
+            
+            if (articles.Count < 1)
+            {
+                return BadRequest($"No match found for substring {substring}");
+            }
+
+            //var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
+            return Ok();
         }
     }
 }

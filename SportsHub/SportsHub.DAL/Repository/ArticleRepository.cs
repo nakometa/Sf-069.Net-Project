@@ -17,5 +17,13 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.Title == title)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<List<Article>> GetBySubstringAsync(string substring)
+        {
+            return await DbSet
+                .Where(x => x.Title.Contains(substring) ||
+                    x.Authors.Select(a => a.Username).Contains(substring))
+                .ToListAsync();
+        }
     }
 }

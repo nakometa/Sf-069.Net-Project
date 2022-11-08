@@ -59,6 +59,38 @@ namespace UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
+        [Theory]
+        [InlineData(3)]
+        public async Task GetAllAsync_ArticlesExist_ReturnsOkStatus(int count)
+        {
+            //Arrange
+            var articles = ArticleMockData.GetAll();
+            _articleService.Setup(service => service.GetAllAsync()).ReturnsAsync(articles);
+
+            //Act
+            var result = await _articleController.GetAllAsync();
+            var resultObject = GetObjectResultContent<IEnumerable<ArticleResponseDTO>>(result);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(count, resultObject.Count());
+        }
+
+        [Theory]
+        [InlineData(3)]
+        public async Task GetAllAsync_ArticlesDontExist_ReturnsBadRequest(int count)
+        {
+            //Arrange
+            var articles = ArticleMockData.GetNone();
+            _articleService.Setup(service => service.GetAllAsync()).ReturnsAsync(articles);
+
+            //Act
+            var result = await _articleController.GetAllAsync();
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+        }
+
         private static T GetObjectResultContent<T>(ActionResult<T> result)
         {
             return (T)((ObjectResult)result.Result).Value;

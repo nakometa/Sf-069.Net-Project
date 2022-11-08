@@ -8,8 +8,32 @@ namespace UnitTests.MockData
         {
             return new Article()
             {
-                Title = "testArticle"                
+                Title = "testArticle"
             };
+        }
+
+        public static IEnumerable<Article> GetAll()
+        {
+            return new List<Article>
+            {
+                new Article()
+                {
+                Title = "testArticle1"
+                },
+                new Article()
+                {
+                Title = "testArticle2"
+                },
+                new Article()
+                {
+                Title = "testArticle3"
+                },
+            };
+        }
+
+        public static IEnumerable<Article> GetNone()
+        {
+            return new List<Article>();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace SportsHub.Api.Controllers
 
             if (!articles.Any())
             {
-                return Ok(ValidationMessages.NoArticles);
+                return BadRequest(ValidationMessages.NoArticles);
             }
 
             var articlesResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);

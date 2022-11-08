@@ -5,7 +5,6 @@ using SportsHub.Api.Controllers;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
-using System.Net;
 using UnitTests.MockData;
 using Xunit;
 
@@ -39,10 +38,30 @@ namespace UnitTests.Controllers
 
             //Act
             var result = await _articleController.GetArticleByTitleAsync(title);
+            var resultObject = GetObjectResultContent<ArticleResponseDTO>(result);
+            //Assert
+            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(title, resultObject.Title);
+        }
+
+        [Theory]
+        [InlineData("randomArticle")]
+        public async Task GetArticleByTitleAsync_ArticleWithProvidedTitleDoesNotExist_ReturnsBadRequest(string title)
+        {
+            //Arrange
+            var article = ArticleMockData.GetArticle();
+            _articleService.Setup(service => service.GetByTitleAsync(title)).ReturnsAsync((Article?)null);
+
+            //Act
+            var result = await _articleController.GetArticleByTitleAsync(title);
 
             //Assert
-            Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(title, result?.Value?.Title);
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+        }
+
+        private static T GetObjectResultContent<T>(ActionResult<T> result)
+        {
+            return (T)((ObjectResult)result.Result).Value;
         }
     }
 }

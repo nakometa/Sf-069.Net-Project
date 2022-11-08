@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -25,7 +26,7 @@ namespace SportsHub.Api.Controllers
 
             if (!articles.Any())
             {
-                return Ok("No articles in the database.");
+                return Ok(ValidationMessages.NoArticles);
             }
 
             var articlesResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
@@ -39,7 +40,7 @@ namespace SportsHub.Api.Controllers
 
             if (article == null)
             {
-                return BadRequest($"No such article");
+                return BadRequest(ValidationMessages.NoSuchArticle);
             }
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);

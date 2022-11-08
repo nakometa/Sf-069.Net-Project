@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Api.Validations;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -76,14 +77,14 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            bool editedSuccessfylly = await _articleService.EditArticle(adminInput);
+            bool editedSuccessfully = await _articleService.EditArticle(adminInput);
 
-            if (editedSuccessfylly)
+            if (editedSuccessfully)
             {
-                return Ok("Article updated successfully.");
+                return Ok(ValidationMessages.ArticleUpdatedSuccessfully);
             }
 
-            return BadRequest("Article not found.");
+            return BadRequest(ValidationMessages.ArticleNotFound);
         }
     }
 }

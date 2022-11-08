@@ -73,17 +73,18 @@ public class UserControllerTests
     }
 
     [Fact]
-    public void AdminsEndPoint_Returning_OkStatus()
+    public async Task AdminsEndPoint_Returning_OkStatus()
     {
         //Arrange
         var user = new ClaimsPrincipal(new ClaimsIdentity());
         _userController.ControllerContext = new ControllerContext();
         _userController.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
 
+        // This need to be looked at
         //Act
-        //var result = _userController.AdminsEndpoint() as ObjectResult;
+        var result = await _userController.AdminsEndpoint() as ObjectResult;
 
         //Assert
-        //Assert.IsType<OkObjectResult>(result);
+        Assert.IsType<OkObjectResult>(result);
     }
 }

@@ -30,12 +30,12 @@ public class AuthenticationServiceTests
         _userService.Setup(service => service.GetByUsernameAsync(givenUser.UsernameOrEmail)).ReturnsAsync(user);
 
         //Act
-         var result = await _authentication.Authenticate(givenUser); 
-       
-         //Assert
-        Assert.Equal(result.Username, user.Username );
+        var result = await _authentication.Authenticate(givenUser);
+
+        //Assert
+        Assert.Equal(result.Username, user.Username);
         Assert.Equal(result.Password, user.Password);
-        
+
     }
 
     [Fact]
@@ -47,11 +47,11 @@ public class AuthenticationServiceTests
 
         //Act
         var result = await _authentication.Authenticate(givenUser);
-      
+
         //Assert
         Assert.Null(result);
     }
-    
+
     [Fact]
     public async Task Authenticate_WithEmail_ReturnUser()
     {
@@ -61,13 +61,13 @@ public class AuthenticationServiceTests
         _userService.Setup(service => service.GetByEmailAsync(givenUser.UsernameOrEmail)).ReturnsAsync(user);
 
         //Act
-        var result = await _authentication.Authenticate(givenUser); 
-      
+        var result = await _authentication.Authenticate(givenUser);
+
         //Assert
-        Assert.Equal(result.Email, user.Email );
+        Assert.Equal(result.Email, user.Email);
         Assert.Equal(result.Password, user.Password);
     }
-    
+
     [Fact]
     public async Task Authenticate_WithEmail_ReturnNull()
     {
@@ -77,7 +77,7 @@ public class AuthenticationServiceTests
 
         //Act
         var result = await _authentication.Authenticate(givenUser);
-      
+
         //Assert
         Assert.Null(result);
     }

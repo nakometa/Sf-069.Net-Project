@@ -9,5 +9,7 @@
         public const string UserNotFound = "User not found";
         public const string UserFound = "User: {0}";
         public const string AdminEndpoint = "Hi, {0}, you are an Admin";
+        public const string NoArticles = "No articles in the database";
+        public const string NoSuchArticle = "No such article";
     }
 }

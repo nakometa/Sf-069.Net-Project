@@ -4,6 +4,7 @@ using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Constants;
 
+
 namespace SportsHub.Api.Controllers
 {
     [Route("api/[controller]")]

@@ -53,6 +53,7 @@ namespace SportsHub.Api.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var currentUser = await _userService.GetUserByClaimsAsync(identity);
+
             return currentUser;
         }
     }

@@ -28,11 +28,11 @@ namespace UnitTests.Controllers
             _articleController = new ArticleController(_articleService.Object, _mapper);
         }
 
-        [Theory]
-        [InlineData("testArticle")]
-        public async Task GetArticleByTitleAsync_ArticleWithProvidedTitleExists_ReturnsOkStatus(string title)
+        [Fact]
+        public async Task GetArticleByTitleAsync_ArticleWithProvidedTitleExists_ReturnsOkStatus()
         {
             //Arrange
+            string title = "testArticle";
             var article = ArticleMockData.GetArticle();
             _articleService.Setup(service => service.GetByTitleAsync(title)).ReturnsAsync(article);
 
@@ -44,11 +44,11 @@ namespace UnitTests.Controllers
             Assert.Equal(title, resultObject.Title);
         }
 
-        [Theory]
-        [InlineData("randomArticle")]
-        public async Task GetArticleByTitleAsync_ArticleWithProvidedTitleDoesNotExist_ReturnsBadRequest(string title)
+        [Fact]
+        public async Task GetArticleByTitleAsync_ArticleWithProvidedTitleDoesNotExist_ReturnsBadRequest()
         {
             //Arrange
+            string title = "randomTitle";
             var article = ArticleMockData.GetArticle();
             _articleService.Setup(service => service.GetByTitleAsync(title)).ReturnsAsync((Article?)null);
 
@@ -59,9 +59,8 @@ namespace UnitTests.Controllers
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
-        [Theory]
-        [InlineData(3)]
-        public async Task GetAllAsync_ArticlesExist_ReturnsOkStatus(int count)
+        [Fact]
+        public async Task GetAllAsync_ArticlesExist_ReturnsOkStatus()
         {
             //Arrange
             var articles = ArticleMockData.GetAll();
@@ -73,12 +72,11 @@ namespace UnitTests.Controllers
 
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(count, resultObject.Count());
+            Assert.Equal(3, resultObject.Count());
         }
 
-        [Theory]
-        [InlineData(3)]
-        public async Task GetAllAsync_ArticlesDontExist_ReturnsBadRequest(int count)
+        [Fact]
+        public async Task GetAllAsync_ArticlesDontExist_ReturnsBadRequest()
         {
             //Arrange
             var articles = ArticleMockData.GetNone();

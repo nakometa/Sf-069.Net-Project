@@ -4,6 +4,6 @@ namespace SportsHub.AppService.Services
 {
     public interface IFilterService
     {
-        Task<List<Article>> GetListOfArticlesBySubstring(string substring);
+        Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring);
     }
 }

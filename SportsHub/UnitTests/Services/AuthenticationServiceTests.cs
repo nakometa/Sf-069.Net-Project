@@ -2,6 +2,7 @@
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.PasswordHasher;
 using UnitTests.MockData;
 using Xunit;
 
@@ -10,12 +11,14 @@ namespace UnitTests.Services;
 public class AuthenticationServiceTests
 {
     private readonly Mock<IUserService> _userService;
+    private readonly Mock<IPasswordHasher> _passwordHasher;
     private readonly IAuthenticationService _authentication;
 
     public AuthenticationServiceTests()
     {
         _userService = new Mock<IUserService>();
-        _authentication = new AuthenticationService(_userService.Object);
+        _passwordHasher = new Mock<IPasswordHasher>();
+        _authentication = new AuthenticationService(_userService.Object, _passwordHasher.Object);
     }
 
     [Fact]

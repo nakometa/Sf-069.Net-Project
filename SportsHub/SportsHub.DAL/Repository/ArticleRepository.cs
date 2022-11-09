@@ -20,9 +20,11 @@ namespace SportsHub.DAL.Repository
 
         public async Task<List<Article>> GetBySubstringAsync(string substring)
         {
+            var t = DbSet.Select(x => x.Authors.Select(a => a.Username));
+
             return await DbSet
                 .Where(x => x.Title.Contains(substring) ||
-                    x.Authors.Select(a => a.Username).Contains(substring))
+                    x.Authors.Any(a => a.Username.Contains(substring)))
                 .ToListAsync();
         }
     }

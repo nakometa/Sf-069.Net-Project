@@ -18,11 +18,16 @@ namespace SportsHub.DAL.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Article?> DeleteArticleAsync(int id)
+        public async Task<bool> DeleteArticleAsync(int id)
         {
-            return await DbSet
+            var article = await DbSet
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
+
+            if (article is null) return false;
+            
+            Delete(article);
+            return true;
         }
     }
 }

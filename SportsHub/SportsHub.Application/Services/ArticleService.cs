@@ -20,8 +20,12 @@ namespace SportsHub.AppService.Services
         public async Task<bool> DeleteArticleAsync(int id)
         {
             var articleExists = await _unitOfWork.ArticleRepository.DeleteArticleAsync(id);
+            
+            //after merging exception handling we can throw exception insted of returning again false
             if (!articleExists) return false;
+            
             await _unitOfWork.SaveChangesAsync();
+            
             return true;
         }
     }

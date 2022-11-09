@@ -35,7 +35,9 @@ namespace SportsHub.Api.Controllers
         public async Task<ActionResult> DeleteArticleAsync(int id)
         {
             bool deletedSuccessful = await _articleService.DeleteArticleAsync(id);
+            
             if (deletedSuccessful) return Ok("Article deleted successful");
+            
             return BadRequest("Unable to delete article");
         }
     }

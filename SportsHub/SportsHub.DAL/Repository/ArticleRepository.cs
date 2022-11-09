@@ -27,6 +27,7 @@ namespace SportsHub.DAL.Repository
             if (article is null) return false;
             
             Delete(article);
+            
             return true;
         }
     }

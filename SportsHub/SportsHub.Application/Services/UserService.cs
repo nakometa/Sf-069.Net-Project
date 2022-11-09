@@ -18,29 +18,29 @@ namespace SportsHub.AppService.Services
         public async Task<User?> GetByEmailOrUsernameAsync(string usernameOrEmail)
         {
             return await _unitOfWork.UserRepository.GetByUsernameOrEmailAsync(usernameOrEmail)??
-                   throw new NotFoundException(404, ExceptionMessages.NotFound);
+                   throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
         }
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _unitOfWork.UserRepository.GetByEmailAsync(email)??
-                   throw new NotFoundException(404, ExceptionMessages.NotFound);
+                   throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
-                   throw new NotFoundException(404, ExceptionMessages.NotFound);
+                   throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
         }
 
         public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)
         {
-            if (identity == null) throw new BusinessLogicException(400, ExceptionMessages.BussinesError);
+            if (identity == null) throw new BusinessLogicException(StatusCodeConstants.BadRequest, ExceptionMessages.BussinesError);
             
 
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
-                       throw new NotFoundException(404, ExceptionMessages.NotFound);
+                       throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
 
             return new User()
             {

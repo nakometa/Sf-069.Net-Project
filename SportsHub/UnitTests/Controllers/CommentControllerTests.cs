@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
@@ -70,15 +71,31 @@ namespace UnitTests.Controllers
         [Fact]
         public async Task PostCommentAsync_NewComment_ReturnsOkStatus()
         {
+            //Arrange
             var comment = CommentMockData.GetComment();
             _commentService.Setup(service => service.PostCommentAsync(comment)).ReturnsAsync(true);
+            _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
+            //Act
             var result = await _commentController.PostCommentAsync(comment);
-            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(3, resultObject.Count());
+        }
+
+        [Fact]
+        public async Task PostCommentAsync_NewComment_ReturnsBadRequest()
+        {
+            //Arrange
+            var comment = CommentMockData.GetComment();
+            _commentService.Setup(service => service.PostCommentAsync(comment)).ReturnsAsync(false);
+            _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
+
+            //Act
+            var result = await _commentController.PostCommentAsync(comment);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

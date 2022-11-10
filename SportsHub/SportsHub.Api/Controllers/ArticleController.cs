@@ -7,8 +7,7 @@ using SportsHub.Api.Mapping.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
-using SportsHub.Api.Validations;
-using SportsHub.Domain.Models.Constants;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -31,6 +30,20 @@ namespace SportsHub.Api.Controllers
             _generateModelStateDictionary = generateModelStateDictionary;
         }
 
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<ArticleResponseDTO>>> GetAllAsync()
+        {
+            var articles = await _articleService.GetAllAsync();
+
+            if (!articles.Any())
+            {
+                return BadRequest(ValidationMessages.NoArticles);
+            }
+
+            var articlesResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
+            return Ok(articlesResponse);
+        }
+
         [HttpGet("GetArticleByTitle")]
         public async Task<ActionResult<ArticleResponseDTO>> GetArticleByTitleAsync(string title)
         {
@@ -38,7 +51,7 @@ namespace SportsHub.Api.Controllers
 
             if (article == null)
             {
-                return BadRequest($"No such article");
+                return BadRequest(ValidationMessages.NoSuchArticle);
             }
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);

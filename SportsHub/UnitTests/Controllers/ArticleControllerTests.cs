@@ -6,6 +6,7 @@ using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using UnitTests.MockData;
+using UnitTests.Utils;
 using Xunit;
 
 namespace UnitTests.Controllers
@@ -38,7 +39,7 @@ namespace UnitTests.Controllers
 
             //Act
             var result = await _articleController.GetArticleByTitleAsync(title);
-            var resultObject = GetObjectResultContent<ArticleResponseDTO>(result);
+            var resultObject = TestHelper.GetObjectResultContent<ArticleResponseDTO>(result);
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
             Assert.Equal(title, resultObject.Title);
@@ -68,7 +69,7 @@ namespace UnitTests.Controllers
 
             //Act
             var result = await _articleController.GetAllAsync();
-            var resultObject = GetObjectResultContent<IEnumerable<ArticleResponseDTO>>(result);
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<ArticleResponseDTO>>(result);
 
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
@@ -87,11 +88,6 @@ namespace UnitTests.Controllers
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
-        }
-
-        private static T GetObjectResultContent<T>(ActionResult<T> result)
-        {
-            return (T)((ObjectResult)result.Result).Value;
         }
     }
 }

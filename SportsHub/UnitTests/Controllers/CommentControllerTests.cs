@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
-using SportsHub.Api.Mapping.Models;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
+using UnitTests.MockData;
+using UnitTests.Utils;
+using Xunit;
 
 namespace UnitTests.Controllers
 {
@@ -22,7 +25,7 @@ namespace UnitTests.Controllers
         {
             if (_mapper == null)
             {
-                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Article, ArticleResponseDTO>());
+                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Comment, PostCommentDTO>());
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
@@ -31,6 +34,51 @@ namespace UnitTests.Controllers
             _commentValidator = new Mock<IValidator<PostCommentDTO>>();
             _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
             _commentController = new CommentController(_commentService.Object, _mapper, _commentValidator.Object, _generateModelStateDictionary.Object);
+        }
+
+        [Fact]
+        public async Task GetByArticleAsync_CommentsForProvidedActicleExist_ReturnsOkStatus()
+        {
+            //Arrange
+            int acticleId = 5;
+            var comments = CommentMockData.GetForArticle();
+            _commentService.Setup(service => service.GetByArticleAsync(acticleId)).ReturnsAsync(comments);
+
+            //Act
+            var result = await _commentController.GetByArticleAsync(acticleId);
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(3, resultObject.Count());
+        }
+
+        [Fact]
+        public async Task GetByArticleAsync_CommentsForProvidedActicleDoNotExist_ReturnsBadRequest()
+        {
+            //Arrange
+            int acticleId = 5;
+            _commentService.Setup(service => service.GetByArticleAsync(acticleId)).ReturnsAsync(new List<Comment>());
+
+            //Act
+            var result = await _commentController.GetByArticleAsync(acticleId);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task PostCommentAsync_NewComment_ReturnsOkStatus()
+        {
+            var comment = CommentMockData.GetComment();
+            _commentService.Setup(service => service.PostCommentAsync(comment)).ReturnsAsync(true);
+
+            var result = await _commentController.PostCommentAsync(comment);
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(3, resultObject.Count());
         }
     }
 }

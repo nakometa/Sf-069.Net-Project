@@ -6,6 +6,7 @@ using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
+using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Controllers
 {
@@ -27,7 +28,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public async Task<IActionResult> GetByArticleAsync(int articleId)
+        public async Task<ActionResult<IEnumerable<Comment>>> GetByArticleAsync(int articleId)
         {
             var comments = await _commentService.GetByArticleAsync(articleId);
 

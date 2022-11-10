@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Api.Validations;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -59,10 +60,10 @@ namespace SportsHub.Api.Controllers
 
             if(createdSuccessful)
             {
-                return Ok("Article created successfully.");
+                return Ok(ValidationMessages.ArticleCreatedSuccessfully);
             }
 
-            return BadRequest("Unable to create article.");
+            return BadRequest(ValidationMessages.UnableToCreateArticle);
         }
     }
 }

@@ -11,7 +11,7 @@ public class ExceptionHandler: IMiddleware
         {
             await next(context);
         }
-        catch (Exception ex) when (ex is NotFoundException or BusinessLogicException) 
+        catch (Exception ex) when (ex is BaseCustomException) 
         {
             await HandleCustomExceptionAsync(context, ex);
         }

@@ -1,6 +1,6 @@
 ﻿namespace SportsHub.Api.Exceptions.CustomExceptionModels;
 
-public class NotFoundException: Exception
+public class NotFoundException: BaseCustomException
 {
     public NotFoundException(string message)
     {
@@ -11,13 +11,5 @@ public class NotFoundException: Exception
     {
         ErrorCode = code;
         Message = message;
-    }
-
-    public int ErrorCode { get; set; } 
-    public string Message { get; }
-
-    public override string ToString()
-    {
-        return $"{ErrorCode}-NotFoundException: {Message}";
     }
 }

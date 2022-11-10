@@ -42,6 +42,7 @@ namespace SportsHub.Api.Controllers
             }
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
+
             return Ok(articleResponse);
         }
 
@@ -53,6 +54,7 @@ namespace SportsHub.Api.Controllers
             if(!validationResult.IsValid)
             {
                 var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+
                 return ValidationProblem(response);
             }
 

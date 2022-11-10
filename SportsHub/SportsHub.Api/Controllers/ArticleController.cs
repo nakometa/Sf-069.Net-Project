@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
-using SportsHub.Domain.Models;
 
 namespace SportsHub.Api.Controllers
 {
@@ -11,14 +10,12 @@ namespace SportsHub.Api.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly IArticleService _articleService;
-        private readonly IFilterService _filterService;
         private readonly IMapper _mapper;
 
-        public ArticleController(IArticleService service, IMapper mapper, IFilterService filterService)
+        public ArticleController(IArticleService service, IMapper mapper)
         {
             _articleService = service;
             _mapper = mapper;
-            _filterService = filterService;
         }
 
         [HttpGet("GetArticleByTitle")]
@@ -38,12 +35,7 @@ namespace SportsHub.Api.Controllers
         [HttpGet("GetArticlesBySubstring")]
         public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
         {
-            var articles = await _filterService.GetListOfArticlesBySubstringAsync(substring);
-            
-            if (articles.Count < 1)
-            {
-                return BadRequest($"No match found for substring {substring}");
-            }
+            var articles = await _articleService.GetListOfArticlesBySubstringAsync(substring);
 
             var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
             return Ok(articleResponse);

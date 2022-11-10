@@ -91,7 +91,6 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IArticleService, ArticleService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<IFilterService, FilterService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();

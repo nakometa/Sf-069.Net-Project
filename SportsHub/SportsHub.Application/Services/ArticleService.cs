@@ -16,5 +16,10 @@ namespace SportsHub.AppService.Services
         {
             return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
         }
+
+        public async Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring)
+        {
+            return await _unitOfWork.ArticleRepository.GetBySubstringAsync(substring);
+        }
     }
 }

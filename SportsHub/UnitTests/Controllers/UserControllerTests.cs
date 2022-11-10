@@ -80,10 +80,10 @@ public class UserControllerTests
         _userController.ControllerContext = new ControllerContext();
         _userController.ControllerContext.HttpContext = new DefaultHttpContext() { User = user };
 
-        ////Act
-        //var result = _userController.AdminsEndpoint() as ObjectResult;
+        //Act
+        var result = _userController.AdminsEndpoint() as ObjectResult;
 
-        ////Assert
-        //Assert.IsType<OkObjectResult>(result);
+        //Assert
+        Assert.IsType<OkObjectResult>(result);
     }
 }

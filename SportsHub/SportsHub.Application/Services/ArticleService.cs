@@ -26,7 +26,7 @@ namespace SportsHub.AppService.Services
 
         public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
         {
-            var articleExists = await _unitOfWork.ArticleRepository.GetByIdAsync(adminInput.ArticleId) != null;
+            var articleExists = await GetByTitleAsync(adminInput.Title) != null;
 
             if (articleExists)
             {

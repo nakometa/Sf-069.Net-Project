@@ -38,7 +38,7 @@ namespace SportsHub.Api.Controllers
             return Ok(comments);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("PostComment")]
         public async Task<ActionResult> PostCommentAsync([FromBody] PostCommentDTO commentInput)
         {

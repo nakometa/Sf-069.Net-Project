@@ -49,7 +49,6 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            //TODO
             var created = await _commentService.PostCommentAsync(commentInput);
 
             if (!created)

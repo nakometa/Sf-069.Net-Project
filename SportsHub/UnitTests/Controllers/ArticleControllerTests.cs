@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
 using SportsHub.Api.Mapping.Models;
+using SportsHub.Api.Validations;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using UnitTests.MockData;
@@ -13,6 +16,8 @@ namespace UnitTests.Controllers
     public class ArticleControllerTests
     {
         private readonly Mock<IArticleService> _articleService;
+        private readonly Mock<IValidator<CreateArticleDTO>> _articleValidator;
+        private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly ArticleController _articleController;
         private readonly IMapper _mapper;
 
@@ -25,7 +30,9 @@ namespace UnitTests.Controllers
                 _mapper = mapper;
             }
             _articleService = new Mock<IArticleService>();
-            _articleController = new ArticleController(_articleService.Object, _mapper);
+            _articleValidator = new Mock<IValidator<CreateArticleDTO>>();
+            _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
+            _articleController = new ArticleController(_articleService.Object, _mapper, _articleValidator.Object, _generateModelStateDictionary.Object);
         }
 
         [Fact]

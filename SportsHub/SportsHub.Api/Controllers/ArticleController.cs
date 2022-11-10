@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
+using SportsHub.Api.Validations;
 
 namespace SportsHub.Api.Controllers
 {

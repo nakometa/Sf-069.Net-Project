@@ -33,7 +33,7 @@ namespace SportsHub.DAL.Repository
 
         public async Task AddArticleAsync(Article article)
         {
-            await context.Articles.AddAsync(article);
+            await _context.Articles.AddAsync(article);
         }
     }
 }

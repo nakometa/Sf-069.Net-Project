@@ -50,7 +50,7 @@ namespace SportsHub.Api.Controllers
             }
 
             //TODO
-            var created = false;
+            var created = await _commentService.PostCommentAsync(commentInput);
 
             if (!created)
             {

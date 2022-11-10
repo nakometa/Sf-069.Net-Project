@@ -54,6 +54,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CommentValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -94,6 +95,7 @@ builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.AddTransient<IGenerateModelStateDictionary, GenerateModelStateDictionary>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.

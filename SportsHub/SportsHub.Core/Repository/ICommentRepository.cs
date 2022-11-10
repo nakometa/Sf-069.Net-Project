@@ -5,6 +5,6 @@ namespace SportsHub.Domain.Repository
     public interface ICommentRepository
     {
         Task<IEnumerable<Comment>> GetByArticleAsync(int id);
-        Task<bool> PostCommentAsync(Article article);
+        Task PostCommentAsync(Comment comment);
     }
 }

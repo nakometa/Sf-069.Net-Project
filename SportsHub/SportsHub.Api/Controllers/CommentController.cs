@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -31,7 +32,7 @@ namespace SportsHub.Api.Controllers
 
             if (!comments.Any())
             {
-                return BadRequest($"No comments for this article");
+                return BadRequest(ValidationMessages.NoCommentsForArticle);
             }
 
             return Ok(comments);
@@ -53,10 +54,10 @@ namespace SportsHub.Api.Controllers
 
             if (!created)
             {
-                return BadRequest("Unable to post comment.");
+                return BadRequest(ValidationMessages.UnableToPostComment);
             }
 
-            return Ok("Comment posted successfully.");
+            return Ok(ValidationMessages.CommentPostedSuccessfully);
         }
     }
 }

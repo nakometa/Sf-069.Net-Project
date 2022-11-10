@@ -11,5 +11,8 @@
         public const string AdminEndpoint = "Hi, {0}, you are an Admin";
         public const string NoArticles = "No articles in the database";
         public const string NoSuchArticle = "No such article";
+        public const string NoCommentsForArticle = "No comments for this article";
+        public const string UnableToPostComment = "Unable to post comment";
+        public const string CommentPostedSuccessfully = "Comment posted successfully";
     }
 }

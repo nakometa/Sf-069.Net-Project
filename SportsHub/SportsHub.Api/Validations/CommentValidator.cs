@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.DAL.Data.Configurations.Constants;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Validations
 {
@@ -9,9 +10,9 @@ namespace SportsHub.Api.Validations
         public CommentValidator()
         {
             RuleFor(x => x.Content)
-                .NotEmpty().WithMessage("Content is required")
+                .NotEmpty().WithMessage(ValidationMessages.CommentContentValidationNotEmptyMessage)
                 .Length(0, ConfigurationConstants.CommentContentMaxLength)
-                .WithMessage($"Content should be less than {ConfigurationConstants.CommentContentMaxLength} characters.");
+                .WithMessage(ValidationMessages.CommentContentValidationLengthMessage.Replace("[0]", ConfigurationConstants.CommentContentMaxLength.ToString()));
 
             RuleFor(x => x.AuthorId)
                 .NotEmpty().WithMessage("Author ID is required");

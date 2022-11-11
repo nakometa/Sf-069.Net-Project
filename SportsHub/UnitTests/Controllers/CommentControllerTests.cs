@@ -21,6 +21,8 @@ namespace UnitTests.Controllers
         private readonly Mock<ICommentService> _commentService;
         private readonly Mock<IValidator<PostCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
+        private readonly int TestArticleId = 5;
+        private readonly int NumberOfTestComments = 3;
 
         public CommentControllerTests()
         {
@@ -41,31 +43,30 @@ namespace UnitTests.Controllers
         public async Task GetByArticleAsync_CommentsForProvidedActicleExist_ReturnsOkStatus()
         {
             //Arrange
-            int acticleId = 5;
             var comments = CommentMockData.GetForArticle();
-            _commentService.Setup(service => service.GetByArticleAsync(acticleId)).ReturnsAsync(comments);
+            _commentService.Setup(service => service.GetByArticleAsync(TestArticleId)).ReturnsAsync(comments);
 
             //Act
-            var result = await _commentController.GetByArticleAsync(acticleId);
-            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
+            var result = await _commentController.GetByArticleAsync(TestArticleId);
 
             //Assert
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
+
             Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(3, resultObject.Count());
+            Assert.Equal(NumberOfTestComments, resultObject.Count());
         }
 
         [Fact]
-        public async Task GetByArticleAsync_CommentsForProvidedActicleDoNotExist_ReturnsBadRequest()
+        public async Task GetByArticleAsync_CommentsForProvidedActicleDoNotExist_ReturnsOkStatus()
         {
             //Arrange
-            int acticleId = 5;
-            _commentService.Setup(service => service.GetByArticleAsync(acticleId)).ReturnsAsync(new List<Comment>());
+            _commentService.Setup(service => service.GetByArticleAsync(TestArticleId)).ReturnsAsync(new List<Comment>());
 
             //Act
-            var result = await _commentController.GetByArticleAsync(acticleId);
+            var result = await _commentController.GetByArticleAsync(TestArticleId);
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
 
         [Fact]

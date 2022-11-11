@@ -12,7 +12,9 @@
         public const string NoArticles = "No articles in the database";
         public const string NoSuchArticle = "No such article";
         public const string NoCommentsForArticle = "No comments for this article";
-        public const string UnableToPostComment = "Unable to post comment";
-        public const string CommentPostedSuccessfully = "Comment posted successfully";
+        public const string UnableToAddComment = "Unable to post comment";
+        public const string CommentAddedSuccessfully = "Comment posted successfully";
+        public const string CommentContentValidationNotEmptyMessage = "Content is required";
+        public const string CommentContentValidationLengthMessage = $"Content should be less than [0] characters.";
     }
 }

@@ -34,7 +34,7 @@ namespace SportsHub.Api.Controllers
 
             if (!comments.Any())
             {
-                return BadRequest(ValidationMessages.NoCommentsForArticle);
+                return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
             return Ok(comments);
@@ -56,10 +56,10 @@ namespace SportsHub.Api.Controllers
 
             if (!created)
             {
-                return BadRequest(ValidationMessages.UnableToPostComment);
+                return BadRequest(ValidationMessages.UnableToAddComment);
             }
 
-            return Ok(ValidationMessages.CommentPostedSuccessfully);
+            return Ok(ValidationMessages.CommentAddedSuccessfully);
         }
     }
 }

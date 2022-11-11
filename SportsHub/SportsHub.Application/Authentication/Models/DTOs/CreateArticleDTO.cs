@@ -2,7 +2,6 @@
 {
     public class CreateArticleDTO
     {
-        public int ArticleId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public byte[] ArticlePicture { get; set; }

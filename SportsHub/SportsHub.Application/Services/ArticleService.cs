@@ -33,6 +33,13 @@ namespace SportsHub.AppService.Services
                 return false;
             }
 
+            var categoryExists = GetCategoryById(adminInput.CategoryId);
+
+            if(categoryExists == null)
+            {
+                return false;
+            }
+
             var article = new Article()
             {
                 Title = adminInput.Title,
@@ -47,6 +54,11 @@ namespace SportsHub.AppService.Services
             await _unitOfWork.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<Category?> GetCategoryById(int categoryId)
+        {
+            return await _unitOfWork.CategoryRepository.GetCategoryById(categoryId);
         }
     }
 }

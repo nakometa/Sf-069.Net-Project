@@ -46,5 +46,14 @@ namespace SportsHub.Api.Controllers
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
             return Ok(articleResponse);
         }
+
+        [HttpGet("GetArticlesBySubstring")]
+        public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
+        {
+            var articles = await _articleService.GetListOfArticlesBySubstringAsync(substring);
+
+            var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
+            return Ok(articleResponse);
+        }
     }
 }

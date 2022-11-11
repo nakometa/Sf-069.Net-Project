@@ -6,5 +6,6 @@ namespace SportsHub.AppService.Services
     {
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
+        Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring);
     }
 }

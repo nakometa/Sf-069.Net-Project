@@ -5,7 +5,7 @@ using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Validations
 {
-    public class CommentValidator : AbstractValidator<PostCommentDTO>
+    public class CommentValidator : AbstractValidator<CreateCommentDTO>
     {
         public CommentValidator()
         {

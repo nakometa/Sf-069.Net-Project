@@ -1,6 +1,6 @@
 ﻿namespace SportsHub.AppService.Authentication.Models.DTOs
 {
-    public class PostCommentDTO
+    public class CreateCommentDTO
     {
         public string Content { get; set; }
 

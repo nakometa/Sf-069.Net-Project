@@ -5,9 +5,9 @@ namespace UnitTests.MockData
 {
     public class CommentMockData
     {
-        public static PostCommentDTO GetComment()
+        public static CreateCommentDTO GetComment()
         {
-            return new PostCommentDTO()
+            return new CreateCommentDTO()
             {
                 Content = "test",
                 ArticleId = 5,

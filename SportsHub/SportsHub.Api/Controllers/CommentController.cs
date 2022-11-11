@@ -16,10 +16,10 @@ namespace SportsHub.Api.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
-        private readonly IValidator<PostCommentDTO> _commentValidator;
+        private readonly IValidator<CreateCommentDTO> _commentValidator;
         private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public CommentController(ICommentService service, IMapper mapper, IValidator<PostCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
+        public CommentController(ICommentService service, IMapper mapper, IValidator<CreateCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _commentService = service;
             _mapper = mapper;
@@ -42,7 +42,7 @@ namespace SportsHub.Api.Controllers
 
         [Authorize]
         [HttpPost("PostComment")]
-        public async Task<ActionResult> PostCommentAsync([FromBody] PostCommentDTO commentInput)
+        public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)
         {
             var validationResult = await _commentValidator.ValidateAsync(commentInput);
 
@@ -52,7 +52,7 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            var created = await _commentService.PostCommentAsync(commentInput);
+            var created = await _commentService.AddCommentAsync(commentInput);
 
             if (!created)
             {

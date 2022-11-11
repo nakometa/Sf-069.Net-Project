@@ -18,7 +18,7 @@ namespace SportsHub.DAL.Repository
                 .ToListAsync();
         }
 
-        public async Task PostCommentAsync(Comment comment)
+        public async Task AddCommentAsync(Comment comment)
         {
             await DbSet.AddAsync(comment);
         }

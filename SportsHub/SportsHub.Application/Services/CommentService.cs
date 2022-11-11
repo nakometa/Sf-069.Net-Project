@@ -18,7 +18,7 @@ namespace SportsHub.AppService.Services
             return await _unitOfWork.CommentRepository.GetByArticleAsync(id);
         }
 
-        public async Task<bool> PostCommentAsync(PostCommentDTO commentInput)
+        public async Task<bool> AddCommentAsync(CreateCommentDTO commentInput)
         {
             var userExists = _unitOfWork.UserRepository.GetById(commentInput.AuthorId) != null;
             var articleExists = _unitOfWork.ArticleRepository.GetById(commentInput.ArticleId) != null;
@@ -35,7 +35,7 @@ namespace SportsHub.AppService.Services
                 ArticleId = commentInput.ArticleId,
             };
 
-            await _unitOfWork.CommentRepository.PostCommentAsync(comment);
+            await _unitOfWork.CommentRepository.AddCommentAsync(comment);
             await _unitOfWork.SaveChangesAsync();
 
             return true;

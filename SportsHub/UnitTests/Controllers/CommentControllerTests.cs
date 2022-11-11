@@ -19,7 +19,7 @@ namespace UnitTests.Controllers
         private IMapper _mapper;
         private readonly CommentController _commentController;
         private readonly Mock<ICommentService> _commentService;
-        private readonly Mock<IValidator<PostCommentDTO>> _commentValidator;
+        private readonly Mock<IValidator<CreateCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly int TestArticleId = 5;
         private readonly int NumberOfTestComments = 3;
@@ -28,13 +28,13 @@ namespace UnitTests.Controllers
         {
             if (_mapper == null)
             {
-                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Comment, PostCommentDTO>());
+                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Comment, CreateCommentDTO>());
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
 
             _commentService = new Mock<ICommentService>();
-            _commentValidator = new Mock<IValidator<PostCommentDTO>>();
+            _commentValidator = new Mock<IValidator<CreateCommentDTO>>();
             _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
             _commentController = new CommentController(_commentService.Object, _mapper, _commentValidator.Object, _generateModelStateDictionary.Object);
         }
@@ -74,7 +74,7 @@ namespace UnitTests.Controllers
         {
             //Arrange
             var comment = CommentMockData.GetComment();
-            _commentService.Setup(service => service.PostCommentAsync(comment)).ReturnsAsync(true);
+            _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(true);
             _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
             //Act
@@ -89,7 +89,7 @@ namespace UnitTests.Controllers
         {
             //Arrange
             var comment = CommentMockData.GetComment();
-            _commentService.Setup(service => service.PostCommentAsync(comment)).ReturnsAsync(false);
+            _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(false);
             _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
             //Act

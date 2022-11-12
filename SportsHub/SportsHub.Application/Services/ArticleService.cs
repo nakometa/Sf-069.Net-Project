@@ -58,9 +58,16 @@ namespace SportsHub.AppService.Services
 
         public async Task<bool> EditArticle(CreateArticleDTO adminInput)
         {
-            var article = GetByTitleAsync(adminInput.Title).GetAwaiter().GetResult();
+            var article = await _unitOfWork.ArticleRepository.GetByIdAsync(adminInput.ArticleId);
 
             if(article == null)
+            {
+                return false;
+            }
+
+            var categoryExists = GetCategoryById(adminInput.CategoryId);
+
+            if (categoryExists == null)
             {
                 return false;
             }

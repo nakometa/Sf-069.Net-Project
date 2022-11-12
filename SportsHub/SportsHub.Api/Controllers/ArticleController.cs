@@ -91,6 +91,7 @@ namespace SportsHub.Api.Controllers
             if (!validationResult.IsValid)
             {
                 var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+
                 return ValidationProblem(response);
             }
 

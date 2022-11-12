@@ -101,7 +101,7 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.ArticleUpdatedSuccessfully);
             }
 
-            return BadRequest(ValidationMessages.ArticleNotFound);
+            return BadRequest(ValidationMessages.UnableToUpdateArticle);
         }
     }
 }

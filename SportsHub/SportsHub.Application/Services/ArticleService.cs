@@ -17,7 +17,7 @@ namespace SportsHub.AppService.Services
         public async Task<Article?> GetByTitleAsync(string title)
         {
             return await _unitOfWork.ArticleRepository.GetByTitleAsync(title) ??
-                   throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
+                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
         }
     }
 }

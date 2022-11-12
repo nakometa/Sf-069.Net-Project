@@ -17,7 +17,7 @@ namespace SportsHub.AppService.Services
         public async Task<IEnumerable<Comment>> GetByArticleAsync(int id)
         {
             return await _unitOfWork.CommentRepository.GetByArticleAsync(id)?? 
-                   throw new NotFoundException(StatusCodeConstants.NotFound, ExceptionMessages.NotFound);
+                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
     }
 }

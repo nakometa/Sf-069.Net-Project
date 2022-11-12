@@ -6,5 +6,7 @@ namespace SportsHub.Domain.Repository
     {
         Task<IEnumerable<Comment>> GetByArticleAsync(int id);
         Task AddCommentAsync(Comment comment);
+        Task LikeCommentAsync(int CommentId);
+        Task DislikeCommentAsync(int CommentId);
     }
 }

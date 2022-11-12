@@ -7,11 +7,11 @@ namespace SportsHub.DAL.Repository
     public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         where TEntity : class
     {
-        protected readonly ApplicationDbContext context;
+        protected readonly ApplicationDbContext _context;
 
         public GenericRepository(ApplicationDbContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public void Add(TEntity entity)
@@ -34,6 +34,6 @@ namespace SportsHub.DAL.Repository
             return DbSet.Find(id);
         }
 
-        protected DbSet<TEntity> DbSet => context.Set<TEntity>();
+        protected DbSet<TEntity> DbSet => _context.Set<TEntity>();
     }
 }

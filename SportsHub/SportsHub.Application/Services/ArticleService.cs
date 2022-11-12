@@ -14,6 +14,11 @@ namespace SportsHub.AppService.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<IEnumerable<Article>> GetAllAsync()
+        {
+            return await _unitOfWork.ArticleRepository.GetAllAsync();
+        }
+
         public async Task<Article?> GetByTitleAsync(string title)
         {
             return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
@@ -24,6 +29,13 @@ namespace SportsHub.AppService.Services
             var articleExists = await GetByTitleAsync(adminInput.Title) != null;
 
             if (articleExists)
+            {
+                return false;
+            }
+
+            var categoryExists = GetCategoryById(adminInput.CategoryId);
+
+            if(categoryExists == null)
             {
                 return false;
             }
@@ -59,6 +71,11 @@ namespace SportsHub.AppService.Services
             await _unitOfWork.SaveChangesAsync();
 
             return true;
+        }
+
+        private async Task<Category?> GetCategoryById(int categoryId)
+        {
+            return await _unitOfWork.CategoryRepository.GetCategoryById(categoryId);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace SportsHub.AppService.Services
 {
     public interface IArticleService
     {
+        Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
         Task<bool> CreateArticleAsync(CreateArticleDTO adminInput);
         Task<bool> EditArticle(CreateArticleDTO adminInput);

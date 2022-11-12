@@ -40,5 +40,33 @@ namespace SportsHub.AppService.Services
 
             return true;
         }
+
+        public async Task<bool> LikeCommentAsync(int commentId)
+        {
+            var result = _unitOfWork.CommentRepository.LikeCommentAsync(commentId);
+
+            if (!result)
+            {
+                return false;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DislikeCommentAsync(int commentId)
+        {
+            var result = _unitOfWork.CommentRepository.DislikeCommentAsync(commentId);
+
+            if (!result)
+            {
+                return false;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

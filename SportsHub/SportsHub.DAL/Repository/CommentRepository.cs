@@ -2,6 +2,7 @@
 using SportsHub.DAL.Data;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Repository;
+using System.ComponentModel.Design;
 
 namespace SportsHub.DAL.Repository
 {
@@ -21,6 +22,34 @@ namespace SportsHub.DAL.Repository
         public async Task AddCommentAsync(Comment comment)
         {
             await DbSet.AddAsync(comment);
+        }
+
+        public bool LikeCommentAsync(int commentId)
+        {
+            var comment = GetById(commentId);
+
+            if (comment == null)
+            {
+                return false;
+            }
+
+            comment.Likes++;
+
+            return true;
+        }
+
+        public bool DislikeCommentAsync(int commentId)
+        {
+            var comment = GetById(commentId);
+
+            if (comment == null)
+            {
+                return false;
+            }
+
+            comment.Dislikes++;
+
+            return true;
         }
     }
 }

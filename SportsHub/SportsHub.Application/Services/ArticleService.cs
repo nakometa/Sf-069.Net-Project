@@ -59,7 +59,7 @@ namespace SportsHub.AppService.Services
             return true;
         }
 
-        public async Task<bool> EditArticle(CreateArticleDTO adminInput)
+        public async Task<bool> EditArticleAsync(CreateArticleDTO adminInput)
         {
             var article = await _unitOfWork.ArticleRepository.GetByIdAsync(adminInput.ArticleId);
 

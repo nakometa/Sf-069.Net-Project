@@ -95,7 +95,7 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            bool editedSuccessfully = await _articleService.EditArticle(adminInput);
+            bool editedSuccessfully = await _articleService.EditArticleAsync(adminInput);
 
             if (editedSuccessfully)
             {

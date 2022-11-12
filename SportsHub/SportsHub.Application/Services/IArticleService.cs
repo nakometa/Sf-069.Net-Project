@@ -8,6 +8,6 @@ namespace SportsHub.AppService.Services
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
         Task<bool> CreateArticleAsync(CreateArticleDTO adminInput);
-        Task<bool> EditArticle(CreateArticleDTO adminInput);
+        Task<bool> EditArticleAsync(CreateArticleDTO adminInput);
     }
 }

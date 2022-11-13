@@ -61,5 +61,33 @@ namespace SportsHub.Api.Controllers
 
             return Ok(ValidationMessages.CommentAddedSuccessfully);
         }
+
+        [Authorize]
+        [HttpPost("LikeComment")]
+        public async Task<ActionResult> LikeCommentAsync(int commentId)
+        {
+            var result = await _commentService.LikeCommentAsync(commentId);
+
+            if (!result)
+            {
+                return BadRequest(ValidationMessages.NoSuchComment);
+            }
+
+            return Ok(ValidationMessages.CommentSuccessfullyLiked);
+        }
+
+        [Authorize]
+        [HttpPost("DislikeComment")]
+        public async Task<ActionResult> DislikeCommentAsync(int commentId)
+        {
+            var result = await _commentService.DislikeCommentAsync(commentId);
+
+            if (!result)
+            {
+                return BadRequest(ValidationMessages.NoSuchComment);
+            }
+
+            return Ok(ValidationMessages.CommentSuccessfullyDisliked);
+        }
     }
 }

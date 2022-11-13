@@ -81,5 +81,14 @@ namespace SportsHub.Api.Controllers
 
             return BadRequest(ValidationMessages.UnableToCreateArticle);
         }
+        
+        [HttpGet("GetArticlesBySubstring")]
+        public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
+        {
+            var articles = await _articleService.GetListOfArticlesBySubstringAsync(substring);
+
+            var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
+            return Ok(articleResponse);
+        }
     }
 }

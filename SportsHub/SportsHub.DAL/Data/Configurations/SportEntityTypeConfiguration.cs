@@ -9,8 +9,6 @@ namespace SportsHub.DAL.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Sport> sport)
         {
-            // TODO: CHANGE ALL CONSTANTS
-
             sport.Property(x => x.Name)
                 .IsRequired(true)
                 .HasMaxLength(ConfigurationConstants.SportNameMaxLength)

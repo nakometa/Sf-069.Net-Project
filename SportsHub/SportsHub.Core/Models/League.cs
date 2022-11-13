@@ -2,12 +2,6 @@
 {
     public class League
     {
-        public League()
-        {
-            Teams = new HashSet<Team>();
-            SubLeagues = new HashSet<SubLeague>();
-        }
-
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

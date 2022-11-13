@@ -34,7 +34,7 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasIndex("AuthorsId");
 
-                    b.ToTable("ArticleUser");
+                    b.ToTable("ArticleUser", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.Article", b =>
@@ -79,7 +79,7 @@ namespace SportsHub.DAL.Migrations
                     b.HasIndex("Title")
                         .IsUnique();
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.Category", b =>
@@ -103,7 +103,7 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.Comment", b =>
@@ -137,7 +137,7 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.Role", b =>
@@ -156,7 +156,7 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.State", b =>
@@ -175,7 +175,7 @@ namespace SportsHub.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("States");
+                    b.ToTable("States", (string)null);
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.User", b =>
@@ -235,7 +235,7 @@ namespace SportsHub.DAL.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ArticleUser", b =>

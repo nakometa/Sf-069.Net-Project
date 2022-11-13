@@ -2,6 +2,14 @@
 {
     public static class ConfigurationConstants
     {
+        public const int SportNameMaxLength = 50;
+        public const int SportDescriptionMaxLength = 250;
+        public const int LeagueNameMaxLength = 50;
+        public const int LeagueDescriptionMaxLength = 250;
+        public const int SubLeagueNameMaxLength = 50;
+        public const int SubLeagueDescriptionMaxLength = 250;
+        public const int TeamNameMaxLength = 50;
+        public const int TeamDescriptionMaxLength = 250;
         public const int ArticleTitleMaxLength = 100;
         public const int CategoryNameMaxLength = 50;
         public const int CategoryDescriptionMaxLength = 250;

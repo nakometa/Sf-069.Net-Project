@@ -73,7 +73,7 @@ namespace UnitTests.Controllers
         public async Task PostCommentAsync_NewComment_ReturnsOkStatus()
         {
             //Arrange
-            var comment = CommentMockData.GetComment();
+            var comment = CommentMockData.GetCommentDTO();
             _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(true);
             _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
@@ -88,7 +88,7 @@ namespace UnitTests.Controllers
         public async Task PostCommentAsync_NewComment_ReturnsBadRequest()
         {
             //Arrange
-            var comment = CommentMockData.GetComment();
+            var comment = CommentMockData.GetCommentDTO();
             _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(false);
             _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 

@@ -5,10 +5,21 @@ namespace UnitTests.MockData
 {
     public class CommentMockData
     {
-        public static CreateCommentDTO GetComment()
+        public static CreateCommentDTO GetCommentDTO()
         {
             return new CreateCommentDTO()
             {
+                Content = "test",
+                ArticleId = 5,
+                AuthorId = 14
+            };
+        }
+
+        public static Comment GetComment()
+        {
+            return new Comment()
+            {
+                Id = 1,
                 Content = "test",
                 ArticleId = 5,
                 AuthorId = 3

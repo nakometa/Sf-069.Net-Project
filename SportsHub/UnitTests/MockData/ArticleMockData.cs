@@ -8,6 +8,7 @@ namespace UnitTests.MockData
         {
             return new Article()
             {
+                Id = 5,
                 Title = "testArticle"
             };
         }

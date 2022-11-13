@@ -33,26 +33,6 @@ namespace UnitTests.Services
             _commentService = new CommentService(_unitOfWorkMock.Object);
         }
 
-        //var userExists = _unitOfWork.UserRepository.GetById(commentInput.AuthorId) != null;
-        //var articleExists = _unitOfWork.ArticleRepository.GetById(commentInput.ArticleId) != null;
-
-        //    if (!userExists || !articleExists)
-        //    {
-        //        return false;
-        //    }
-
-        //    var comment = new Comment()
-        //    {
-        //        Content = commentInput.Content,
-        //        AuthorId = commentInput.AuthorId,
-        //        ArticleId = commentInput.ArticleId,
-        //    };
-
-        //await _unitOfWork.CommentRepository.AddCommentAsync(comment);
-        //await _unitOfWork.SaveChangesAsync();
-
-        //    return true;
-
         [Fact]
         public async Task AddCommentAsync_WithExistingArticleAndExistingAuthor_ReturnsTrue()
         {

@@ -22,6 +22,7 @@ namespace UnitTests.Controllers
         private readonly Mock<IValidator<CreateCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly int TestArticleId = 5;
+        private readonly int TestCommentId = 1;
         private readonly int NumberOfTestComments = 3;
 
         public CommentControllerTests()
@@ -94,6 +95,58 @@ namespace UnitTests.Controllers
 
             //Act
             var result = await _commentController.PostCommentAsync(comment);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LikeCommentAsync_WithExistingComment_ReturnsOkStatus()
+        {
+            //Arrange
+            _commentService.Setup(service => service.LikeCommentAsync(TestCommentId)).ReturnsAsync(true);
+
+            //Act
+            var result = await _commentController.LikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LikeCommentAsync_WithNonExistingComment_ReturnsBadRequest()
+        {
+            //Arrange
+            _commentService.Setup(service => service.LikeCommentAsync(TestCommentId)).ReturnsAsync(false);
+
+            //Act
+            var result = await _commentController.LikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DislikeCommentAsync_WithExistingComment_ReturnsOkStatus()
+        {
+            //Arrange
+            _commentService.Setup(service => service.DislikeCommentAsync(TestCommentId)).ReturnsAsync(true);
+
+            //Act
+            var result = await _commentController.DislikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DislikeCommentAsync_WithNonExistingComment_ReturnsBadRequest()
+        {
+            //Arrange
+            _commentService.Setup(service => service.DislikeCommentAsync(TestCommentId)).ReturnsAsync(false);
+
+            //Act
+            var result = await _commentController.DislikeCommentAsync(TestCommentId);
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(result);

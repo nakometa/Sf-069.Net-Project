@@ -1,4 +1,5 @@
-﻿using SportsHub.Domain.Models;
+﻿using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Models;
 
 namespace UnitTests.MockData
 {
@@ -35,6 +36,16 @@ namespace UnitTests.MockData
         public static IEnumerable<Article> GetNone()
         {
             return new List<Article>();
+        }
+
+        public static CreateArticleDTO CreateArticle()
+        {
+            return new CreateArticleDTO()
+            {
+                Title = "test",
+                CategoryId = 1,
+                Content = "test",
+            };
         }
     }
 }

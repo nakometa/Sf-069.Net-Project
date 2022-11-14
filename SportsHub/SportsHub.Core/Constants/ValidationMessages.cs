@@ -19,5 +19,7 @@
         public const string NoSuchComment = "No such comment";
         public const string CommentSuccessfullyLiked = "Comment successfully liked";
         public const string CommentSuccessfullyDisliked = "Comment successfully disliked";
+        public const string ArticleCreatedSuccessfully = "Article created successfully.";
+        public const string UnableToCreateArticle = "Unable to create article.";
     }
 }

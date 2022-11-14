@@ -15,11 +15,13 @@ namespace SportsHub.DAL.UOW
             UserRepository = new UserRepository(_context);
             ArticleRepository = new ArticleRepository(_context);
             CommentRepository = new CommentRepository(_context);
+            CategoryRepository = new CategoryRepository(_context);
         }
 
         public IUserRepository UserRepository { get; }
         public IArticleRepository ArticleRepository { get; }
         public ICommentRepository CommentRepository { get; }
+        public ICategoryRepository CategoryRepository { get; }
 
         public Task SaveChangesAsync()
         {

@@ -1,5 +1,7 @@
+using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
 

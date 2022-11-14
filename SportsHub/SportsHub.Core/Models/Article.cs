@@ -7,6 +7,7 @@
         public string Content { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime? PostedOn { get; set; }
+        public byte[] ArticlePicture { get; set; }
 
         public int StateId { get; set; }
         public virtual State State { get; set; }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -31,7 +32,7 @@ namespace SportsHub.Api.Controllers
                 return Ok(token);
             }
 
-            return NotFound("Invalid username or password.");
+            return NotFound(ValidationMessages.InvalidLogin);
         }
     }
 }

@@ -47,6 +47,9 @@ namespace SportsHub.DAL.Data.Configurations
 
             article.HasOne(x => x.State)
                 .WithMany(x => x.Articles);
+
+            article.Property(x => x.ArticlePicture)
+                .IsRequired(false);
         }
     }
 }

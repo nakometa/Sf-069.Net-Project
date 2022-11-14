@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SportsHub.Api;
-using SportsHub.Api.Exceptions;
 using SportsHub.Api.Mapping;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
@@ -18,6 +16,8 @@ using SportsHub.Domain.PasswordHasher;
 using SportsHub.Domain.UOW;
 using System.Reflection;
 using System.Text;
+using SportsHub.Api.Exceptions;
+using SportsHub.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -94,6 +94,7 @@ builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.AddTransient<IGenerateModelStateDictionary, GenerateModelStateDictionary>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.

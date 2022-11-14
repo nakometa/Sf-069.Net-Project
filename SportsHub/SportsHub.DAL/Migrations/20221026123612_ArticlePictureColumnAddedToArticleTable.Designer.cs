@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportsHub.DAL.Data;
 
@@ -11,9 +12,10 @@ using SportsHub.DAL.Data;
 namespace SportsHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221026123612_ArticlePictureColumnAddedToArticleTable")]
+    partial class ArticlePictureColumnAddedToArticleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,8 +218,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(75)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(75)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");

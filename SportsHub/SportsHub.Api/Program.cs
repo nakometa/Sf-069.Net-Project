@@ -94,6 +94,7 @@ builder.Services.AddTransient<ICommentService, CommentService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();
+builder.Services.AddTransient<IGenerateModelStateDictionary, GenerateModelStateDictionary>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.

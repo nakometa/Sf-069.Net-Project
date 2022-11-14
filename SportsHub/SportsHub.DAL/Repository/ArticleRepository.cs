@@ -24,6 +24,18 @@ namespace SportsHub.DAL.Repository
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<Article?> GetByIdAsync(int id)
+        {
+            return await DbSet
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task AddArticleAsync(Article article)
+        {
+            await _context.Articles.AddAsync(article);
+        }
+        
         public async Task<List<Article>> GetBySubstringAsync(string substring)
         {
             return await DbSet

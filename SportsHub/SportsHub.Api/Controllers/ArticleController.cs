@@ -1,8 +1,14 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Mapping.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
+using SportsHub.Api.Validations;
 
 namespace SportsHub.Api.Controllers
 {
@@ -12,11 +18,17 @@ namespace SportsHub.Api.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateArticleDTO> _articleValidator;
+        private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public ArticleController(IArticleService service, IMapper mapper)
+        public ArticleController(IArticleService service, IMapper mapper, 
+                                 IValidator<CreateArticleDTO> articleValidator,
+                                 IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _articleService = service;
             _mapper = mapper;
+            _articleValidator = articleValidator;
+            _generateModelStateDictionary = generateModelStateDictionary;
         }
 
         [HttpGet("GetAll")]
@@ -44,9 +56,32 @@ namespace SportsHub.Api.Controllers
             }
 
             var articleResponse = _mapper.Map<ArticleResponseDTO>(article);
+
             return Ok(articleResponse);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("AddArticle")]
+        public async Task<IActionResult> CreateArticleAsync([FromBody] CreateArticleDTO adminInput)
+        {
+            ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);
+            if(!validationResult.IsValid)
+            {
+                var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+
+                return ValidationProblem(response);
+            }
+
+            bool createdSuccessful = await _articleService.CreateArticleAsync(adminInput);
+
+            if(createdSuccessful)
+            {
+                return Ok(ValidationMessages.ArticleCreatedSuccessfully);
+            }
+
+            return BadRequest(ValidationMessages.UnableToCreateArticle);
+        }
+        
         [HttpGet("GetArticlesBySubstring")]
         public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
         {

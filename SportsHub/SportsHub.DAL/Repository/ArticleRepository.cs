@@ -23,19 +23,7 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.Title == title)
                 .FirstOrDefaultAsync();
         }
-
-        public async Task<bool> DeleteArticleAsync(int id)
-        {
-            var article = await DbSet
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
-
-            if (article is null) return false;
-            
-            Delete(article);
-            
-            return true;
-
+        
         public async Task<Article?> GetByIdAsync(int id)
         {
             return await DbSet
@@ -47,13 +35,18 @@ namespace SportsHub.DAL.Repository
         {
             await _context.Articles.AddAsync(article);
         }
-        
+
         public async Task<List<Article>> GetBySubstringAsync(string substring)
         {
             return await DbSet
                 .Where(x => x.Title.Contains(substring) ||
-                    x.Authors.Any(a => a.Username.Contains(substring)))
+                            x.Authors.Any(a => a.Username.Contains(substring)))
                 .ToListAsync();
+        }
+
+        public void DeleteArticle(Article article)
+        {
+            _context.Articles.Remove(article);
         }
     }
 }

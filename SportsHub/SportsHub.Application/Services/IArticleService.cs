@@ -7,8 +7,8 @@ namespace SportsHub.AppService.Services
     {
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
-        Task<bool> DeleteArticleAsync(int id);
         Task<bool> CreateArticleAsync(CreateArticleDTO adminInput);
         Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring);
+        Task DeleteArticleAsync(int id);
     }
 }

@@ -1,5 +1,7 @@
+using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
 
@@ -67,16 +69,17 @@ namespace SportsHub.AppService.Services
             return await _unitOfWork.ArticleRepository.GetBySubstringAsync(substring);
         }
 
-        public async Task<bool> DeleteArticleAsync(int id)
+        public async Task DeleteArticleAsync(int id)
         {
-            var articleExists = await _unitOfWork.ArticleRepository.DeleteArticleAsync(id);
+            var articleForDelete = await _unitOfWork.ArticleRepository.GetByIdAsync(id);
             
-            //after merging exception handling we can throw exception insted of returning again false
-            if (!articleExists) return false;
+            if (articleForDelete is null)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
+            }
             
+            _unitOfWork.ArticleRepository.DeleteArticle(articleForDelete);
             await _unitOfWork.SaveChangesAsync();
-            
-            return true;
         }
     }
 }

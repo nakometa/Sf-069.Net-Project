@@ -6,9 +6,9 @@ namespace SportsHub.Domain.Repository
     {
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
-        Task<bool> DeleteArticleAsync(int id);
         Task<Article?> GetByIdAsync(int id);
         Task AddArticleAsync(Article article);
         Task<List<Article>> GetBySubstringAsync(string substring);
+        void DeleteArticle(Article article);
     }
 }

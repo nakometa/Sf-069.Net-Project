@@ -13,5 +13,6 @@
         public const string NoSuchArticle = "No such article";
         public const string ArticleCreatedSuccessfully = "Article created successfully.";
         public const string UnableToCreateArticle = "Unable to create article.";
+        public const string ArticleDeletedSuccessfully = "Articles is deleted successfully";
     }
 }

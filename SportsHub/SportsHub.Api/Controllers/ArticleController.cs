@@ -90,5 +90,13 @@ namespace SportsHub.Api.Controllers
             var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
             return Ok(articleResponse);
         }
+
+        [HttpDelete("DeleteArticle")]
+        public async Task<ActionResult> DeleteArticleAsync(int id)
+        {
+            await _articleService.DeleteArticleAsync(id);
+
+            return Ok(ValidationMessages.ArticleDeletedSuccessfully);
+        }
     }
 }

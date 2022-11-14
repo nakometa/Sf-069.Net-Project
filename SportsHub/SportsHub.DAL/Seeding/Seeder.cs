@@ -9,12 +9,14 @@ namespace SportsHub.DAL.Seeding
         #region Raw Data
         private readonly string _roles = "[{\"Name\":\"User\"},{\"Name\":\"Admin\"}]";
         private readonly string _users = "[{\"Email\":\"admin@admin.com\",\"Username\":\"admin\",\"DisplayName\":\"Administrator\",\"Pseudonym\":\"Admin\",\"FirstName\":\"Admin\",\"LastName\":\"Admin\",\"Password\":\"@dm1n\",\"RoleId\":2},{\"Email\":\"notadmin@admin.com\",\"Username\":\"notadmin\",\"DisplayName\":\"NotAnAdministrator\",\"Pseudonym\":\"NotAdmin\",\"FirstName\":\"NotAdmin\",\"LastName\":\"NotAdmin\",\"Password\":\"n0t@dm1n\",\"RoleId\":1}]";
+        private readonly string _states = "[{\"Name\":\"Published\"}, {\"Name\":\"Unpublished\"}, {\"Name\":\"Deleted\"}, {\"Name\":\"Draft\"}]";
         #endregion
 
         public async Task SeedAsync(ApplicationDbContext context)
         {
             await SeedRolesAsync(context);
             await SeedUsersAsync(context);
+            await SeedStatesAsync(context);
         }
 
         private async Task SeedUsersAsync(ApplicationDbContext context)
@@ -30,6 +32,14 @@ namespace SportsHub.DAL.Seeding
             IEnumerable<Role> roles = JsonSerializer.Deserialize<List<Role?>>(_roles);
 
             context.Roles.AddRange(roles);
+            await context.SaveChangesAsync();
+        }
+
+        private async Task SeedStatesAsync(ApplicationDbContext context)
+        {
+            IEnumerable<State> states = JsonSerializer.Deserialize<List<State?>>(_states);
+
+            context.States.AddRange(states);
             await context.SaveChangesAsync();
         }
     }

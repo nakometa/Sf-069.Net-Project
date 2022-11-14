@@ -62,7 +62,6 @@ public class AuthenticationServiceTests
         Assert.Null(result);
     }
 
-    //Not Working !!!!
     [Theory]
     [AutoData]
     public async Task Authenticate_WithEmail_ReturnUser(string email)

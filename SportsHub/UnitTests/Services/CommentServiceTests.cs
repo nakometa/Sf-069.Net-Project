@@ -93,7 +93,7 @@ namespace UnitTests.Services
         public async Task LikeCommentAsync_WithExistingComment_ReturnsTrue()
         {
             //Arrange
-            _commentRepository.Setup(repo => repo.LikeCommentAsync(TestCommentId)).Returns(true);
+            _commentRepository.Setup(repo => repo.GetById(TestCommentId)).Returns(CommentMockData.GetComment());
 
             //Act
             var result = await _commentService.LikeCommentAsync(TestCommentId);
@@ -106,7 +106,7 @@ namespace UnitTests.Services
         public async Task LikeCommentAsync_WithNonExistingComment_ReturnsFalse()
         {
             //Arrange
-            _commentRepository.Setup(repo => repo.LikeCommentAsync(TestCommentId)).Returns(false);
+            _commentRepository.Setup(repo => repo.GetById(TestCommentId)).Returns((Comment?)null);
 
             //Act
             var result = await _commentService.LikeCommentAsync(TestCommentId);
@@ -119,7 +119,7 @@ namespace UnitTests.Services
         public async Task DislikeCommentAsync_WithExistingComment_ReturnsTrue()
         {
             //Arrange
-            _commentRepository.Setup(repo => repo.DislikeCommentAsync(TestCommentId)).Returns(true);
+            _commentRepository.Setup(repo => repo.GetById(TestCommentId)).Returns(CommentMockData.GetComment());
 
             //Act
             var result = await _commentService.DislikeCommentAsync(TestCommentId);
@@ -132,7 +132,7 @@ namespace UnitTests.Services
         public async Task DislikeCommentAsync_WithNonExistingComment_ReturnsFalse()
         {
             //Arrange
-            _commentRepository.Setup(repo => repo.DislikeCommentAsync(TestCommentId)).Returns(false);
+            _commentRepository.Setup(repo => repo.GetById(TestCommentId)).Returns((Comment?)null);
 
             //Act
             var result = await _commentService.DislikeCommentAsync(TestCommentId);

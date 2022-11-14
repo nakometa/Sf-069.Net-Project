@@ -2,11 +2,9 @@
 
 namespace SportsHub.Domain.Repository
 {
-    public interface ICommentRepository
+    public interface ICommentRepository : IGenericRepository<Comment>
     {
         Task<IEnumerable<Comment>> GetByArticleAsync(int id);
         Task AddCommentAsync(Comment comment);
-        bool LikeCommentAsync(int commentId);
-        bool DislikeCommentAsync(int commentId);
     }
 }

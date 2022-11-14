@@ -43,12 +43,14 @@ namespace SportsHub.AppService.Services
 
         public async Task<bool> LikeCommentAsync(int commentId)
         {
-            var result = _unitOfWork.CommentRepository.LikeCommentAsync(commentId);
+            var comment = _unitOfWork.CommentRepository.GetById(commentId);
 
-            if (!result)
+            if (comment == null)
             {
                 return false;
             }
+
+            comment.Likes++;
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -57,12 +59,14 @@ namespace SportsHub.AppService.Services
 
         public async Task<bool> DislikeCommentAsync(int commentId)
         {
-            var result = _unitOfWork.CommentRepository.DislikeCommentAsync(commentId);
+            var comment = _unitOfWork.CommentRepository.GetById(commentId);
 
-            if (!result)
+            if (comment == null)
             {
                 return false;
             }
+
+            comment.Dislikes++;
 
             await _unitOfWork.SaveChangesAsync();
 

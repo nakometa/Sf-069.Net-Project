@@ -23,33 +23,5 @@ namespace SportsHub.DAL.Repository
         {
             await DbSet.AddAsync(comment);
         }
-
-        public bool LikeCommentAsync(int commentId)
-        {
-            var comment = GetById(commentId);
-
-            if (comment == null)
-            {
-                return false;
-            }
-
-            comment.Likes++;
-
-            return true;
-        }
-
-        public bool DislikeCommentAsync(int commentId)
-        {
-            var comment = GetById(commentId);
-
-            if (comment == null)
-            {
-                return false;
-            }
-
-            comment.Dislikes++;
-
-            return true;
-        }
     }
 }

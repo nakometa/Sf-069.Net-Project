@@ -2,7 +2,6 @@
 using SportsHub.DAL.Data;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Repository;
-using System.ComponentModel.Design;
 
 namespace SportsHub.DAL.Repository
 {

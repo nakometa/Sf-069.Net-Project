@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
+using SportsHub.Api.Mapping;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
@@ -12,6 +13,7 @@ using Xunit;
 
 namespace UnitTests.Controllers
 {
+    //!!ActicleController need to implement IGenerateModelStateDictionary to work . Currently all of this tests dont work because of this!!
     public class ArticleControllerTests
     {
         private readonly Mock<IArticleService> _articleService;
@@ -22,12 +24,10 @@ namespace UnitTests.Controllers
         public ArticleControllerTests()
         {
             SetupFixture();
-            if (_mapper == null)
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>()
             {
-                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Article, ArticleResponseDTO>());
-                IMapper mapper = mappingConfig.CreateMapper();
-                _mapper = mapper;
-            }
+                new ArticleMapping(),
+            })).CreateMapper();
             _articleService = _fixture.Freeze<Mock<IArticleService>>();
            _articleController = new ArticleController(_articleService.Object, _mapper);
         }
@@ -42,7 +42,7 @@ namespace UnitTests.Controllers
     
             //Act
             var result = await _articleController.GetArticleByTitleAsync(title);
-            var resultObject = GetObjectResultContent<ArticleResponseDTO>(result);
+            var resultObject = GetObjectResultContent(result);
             //Assert
             Assert.IsType<OkObjectResult>(result.Result);
             Assert.Equal(title, resultObject.Title);

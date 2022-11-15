@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
-using SportsHub.Api.DTOs;
+using SportsHub.Api.Mapping;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using Xunit;
@@ -25,12 +25,10 @@ public class UserControllerTests
     public UserControllerTests()
     {
         SetupFixture();
-        if (_mapper == null)
+        _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>()
         {
-            var mappingConfig = new MapperConfiguration(x => x.CreateMap<User, UserResponseDTO>());
-            IMapper mapper = mappingConfig.CreateMapper();
-            _mapper = mapper;
-        }
+            new UserMapping(),
+        })).CreateMapper();
         _userService = _fixture.Freeze<Mock<IUserService>>();
         _userController = new UserController(_userService.Object, _mapper);
     }

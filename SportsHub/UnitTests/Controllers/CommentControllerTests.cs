@@ -33,7 +33,7 @@ namespace UnitTests.Controllers
                 var mappingConfig = new MapperConfiguration(x =>
                 {
                     x.CreateMap<Comment, CreateCommentDTO>();
-                    x.CreateMap<Comment, CommentResponseDTO>();
+                    x.CreateMap<Comment, CreateCommentRequest>();
                     x.CreateMap<InputCommentDTO, CreateCommentDTO>();
 
                 });
@@ -58,7 +58,7 @@ namespace UnitTests.Controllers
             var result = await _commentController.GetByArticleAsync(TestArticleId);
 
             //Assert
-            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<CommentResponseDTO>>(result);
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<CreateCommentRequest>>(result);
 
             Assert.IsType<OkObjectResult>(result.Result);
             Assert.Equal(NumberOfTestComments, resultObject.Count());

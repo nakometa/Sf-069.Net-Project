@@ -1,6 +1,6 @@
 ﻿namespace SportsHub.Api.Mapping.Models
 {
-    public class CommentResponseDTO
+    public class CreateCommentRequest
     {
         public int Id { get; set; }
         public string Content { get; set; }

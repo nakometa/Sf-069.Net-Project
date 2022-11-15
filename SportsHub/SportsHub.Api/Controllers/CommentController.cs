@@ -30,7 +30,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public async Task<ActionResult<IEnumerable<CommentResponseDTO>>> GetByArticleAsync(int articleId)
+        public async Task<ActionResult<IEnumerable<CreateCommentRequest>>> GetByArticleAsync(int articleId)
         {
             var comments = await _commentService.GetByArticleAsync(articleId);
 
@@ -39,7 +39,7 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
-            var commentsResponse = _mapper.Map<List<CommentResponseDTO>>(comments);
+            var commentsResponse = _mapper.Map<List<CreateCommentRequest>>(comments);
 
             return Ok(commentsResponse);
         }

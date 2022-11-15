@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+using AutoMapper;
+using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
 
@@ -24,7 +26,8 @@ namespace SportsHub.AppService.Services
 
         public async Task<Article?> GetByTitleAsync(string title)
         {
-            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
+            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title) ??
+                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
         }
 
         public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
@@ -86,6 +89,24 @@ namespace SportsHub.AppService.Services
         private async Task<Category?> GetCategoryById(int categoryId)
         {
             return await _unitOfWork.CategoryRepository.GetCategoryById(categoryId);
+        }
+        
+        public async Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring)
+        {
+            return await _unitOfWork.ArticleRepository.GetBySubstringAsync(substring);
+        }
+
+        public async Task DeleteArticleAsync(int id)
+        {
+            var articleForDelete = await _unitOfWork.ArticleRepository.GetByIdAsync(id);
+            
+            if (articleForDelete is null)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
+            }
+            
+            _unitOfWork.ArticleRepository.DeleteArticle(articleForDelete);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -82,7 +82,7 @@ namespace SportsHub.Api.Controllers
 
             return BadRequest(ValidationMessages.UnableToCreateArticle);
         }
-
+        
         [Authorize(Roles = "Admin")]
         [HttpPut("EditArticle")]
         public async Task<IActionResult> EditArticleAsync([FromBody] CreateArticleDTO adminInput)
@@ -103,6 +103,23 @@ namespace SportsHub.Api.Controllers
             }
 
             return BadRequest(ValidationMessages.UnableToUpdateArticle);
+        }
+        
+        [HttpGet("GetArticlesBySubstring")]
+        public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
+        {
+            var articles = await _articleService.GetListOfArticlesBySubstringAsync(substring);
+
+            var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
+            return Ok(articleResponse);
+        }
+
+        [HttpDelete("DeleteArticle")]
+        public async Task<ActionResult> DeleteArticleAsync(int id)
+        {
+            await _articleService.DeleteArticleAsync(id);
+
+            return Ok(ValidationMessages.ArticleDeletedSuccessfully);
         }
     }
 }

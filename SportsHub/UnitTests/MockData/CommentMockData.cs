@@ -1,10 +1,21 @@
-﻿using SportsHub.AppService.Authentication.Models.DTOs;
+﻿using SportsHub.Api.Mapping.Models;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
 
 namespace UnitTests.MockData
 {
     public class CommentMockData
     {
+        public static InputCommentDTO GetInputCommentDTO()
+        {
+            return new InputCommentDTO()
+            {
+                Content = "test",
+                ArticleId = 5,
+                AuthorId = 14
+            };
+        }
+
         public static CreateCommentDTO GetCommentDTO()
         {
             return new CreateCommentDTO()

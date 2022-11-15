@@ -2,11 +2,13 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SportsHub.Api.Mapping.Models;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
+using System.Xml.Linq;
 
 namespace SportsHub.Api.Controllers
 {
@@ -16,10 +18,10 @@ namespace SportsHub.Api.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
-        private readonly IValidator<CreateCommentDTO> _commentValidator;
+        private readonly IValidator<InputCommentDTO> _commentValidator;
         private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public CommentController(ICommentService service, IMapper mapper, IValidator<CreateCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
+        public CommentController(ICommentService service, IMapper mapper, IValidator<InputCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _commentService = service;
             _mapper = mapper;
@@ -28,7 +30,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetByArticleAsync(int articleId)
+        public async Task<ActionResult<IEnumerable<CommentResponseDTO>>> GetByArticleAsync(int articleId)
         {
             var comments = await _commentService.GetByArticleAsync(articleId);
 
@@ -37,12 +39,14 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
-            return Ok(comments);
+            var commentsResponse = _mapper.Map<List<CommentResponseDTO>>(comments);
+
+            return Ok(commentsResponse);
         }
 
         [Authorize]
         [HttpPost("PostComment")]
-        public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)
+        public async Task<ActionResult> PostCommentAsync([FromBody] InputCommentDTO commentInput)
         {
             var validationResult = await _commentValidator.ValidateAsync(commentInput);
 
@@ -52,7 +56,9 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            var created = await _commentService.AddCommentAsync(commentInput);
+            var comment = _mapper.Map<CreateCommentDTO>(commentInput);
+
+            var created = await _commentService.AddCommentAsync(comment);
 
             if (!created)
             {

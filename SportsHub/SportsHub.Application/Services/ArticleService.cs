@@ -1,4 +1,4 @@
-﻿using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
@@ -21,7 +21,8 @@ namespace SportsHub.AppService.Services
 
         public async Task<Article?> GetByTitleAsync(string title)
         {
-            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title);
+            return await _unitOfWork.ArticleRepository.GetByTitleAsync(title) ??
+                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
         }
 
         public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)

@@ -113,7 +113,7 @@ namespace UnitTests.Controllers
 
         [Fact]
 
-        public async Task CreateArticleAsync_NewArticle_ReturnsOkStatus()
+        public async Task CreateArticleAsync_NewValidArticle_ReturnsOkStatus()
         {
             //Arrange
             var article = ArticleMockData.CreateArticle();
@@ -121,6 +121,34 @@ namespace UnitTests.Controllers
 
             //Act
             var result = await _articleController.CreateArticleAsync(article);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task EditArticleAsync_NonexistentArticle_ReturnsBadRequest()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(false);
+
+            //Act
+            var result = await _articleController.EditArticleAsync(article);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task EditArticleAsync_ValidInput_ReturnsOkStatus()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(true);
+
+            //Act
+            var result = await _articleController.EditArticleAsync(article);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);

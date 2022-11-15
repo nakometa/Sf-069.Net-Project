@@ -1,3 +1,4 @@
+using AutoMapper;
 using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
@@ -10,10 +11,12 @@ namespace SportsHub.AppService.Services
     public class ArticleService : IArticleService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ArticleService(IUnitOfWork unitOfWork)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Article>> GetAllAsync()
@@ -54,6 +57,30 @@ namespace SportsHub.AppService.Services
             };
 
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditArticleAsync(CreateArticleDTO adminInput)
+        {
+            var article = await _unitOfWork.ArticleRepository.GetByIdAsync(adminInput.ArticleId);
+
+            if(article == null)
+            {
+                return false;
+            }
+
+            var categoryExists = GetCategoryById(adminInput.CategoryId);
+
+            if (categoryExists == null)
+            {
+                return false;
+            }
+
+            _mapper.Map(adminInput, article);
+
+            _unitOfWork.ArticleRepository.UpdateArticle(article);
             await _unitOfWork.SaveChangesAsync();
 
             return true;

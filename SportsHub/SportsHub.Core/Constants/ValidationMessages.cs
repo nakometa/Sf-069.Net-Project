@@ -23,5 +23,8 @@
         public const string CommentSuccessfullyDisliked = "Comment successfully disliked";
         public const string ArticleCreatedSuccessfully = "Article created successfully.";
         public const string UnableToCreateArticle = "Unable to create article.";
+        public const string ArticleUpdatedSuccessfully = "The article was updated successfully.";
+        public const string UnableToUpdateArticle = "Unable to update the article.";
+        public const string ArticleDeletedSuccessfully = "Articles is deleted successfully";
     }
 }

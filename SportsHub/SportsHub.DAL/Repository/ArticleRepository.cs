@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SportsHub.DAL.Data;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Repository;
@@ -23,7 +23,7 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.Title == title)
                 .FirstOrDefaultAsync();
         }
-
+        
         public async Task<Article?> GetByIdAsync(int id)
         {
             return await DbSet
@@ -35,13 +35,23 @@ namespace SportsHub.DAL.Repository
         {
             await _context.Articles.AddAsync(article);
         }
+
+        public void UpdateArticle(Article article)
+        {
+            _context.Update(article);
+        }
         
         public async Task<List<Article>> GetBySubstringAsync(string substring)
         {
             return await DbSet
                 .Where(x => x.Title.Contains(substring) ||
-                    x.Authors.Any(a => a.Username.Contains(substring)))
+                            x.Authors.Any(a => a.Username.Contains(substring)))
                 .ToListAsync();
+        }
+
+        public void DeleteArticle(Article article)
+        {
+            _context.Articles.Remove(article);
         }
     }
 }

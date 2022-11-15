@@ -9,6 +9,7 @@ using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
 using SportsHub.Api.Validations;
+using SportsHub.Domain.Models.Constants;
 
 namespace SportsHub.Api.Controllers
 {
@@ -82,6 +83,28 @@ namespace SportsHub.Api.Controllers
             return BadRequest(ValidationMessages.UnableToCreateArticle);
         }
         
+        [Authorize(Roles = "Admin")]
+        [HttpPut("EditArticle")]
+        public async Task<IActionResult> EditArticleAsync([FromBody] CreateArticleDTO adminInput)
+        {
+            ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);
+            if (!validationResult.IsValid)
+            {
+                var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
+
+                return ValidationProblem(response);
+            }
+
+            bool editedSuccessfully = await _articleService.EditArticleAsync(adminInput);
+
+            if (editedSuccessfully)
+            {
+                return Ok(ValidationMessages.ArticleUpdatedSuccessfully);
+            }
+
+            return BadRequest(ValidationMessages.UnableToUpdateArticle);
+        }
+        
         [HttpGet("GetArticlesBySubstring")]
         public async Task<ActionResult<List<ArticleResponseDTO>>> GetArticlesBySubstring(string substring)
         {
@@ -89,6 +112,14 @@ namespace SportsHub.Api.Controllers
 
             var articleResponse = _mapper.Map<List<ArticleResponseDTO>>(articles);
             return Ok(articleResponse);
+        }
+
+        [HttpDelete("DeleteArticle")]
+        public async Task<ActionResult> DeleteArticleAsync(int id)
+        {
+            await _articleService.DeleteArticleAsync(id);
+
+            return Ok(ValidationMessages.ArticleDeletedSuccessfully);
         }
     }
 }

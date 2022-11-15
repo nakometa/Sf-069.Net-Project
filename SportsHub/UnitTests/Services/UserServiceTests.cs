@@ -46,7 +46,7 @@ public class UserServiceTests
 
     [Theory]
     [AutoData]
-    public async Task GetByEmailAsync_WithIncorrectEmail_ReturnsNull(string email)
+    public async Task GetByEmailAsync_WithIncorrectEmail_ReturnsNotFoundException(string email)
     {
         //Arrange
         _repo.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync((User?)null);
@@ -76,7 +76,7 @@ public class UserServiceTests
 
     [Theory]
     [AutoData]
-    public async Task GetByUsernameAsync_WithIncorrectUsername_ReturnsNull(string userName)
+    public async Task GetByUsernameAsync_WithIncorrectUsername_ReturnsNotFoundException(string userName)
     {
         //Arrange
         _repo.Setup(r => r.GetByUsernameAsync(userName)).ReturnsAsync((User?)null);

@@ -18,5 +18,6 @@
         public const string CommentContentValidationLengthMessage = $"Content should be less than [0] characters.";
         public const string ArticleCreatedSuccessfully = "Article created successfully.";
         public const string UnableToCreateArticle = "Unable to create article.";
+        public const string ArticleDeletedSuccessfully = "Articles is deleted successfully";
     }
 }

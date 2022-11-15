@@ -9,5 +9,6 @@ namespace SportsHub.Domain.Repository
         Task<Article?> GetByIdAsync(int id);
         Task AddArticleAsync(Article article);
         Task<List<Article>> GetBySubstringAsync(string substring);
+        void DeleteArticle(Article article);
     }
 }

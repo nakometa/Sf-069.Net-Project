@@ -41,11 +41,10 @@ namespace UnitTests.Controllers
             _articleService.Setup(service => service.GetByTitleAsync(title)).ReturnsAsync(article);
     
             //Act
-            var result = await _articleController.GetArticleByTitleAsync(title);
-            var resultObject = GetObjectResultContent(result);
+            var result = GetObjectResultContent( await _articleController.GetArticleByTitleAsync(title));
             //Assert
-            Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(title, resultObject.Title);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(title, result.Title);
         }
     
         [Fact]

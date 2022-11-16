@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
 using AutoMapper;
@@ -90,7 +90,64 @@ namespace UnitTests.Controllers
             //Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
-    
+
+        [Fact]
+        public async Task CreateArticleAsync_ArticleAlreadyExists_ReturnsBadRequest()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(false);
+
+            //Act
+            var result = await _articleController.CreateArticleAsync(article);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+
+        public async Task CreateArticleAsync_NewValidArticle_ReturnsOkStatus()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(true);
+
+            //Act
+            var result = await _articleController.CreateArticleAsync(article);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task EditArticleAsync_NonexistentArticle_ReturnsBadRequest()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(false);
+
+            //Act
+            var result = await _articleController.EditArticleAsync(article);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task EditArticleAsync_ValidInput_ReturnsOkStatus()
+        {
+            //Arrange
+            var article = ArticleMockData.CreateArticle();
+            _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(true);
+
+            //Act
+            var result = await _articleController.EditArticleAsync(article);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
         private static T GetObjectResultContent<T>(ActionResult<T> result)
         {
             return (T)((ObjectResult)result.Result).Value;

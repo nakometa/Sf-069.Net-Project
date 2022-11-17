@@ -11,12 +11,16 @@ namespace SportsHub.DAL.Data.Configurations
         {
             league.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.LeagueNameMaxLength)
+                .HasMaxLength(ConfigurationConstants.LeagueConstants.LeagueNameMaxLength)
                 .IsUnicode(true);
+
+
+            league.HasIndex(x => x.Name)
+                .IsUnique();
 
             league.Property(x => x.Description)
                 .IsRequired(false)
-                .HasMaxLength(ConfigurationConstants.LeagueDescriptionMaxLength)
+                .HasMaxLength(ConfigurationConstants.LeagueConstants.LeagueDescriptionMaxLength)
                 .IsUnicode(true);
 
             league.HasMany(x => x.SubLeagues)

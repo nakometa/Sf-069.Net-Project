@@ -11,12 +11,12 @@ namespace SportsHub.DAL.Data.Configurations
         {
             category.Property(x => x.Name)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.CategoryNameMaxLength)
+                .HasMaxLength(ConfigurationConstants.CategoryConstants.CategoryNameMaxLength)
                 .IsUnicode(true);
 
             category.Property(x => x.Description)
                 .IsRequired(false)
-                .HasMaxLength(ConfigurationConstants.CategoryDescriptionMaxLength)
+                .HasMaxLength(ConfigurationConstants.CategoryConstants.CategoryDescriptionMaxLength)
                 .IsUnicode(true);
 
             category.HasMany(x => x.Articles)

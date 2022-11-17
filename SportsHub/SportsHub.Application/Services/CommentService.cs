@@ -1,6 +1,6 @@
-﻿using SportsHub.AppService.Authentication.Models.DTOs;
-using SportsHub.Domain.Models;
-﻿using SportsHub.Api.Exceptions.CustomExceptionModels;
+﻿using AutoMapper;
+using SportsHub.Api.Exceptions.CustomExceptionModels;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.UOW;
@@ -9,17 +9,19 @@ namespace SportsHub.AppService.Services
 {
     public class CommentService : ICommentService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CommentService(IUnitOfWork unitOfWork)
+        public CommentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Comment>> GetByArticleAsync(int id)
         {
-            return await _unitOfWork.CommentRepository.GetByArticleAsync(id)?? 
-                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+            return await _unitOfWork.CommentRepository.GetByArticleAsync(id) ??
+                   throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
         public async Task<bool> AddCommentAsync(CreateCommentDTO commentInput)
@@ -29,17 +31,12 @@ namespace SportsHub.AppService.Services
 
             if (!userExists || !articleExists)
             {
-                return false;
+                throw new NotFoundException("User or article not found!");
             }
 
-            var comment = new Comment()
-            {
-                Content = commentInput.Content,
-                AuthorId = commentInput.AuthorId,
-                ArticleId = commentInput.ArticleId,
-            };
+            var comment = _mapper.Map<Comment>(commentInput);
 
-            await _unitOfWork.CommentRepository.AddCommentAsync(comment);
+            await _unitOfWork.CommentRepository.AddAsync(comment);
             await _unitOfWork.SaveChangesAsync();
 
             return true;

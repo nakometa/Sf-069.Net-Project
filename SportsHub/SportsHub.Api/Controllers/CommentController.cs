@@ -19,7 +19,10 @@ namespace SportsHub.Api.Controllers
         private readonly IValidator<CreateCommentDTO> _commentValidator;
         private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public CommentController(ICommentService service, IMapper mapper, IValidator<CreateCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
+        public CommentController(ICommentService service,
+                                 IMapper mapper,
+                                 IValidator<CreateCommentDTO> commentValidator,
+                                 IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _commentService = service;
             _mapper = mapper;
@@ -52,12 +55,7 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            var created = await _commentService.AddCommentAsync(commentInput);
-
-            if (!created)
-            {
-                return BadRequest(ValidationMessages.UnableToAddComment);
-            }
+            await _commentService.AddCommentAsync(commentInput);                       
 
             return Ok(ValidationMessages.CommentAddedSuccessfully);
         }

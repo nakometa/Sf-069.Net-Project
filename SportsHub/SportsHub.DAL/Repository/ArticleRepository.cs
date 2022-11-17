@@ -36,6 +36,11 @@ namespace SportsHub.DAL.Repository
             await _context.Articles.AddAsync(article);
         }
 
+        public void UpdateArticle(Article article)
+        {
+            _context.Update(article);
+        }
+        
         public async Task<List<Article>> GetBySubstringAsync(string substring)
         {
             return await DbSet

@@ -7,6 +7,7 @@ using Moq;
 using SportsHub.Api.Controllers;
 using SportsHub.Api.Mapping;
 using SportsHub.Api.Mapping.Models;
+using SportsHub.Api.Validations;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using UnitTests.MockData;
@@ -19,19 +20,26 @@ namespace UnitTests.Controllers
     public class ArticleControllerTests
     {
         private readonly Mock<IArticleService> _articleService;
+        private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly ArticleController _articleController;
+        private readonly ArticleValidation _articleValidation;
         private readonly IMapper _mapper;
-        private IFixture _fixture;
-    
+
         public ArticleControllerTests()
         {
             SetupFixture();
-            _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>()
+
+            if (_mapper == null)
             {
-                new ArticleMapping(),
-            })).CreateMapper();
-            _articleService = _fixture.Freeze<Mock<IArticleService>>();
-           _articleController = new ArticleController(_articleService.Object, _mapper);
+                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Article, ArticleResponseDTO>());
+                IMapper mapper = mappingConfig.CreateMapper();
+                _mapper = mapper;
+            }
+
+            _articleService = new Mock<IArticleService>();
+            _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
+            _articleValidation = new ArticleValidation();
+            _articleController = new ArticleController(_articleService.Object, _mapper, _articleValidation, _generateModelStateDictionary.Object);
         }
     
         [Theory]

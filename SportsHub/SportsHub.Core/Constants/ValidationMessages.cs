@@ -15,7 +15,12 @@
         public const string UnableToAddComment = "Unable to post comment";
         public const string CommentAddedSuccessfully = "Comment posted successfully";
         public const string CommentContentValidationNotEmptyMessage = "Content is required";
-        public const string CommentContentValidationLengthMessage = $"Content should be less than [0] characters.";
+        public const string CommentContentValidationLengthMessage = "Content should be less than {0} characters";
+        public const string CommentAuthorValidationMessage = "Author ID is required";
+        public const string CommentArticleValidationMessage = "Article ID is required";
+        public const string NoSuchComment = "No such comment";
+        public const string CommentSuccessfullyLiked = "Comment successfully liked";
+        public const string CommentSuccessfullyDisliked = "Comment successfully disliked";
         public const string ArticleCreatedSuccessfully = "Article created successfully.";
         public const string UnableToCreateArticle = "Unable to create article.";
         public const string ArticleUpdatedSuccessfully = "The article was updated successfully.";

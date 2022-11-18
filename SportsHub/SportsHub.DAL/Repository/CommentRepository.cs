@@ -17,10 +17,5 @@ namespace SportsHub.DAL.Repository
                 .Where(x => x.ArticleId == id)
                 .ToListAsync();
         }
-
-        public async Task AddCommentAsync(Comment comment)
-        {
-            await DbSet.AddAsync(comment);
-        }
     }
 }

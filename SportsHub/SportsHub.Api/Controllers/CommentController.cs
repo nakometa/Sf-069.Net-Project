@@ -2,13 +2,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportsHub.Api.Mapping.Models;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
-using System.Xml.Linq;
 
 namespace SportsHub.Api.Controllers
 {
@@ -18,10 +16,13 @@ namespace SportsHub.Api.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly IMapper _mapper;
-        private readonly IValidator<InputCommentDTO> _commentValidator;
+        private readonly IValidator<CreateCommentDTO> _commentValidator;
         private readonly IGenerateModelStateDictionary _generateModelStateDictionary;
 
-        public CommentController(ICommentService service, IMapper mapper, IValidator<InputCommentDTO> commentValidator, IGenerateModelStateDictionary generateModelStateDictionary)
+        public CommentController(ICommentService service,
+                                 IMapper mapper,
+                                 IValidator<CreateCommentDTO> commentValidator,
+                                 IGenerateModelStateDictionary generateModelStateDictionary)
         {
             _commentService = service;
             _mapper = mapper;
@@ -30,7 +31,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public async Task<ActionResult<IEnumerable<CreateCommentRequest>>> GetByArticleAsync(int articleId)
+        public async Task<ActionResult<IEnumerable<Comment>>> GetByArticleAsync(int articleId)
         {
             var comments = await _commentService.GetByArticleAsync(articleId);
 
@@ -39,14 +40,12 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
-            var commentsResponse = _mapper.Map<List<CreateCommentRequest>>(comments);
-
-            return Ok(commentsResponse);
+            return Ok(comments);
         }
 
         [Authorize]
         [HttpPost("PostComment")]
-        public async Task<ActionResult> PostCommentAsync([FromBody] InputCommentDTO commentInput)
+        public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)
         {
             var validationResult = await _commentValidator.ValidateAsync(commentInput);
 
@@ -56,44 +55,9 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            var comment = _mapper.Map<CreateCommentDTO>(commentInput);
-
-            var created = await _commentService.AddCommentAsync(comment);
-
-            if (!created)
-            {
-                return BadRequest(ValidationMessages.UnableToAddComment);
-            }
+            await _commentService.AddCommentAsync(commentInput);                       
 
             return Ok(ValidationMessages.CommentAddedSuccessfully);
-        }
-
-        [Authorize]
-        [HttpPost("LikeComment")]
-        public async Task<ActionResult> LikeCommentAsync(int commentId)
-        {
-            var result = await _commentService.LikeCommentAsync(commentId);
-
-            if (!result)
-            {
-                return BadRequest(ValidationMessages.NoSuchComment);
-            }
-
-            return Ok(ValidationMessages.CommentSuccessfullyLiked);
-        }
-
-        [Authorize]
-        [HttpPost("DislikeComment")]
-        public async Task<ActionResult> DislikeCommentAsync(int commentId)
-        {
-            var result = await _commentService.DislikeCommentAsync(commentId);
-
-            if (!result)
-            {
-                return BadRequest(ValidationMessages.NoSuchComment);
-            }
-
-            return Ok(ValidationMessages.CommentSuccessfullyDisliked);
         }
     }
 }

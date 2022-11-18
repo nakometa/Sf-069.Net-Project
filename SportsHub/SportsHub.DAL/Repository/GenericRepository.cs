@@ -19,6 +19,11 @@ namespace SportsHub.DAL.Repository
             DbSet.Add(entity);
         }
 
+        public async Task AddAsync(TEntity entity)
+        {
+            await DbSet.AddAsync(entity);
+        }
+
         public void Delete(TEntity entity)
         {
             DbSet.Remove(entity);

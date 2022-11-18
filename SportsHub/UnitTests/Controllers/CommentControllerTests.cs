@@ -20,7 +20,7 @@ namespace UnitTests.Controllers
         private IMapper _mapper;
         private readonly CommentController _commentController;
         private readonly Mock<ICommentService> _commentService;
-        private readonly Mock<IValidator<InputCommentDTO>> _commentValidator;
+        private readonly Mock<IValidator<CreateCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly int TestArticleId = 5;
         private readonly int TestCommentId = 1;
@@ -42,7 +42,7 @@ namespace UnitTests.Controllers
             }
 
             _commentService = new Mock<ICommentService>();
-            _commentValidator = new Mock<IValidator<InputCommentDTO>>();
+            _commentValidator = new Mock<IValidator<CreateCommentDTO>>();
             _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
             _commentController = new CommentController(_commentService.Object, _mapper, _commentValidator.Object, _generateModelStateDictionary.Object);
         }
@@ -82,7 +82,7 @@ namespace UnitTests.Controllers
         {
             //Arrange
             var commentDTO = CommentMockData.GetCommentDTO();
-            var inputComment = CommentMockData.GetInputCommentDTO();
+            var inputComment = CommentMockData.GetCommentDTO;
             _commentService.Setup(service => service.AddCommentAsync(commentDTO)).ReturnsAsync(true);
             _commentValidator.Setup(validator => validator.ValidateAsync(inputComment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
@@ -98,7 +98,7 @@ namespace UnitTests.Controllers
         {
             //Arrange
             var commentDTO = CommentMockData.GetCommentDTO();
-            var inputComment = CommentMockData.GetInputCommentDTO();
+            var inputComment = CommentMockData.GetCommentDTO();
             _commentService.Setup(service => service.AddCommentAsync(commentDTO)).ReturnsAsync(false);
             _commentValidator.Setup(validator => validator.ValidateAsync(inputComment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 

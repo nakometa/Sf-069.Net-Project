@@ -11,7 +11,7 @@ namespace SportsHub.DAL.Data.Configurations
         {
             comment.Property(x => x.Content)
                 .IsRequired(true)
-                .HasMaxLength(ConfigurationConstants.CommentContentMaxLength)
+                .HasMaxLength(ConfigurationConstants.CommentConstants.CommentContentMaxLength)
                 .IsUnicode(true);
 
             comment.Property(x => x.PostedOn)

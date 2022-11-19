@@ -2,21 +2,25 @@ using AutoFixture;
 using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
 using SportsHub.Api.Mapping;
 using SportsHub.Api.Mapping.Models;
+using SportsHub.Api.Validations;
+using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
 using Xunit;
 
 namespace UnitTests.Controllers
 {
-    //!!ActicleController need to implement IGenerateModelStateDictionary to work . Currently all of this tests dont work because of this!!
     public class ArticleControllerTests
     {
         private readonly Mock<IArticleService> _articleService;
+        private readonly IValidator<CreateArticleDTO> _validator;
+        private readonly Mock<IGenerateModelStateDictionary> _dictionary;
         private readonly ArticleController _articleController;
         private readonly IMapper _mapper;
         private IFixture _fixture;
@@ -29,7 +33,9 @@ namespace UnitTests.Controllers
                 new ArticleMapping(),
             })).CreateMapper();
             _articleService = _fixture.Freeze<Mock<IArticleService>>();
-           _articleController = new ArticleController(_articleService.Object, _mapper);
+            _validator = new ArticleValidation();
+            _dictionary =_fixture.Freeze<Mock<IGenerateModelStateDictionary>>();
+           _articleController = new ArticleController(_articleService.Object, _mapper,_validator, _dictionary.Object);
         }
     
         [Theory]
@@ -95,7 +101,8 @@ namespace UnitTests.Controllers
         public async Task CreateArticleAsync_ArticleAlreadyExists_ReturnsBadRequest()
         {
             //Arrange
-            var article = ArticleMockData.CreateArticle();
+           // var article = ArticleMockData.CreateArticle();
+            var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(false);
 
             //Act
@@ -110,7 +117,8 @@ namespace UnitTests.Controllers
         public async Task CreateArticleAsync_NewValidArticle_ReturnsOkStatus()
         {
             //Arrange
-            var article = ArticleMockData.CreateArticle();
+          //  var article = ArticleMockData.CreateArticle();
+            var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(true);
 
             //Act
@@ -124,7 +132,8 @@ namespace UnitTests.Controllers
         public async Task EditArticleAsync_NonexistentArticle_ReturnsBadRequest()
         {
             //Arrange
-            var article = ArticleMockData.CreateArticle();
+           // var article = ArticleMockData.CreateArticle();
+            var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(false);
 
             //Act
@@ -138,7 +147,8 @@ namespace UnitTests.Controllers
         public async Task EditArticleAsync_ValidInput_ReturnsOkStatus()
         {
             //Arrange
-            var article = ArticleMockData.CreateArticle();
+           // var article = ArticleMockData.CreateArticle();
+            var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(true);
 
             //Act
@@ -162,3 +172,4 @@ namespace UnitTests.Controllers
         }
     }
 }
+

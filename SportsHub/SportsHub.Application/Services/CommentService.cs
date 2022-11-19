@@ -48,7 +48,7 @@ namespace SportsHub.AppService.Services
 
             if (comment == null)
             {
-                return false;
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
             }
 
             comment.Likes++;
@@ -64,7 +64,7 @@ namespace SportsHub.AppService.Services
 
             if (comment == null)
             {
-                return false;
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
             }
 
             comment.Dislikes++;

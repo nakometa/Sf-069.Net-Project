@@ -27,7 +27,7 @@ namespace SportsHub.AppService.Services
         public async Task<Article?> GetByTitleAsync(string title)
         {
             return await _unitOfWork.ArticleRepository.GetByTitleAsync(title) ??
-                   throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
+                   throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
         }
 
         public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
@@ -41,7 +41,7 @@ namespace SportsHub.AppService.Services
 
             var categoryExists = GetCategoryById(adminInput.CategoryId);
 
-            if(categoryExists == null)
+            if (categoryExists == null)
             {
                 return false;
             }
@@ -50,7 +50,7 @@ namespace SportsHub.AppService.Services
             {
                 Title = adminInput.Title,
                 CategoryId = adminInput.CategoryId,
-                StateId = (int) StateEnums.Unpublished,
+                StateId = (int)StateEnums.Unpublished,
                 Content = adminInput.Content,
                 ArticlePicture = adminInput.ArticlePicture,
                 CreatedOn = DateTime.UtcNow
@@ -66,7 +66,7 @@ namespace SportsHub.AppService.Services
         {
             var article = await _unitOfWork.ArticleRepository.GetByIdAsync(adminInput.ArticleId);
 
-            if(article == null)
+            if (article == null)
             {
                 return false;
             }
@@ -90,7 +90,7 @@ namespace SportsHub.AppService.Services
         {
             return await _unitOfWork.CategoryRepository.GetCategoryById(categoryId);
         }
-        
+
         public async Task<List<Article>> GetListOfArticlesBySubstringAsync(string substring)
         {
             return await _unitOfWork.ArticleRepository.GetBySubstringAsync(substring);
@@ -99,12 +99,14 @@ namespace SportsHub.AppService.Services
         public async Task DeleteArticleAsync(int id)
         {
             var articleForDelete = await _unitOfWork.ArticleRepository.GetByIdAsync(id);
-            
+
             if (articleForDelete is null)
             {
                 throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
             }
-            
+
+            _unitOfWork.UserRepository.DeleteArticle(articleForDelete);
+
             _unitOfWork.ArticleRepository.DeleteArticle(articleForDelete);
             await _unitOfWork.SaveChangesAsync();
         }

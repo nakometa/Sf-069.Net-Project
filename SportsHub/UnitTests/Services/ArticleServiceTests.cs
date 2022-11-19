@@ -26,7 +26,7 @@ public class ArticleServiceTests
     {
         SetupFixture();
         _repository = _fixture.Freeze<Mock<IArticleRepository>>();
-        _unitOfWork =_fixture.Freeze<Mock<IUnitOfWork>>();
+        _unitOfWork = _fixture.Freeze<Mock<IUnitOfWork>>();
         _unitOfWork.Setup(u => u.ArticleRepository).Returns(_repository.Object);
         _mapper = new MapperConfiguration(cfg => cfg.AddProfiles(new List<Profile>()
         {
@@ -41,14 +41,60 @@ public class ArticleServiceTests
         //Arrange
         IEnumerable<Article> articles = _fixture.Build<Article>().CreateMany(4);
         _unitOfWork.Setup(x => x.ArticleRepository.GetAllAsync()).ReturnsAsync(articles);
-        
+
         //Act
         var result = await _service.GetAllAsync();
-        
+
         //Assert
         Assert.Equal(articles.Count(), result.Count());
     }
-    
+
+    [Theory]
+    [AutoData]
+    public async Task GetListOfArticlesBySubstringAsync_WithSubstringMatchingTitle_ReturnsArticles(string substring)
+    {
+        //Arrange
+        var articles = _fixture.Build<Article>().CreateMany(3).ToList();
+        _unitOfWork.Setup(x => x.ArticleRepository.GetBySubstringAsync(substring)).ReturnsAsync(articles);
+
+        //Act
+        var result = await _service.GetListOfArticlesBySubstringAsync(substring);
+
+        //Assert
+        Assert.Equal(articles.Count(), result.Count);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetListOfArticlesBySubstringAsync_WithSubstringMatchingAuthorUsername_ReturnsArticles(string substring)
+    {
+        //Arrange
+        var articles = _fixture.Build<Article>().CreateMany(4).ToList();
+        _unitOfWork.Setup(x => x.ArticleRepository.GetBySubstringAsync(substring)).ReturnsAsync(articles);
+        
+        //Act
+        var result = await _service.GetListOfArticlesBySubstringAsync(substring);
+
+        //Assert
+        Assert.Equal(articles.Count(), result.Count);
+        
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task DeleteArticleAsync_WithoutCorrectId_ShouldThrowException(int id)
+    {
+        //Arrange
+        _unitOfWork.Setup(x => x.ArticleRepository.GetByIdAsync(id)).ReturnsAsync((Article?)null);
+        
+        //Act
+        var exception = Assert.ThrowsAsync<NotFoundException>(() => _service.DeleteArticleAsync(id));
+
+        //Assert
+        Assert.Equal(exception.Result.ErrorCode, StatusCodeConstants.NotFound);
+        Assert.Equal(exception.Result.Message, string.Format(ExceptionMessages.NotFound,ExceptionMessages.Article));
+    }
+
     [Theory]
     [AutoData]
     public async Task GetByTitleAsync_WithExistingTitle_ReturnsArticle(string title)
@@ -56,10 +102,10 @@ public class ArticleServiceTests
         //Arrange
         var article = _fixture.Build<Article>().With(x => x.Title, title).Create();
         _unitOfWork.Setup(x => x.ArticleRepository.GetByTitleAsync(title)).ReturnsAsync(article);
-        
+
         //Act
         var result = await _service.GetByTitleAsync(title);
-        
+
         //Assert
         Assert.Equal(result.Title, article.Title);
     }
@@ -70,15 +116,15 @@ public class ArticleServiceTests
     {
         //Arrange
         _unitOfWork.Setup(x => x.ArticleRepository.GetByTitleAsync(title)).ReturnsAsync((Article?)null);
-        
+
         //Act
-        var exception = Assert.ThrowsAsync<NotFoundException>(()=> _service.GetByTitleAsync(title));
-        
+        var exception = Assert.ThrowsAsync<NotFoundException>(() => _service.GetByTitleAsync(title));
+
         //Assert
         Assert.Equal(exception.Result.ErrorCode, StatusCodeConstants.NotFound);
-        Assert.Equal(exception.Result.Message, string.Format(ExceptionMessages.NotFound,ExceptionMessages.Article));
+        Assert.Equal(exception.Result.Message, string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
     }
-    
+
     private void SetupFixture()
     {
         _fixture = new Fixture().Customize(new AutoMoqCustomization());
@@ -86,5 +132,4 @@ public class ArticleServiceTests
             .ForEach(b => _fixture.Behaviors.Remove(b));
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
-
 }

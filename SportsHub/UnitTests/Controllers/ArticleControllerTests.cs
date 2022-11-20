@@ -101,7 +101,6 @@ namespace UnitTests.Controllers
         public async Task CreateArticleAsync_ArticleAlreadyExists_ReturnsBadRequest()
         {
             //Arrange
-           // var article = ArticleMockData.CreateArticle();
             var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(false);
 
@@ -117,7 +116,6 @@ namespace UnitTests.Controllers
         public async Task CreateArticleAsync_NewValidArticle_ReturnsOkStatus()
         {
             //Arrange
-          //  var article = ArticleMockData.CreateArticle();
             var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(true);
 
@@ -132,7 +130,6 @@ namespace UnitTests.Controllers
         public async Task EditArticleAsync_NonexistentArticle_ReturnsBadRequest()
         {
             //Arrange
-           // var article = ArticleMockData.CreateArticle();
             var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(false);
 
@@ -147,7 +144,6 @@ namespace UnitTests.Controllers
         public async Task EditArticleAsync_ValidInput_ReturnsOkStatus()
         {
             //Arrange
-           // var article = ArticleMockData.CreateArticle();
             var article = _fixture.Build<CreateArticleDTO>().Create();
             _articleService.Setup(service => service.EditArticleAsync(article)).ReturnsAsync(true);
 

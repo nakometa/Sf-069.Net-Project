@@ -11,11 +11,21 @@ namespace SportsHub.DAL.Repository
         {
         }
 
-        public async Task<IEnumerable<Comment>> GetByArticleAsync(int id)
+        public IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters)
         {
-            return await DbSet
+            return DbSet
                 .Where(x => x.ArticleId == id)
-                .ToListAsync();
+                .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
+                .Take(categoryParameters.PageSize);
+        }
+
+        public IQueryable<Comment> OrderByDate(int id, CategoryParameters categoryParameters)
+        {
+            return DbSet
+                .Where(x => x.ArticleId == id)
+                .OrderBy(x => x)
+                .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
+                .Take(categoryParameters.PageSize);
         }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.AppService.Pagination;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
@@ -31,9 +32,9 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetByArticleAsync(int articleId)
+        public ActionResult<IQueryable<Comment>> GetByArticle([FromQuery] CategoryParameters categoryParameters, int articleId)
         {
-            var comments = await _commentService.GetByArticleAsync(articleId);
+            var comments = _commentService.GetByArticle(articleId, categoryParameters);
 
             if (!comments.Any())
             {

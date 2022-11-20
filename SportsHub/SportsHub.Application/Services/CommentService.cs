@@ -18,9 +18,9 @@ namespace SportsHub.AppService.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Comment>> GetByArticleAsync(int id)
+        public IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters)
         {
-            return await _unitOfWork.CommentRepository.GetByArticleAsync(id) ??
+            return _unitOfWork.CommentRepository.GetByArticle(id, categoryParameters) ??
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 

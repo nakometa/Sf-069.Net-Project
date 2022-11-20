@@ -5,7 +5,7 @@ namespace SportsHub.AppService.Services
 {
     public interface ICommentService
     {
-        Task<IEnumerable<Comment>> GetByArticleAsync(int id);
+        IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters);
         Task<bool> AddCommentAsync(CreateCommentDTO commentInput);
     }
 }

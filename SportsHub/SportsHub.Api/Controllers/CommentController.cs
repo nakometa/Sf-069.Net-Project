@@ -43,6 +43,32 @@ namespace SportsHub.Api.Controllers
             return Ok(comments);
         }
 
+        [HttpGet("GetByArticleOrderByAsc")]
+        public ActionResult<IQueryable<Comment>> GetByArticleOrderByAscending([FromQuery] CategoryParameters categoryParameters, int articleId)
+        {
+            var comments = _commentService.GetByArticleOrderByDate(articleId, categoryParameters);
+
+            if (!comments.Any())
+            {
+                return Ok(ValidationMessages.NoCommentsForArticle);
+            }
+
+            return Ok(comments);
+        }
+
+        [HttpGet("GetByArticleOrderByDesc")]
+        public ActionResult<IQueryable<Comment>> GetByArticleOrderByDescending([FromQuery] CategoryParameters categoryParameters, int articleId)
+        {
+            var comments = _commentService.GetByArticleOrderByDateDescending(articleId, categoryParameters);
+
+            if (!comments.Any())
+            {
+                return Ok(ValidationMessages.NoCommentsForArticle);
+            }
+
+            return Ok(comments);
+        }
+
         [Authorize]
         [HttpPost("PostComment")]
         public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)

@@ -57,7 +57,7 @@ namespace SportsHub.Api.Controllers
 
             await _commentService.AddCommentAsync(commentInput);                       
 
-            return Ok(ValidationMessages.CommentAddedSuccessfully);
+            return Created(ValidationMessages.CommentAddedSuccessfully, commentInput);
         }
     }
 }

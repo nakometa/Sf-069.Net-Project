@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
-using SportsHub.AppService.Pagination;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;

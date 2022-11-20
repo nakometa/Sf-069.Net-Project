@@ -23,7 +23,16 @@ namespace SportsHub.DAL.Repository
         {
             return DbSet
                 .Where(x => x.ArticleId == id)
-                .OrderBy(x => x)
+                .OrderBy(x => x.PostedOn)
+                .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
+                .Take(categoryParameters.PageSize);
+        }
+
+        public IQueryable<Comment> OrderByDateDescending(int id, CategoryParameters categoryParameters)
+        {
+            return DbSet
+                .Where(x => x.ArticleId == id)
+                .OrderByDescending(x => x.PostedOn)
                 .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
                 .Take(categoryParameters.PageSize);
         }

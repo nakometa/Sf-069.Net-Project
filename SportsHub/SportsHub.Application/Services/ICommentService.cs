@@ -7,5 +7,7 @@ namespace SportsHub.AppService.Services
     {
         IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters);
         Task<bool> AddCommentAsync(CreateCommentDTO commentInput);
+        public IQueryable<Comment> GetByArticleOrderByDate(int id, CategoryParameters categoryParameters);
+        public IQueryable<Comment> GetByArticleOrderByDateDescending(int id, CategoryParameters categoryParameters);
     }
 }

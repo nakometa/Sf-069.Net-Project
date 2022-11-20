@@ -24,6 +24,18 @@ namespace SportsHub.AppService.Services
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
+        public IQueryable<Comment> GetByArticleOrderByDate(int id, CategoryParameters categoryParameters)
+        {
+            return _unitOfWork.CommentRepository.OrderByDate(id, categoryParameters) ??
+                   throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+        }
+
+        public IQueryable<Comment> GetByArticleOrderByDateDescending(int id, CategoryParameters categoryParameters)
+        {
+            return _unitOfWork.CommentRepository.OrderByDateDescending(id, categoryParameters) ??
+                   throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+        }
+
         public async Task<bool> AddCommentAsync(CreateCommentDTO commentInput)
         {
             var userExists = _unitOfWork.UserRepository.GetById(commentInput.AuthorId) != null;

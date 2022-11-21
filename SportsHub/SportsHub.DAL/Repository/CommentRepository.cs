@@ -36,5 +36,14 @@ namespace SportsHub.DAL.Repository
                 .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
                 .Take(categoryParameters.PageSize);
         }
+
+        public IQueryable<Comment> SortByLikes(int id, CategoryParameters categoryParameters)
+        {
+            return DbSet
+                .Where(x => x.ArticleId == id)
+                .OrderByDescending(x => x.Likes)
+                .Skip((categoryParameters.PageNumber - 1) * categoryParameters.PageSize)
+                .Take(categoryParameters.PageSize);
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace SportsHub.Domain.Repository
         IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters);
         IQueryable<Comment> OrderByDate(int id, CategoryParameters categoryParameters);
         IQueryable<Comment> OrderByDateDescending(int id, CategoryParameters categoryParameters);
+        IQueryable<Comment> SortByLikes(int id, CategoryParameters categoryParameters);
     }
 }

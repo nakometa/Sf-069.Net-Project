@@ -67,9 +67,20 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
-            var commentsResponse = _mapper.Map<IQueryable<CreateCommentRequest>>(comments);
+            return Ok(comments);
+        }
 
-            return Ok(commentsResponse);
+        [HttpGet("GetByArticleSortByLikes")]
+        public ActionResult<IQueryable<Comment>> GetByArticleSortByLikes([FromQuery] CategoryParameters categoryParameters, int articleId)
+        {
+            var comments = _commentService.SortByLikes(articleId, categoryParameters);
+
+            if (!comments.Any())
+            {
+                return Ok(ValidationMessages.NoCommentsForArticle);
+            }
+
+            return Ok(comments);
         }
 
         [Authorize]

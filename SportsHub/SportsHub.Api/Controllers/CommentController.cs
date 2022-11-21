@@ -59,7 +59,6 @@ namespace SportsHub.Api.Controllers
 
         [HttpGet("GetByArticleOrderByDesc")]
         public ActionResult<IQueryable<Comment>> GetByArticleOrderByDescending([FromQuery] CategoryParameters categoryParameters, int articleId)
-        public async Task<ActionResult<IEnumerable<CreateCommentRequest>>> GetByArticleAsync(int articleId)
         {
             var comments = _commentService.GetByArticleOrderByDateDescending(articleId, categoryParameters);
 
@@ -68,7 +67,7 @@ namespace SportsHub.Api.Controllers
                 return Ok(ValidationMessages.NoCommentsForArticle);
             }
 
-            var commentsResponse = _mapper.Map<List<CreateCommentRequest>>(comments);
+            var commentsResponse = _mapper.Map<IQueryable<CreateCommentRequest>>(comments);
 
             return Ok(commentsResponse);
         }
@@ -85,7 +84,7 @@ namespace SportsHub.Api.Controllers
                 return ValidationProblem(response);
             }
 
-            await _commentService.AddCommentAsync(commentInput);                       
+            await _commentService.AddCommentAsync(commentInput);
 
             return Created(ValidationMessages.CommentAddedSuccessfully, commentInput);
         }

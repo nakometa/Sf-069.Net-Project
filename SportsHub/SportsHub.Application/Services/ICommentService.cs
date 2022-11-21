@@ -9,5 +9,7 @@ namespace SportsHub.AppService.Services
         Task<bool> AddCommentAsync(CreateCommentDTO commentInput);
         public IQueryable<Comment> GetByArticleOrderByDate(int id, CategoryParameters categoryParameters);
         public IQueryable<Comment> GetByArticleOrderByDateDescending(int id, CategoryParameters categoryParameters);
+        Task<bool> LikeCommentAsync(int commentId);
+        Task<bool> DislikeCommentAsync(int commentId);
     }
 }

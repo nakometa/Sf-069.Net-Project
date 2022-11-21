@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SportsHub.DAL.Data;
 
@@ -11,9 +12,10 @@ using SportsHub.DAL.Data;
 namespace SportsHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221113175450_LikeDislikeComments")]
+    partial class LikeDislikeComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,6 @@ namespace SportsHub.DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<byte[]>("ArticlePicture")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -222,8 +221,8 @@ namespace SportsHub.DAL.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(75)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(75)");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<byte[]>("ProfilePicture")
                         .HasColumnType("varbinary(max)");

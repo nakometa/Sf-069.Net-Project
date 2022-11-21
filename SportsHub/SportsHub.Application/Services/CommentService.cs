@@ -53,5 +53,37 @@ namespace SportsHub.AppService.Services
 
             return true;
         }
+
+        public async Task<bool> LikeCommentAsync(int commentId)
+        {
+            var comment = _unitOfWork.CommentRepository.GetById(commentId);
+
+            if (comment == null)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+            }
+
+            comment.Likes++;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DislikeCommentAsync(int commentId)
+        {
+            var comment = _unitOfWork.CommentRepository.GetById(commentId);
+
+            if (comment == null)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+            }
+
+            comment.Dislikes++;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

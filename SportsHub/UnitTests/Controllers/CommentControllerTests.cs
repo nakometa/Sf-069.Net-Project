@@ -4,6 +4,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
+using SportsHub.Api.Mapping.Models;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
@@ -22,13 +23,20 @@ namespace UnitTests.Controllers
         private readonly Mock<IValidator<CreateCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
         private readonly int TestArticleId = 5;
+        private readonly int TestCommentId = 1;
         private readonly int NumberOfTestComments = 3;
 
         public CommentControllerTests()
         {
             if (_mapper == null)
             {
-                var mappingConfig = new MapperConfiguration(x => x.CreateMap<Comment, CreateCommentDTO>());
+                var mappingConfig = new MapperConfiguration(x =>
+                {
+                    x.CreateMap<Comment, CreateCommentDTO>();
+                    x.CreateMap<Comment, CreateCommentRequest>();
+                    x.CreateMap<InputCommentDTO, CreateCommentDTO>();
+
+                });
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
@@ -50,7 +58,7 @@ namespace UnitTests.Controllers
             var result = await _commentController.GetByArticleAsync(TestArticleId);
 
             //Assert
-            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<Comment>>(result);
+            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<CreateCommentRequest>>(result);
 
             Assert.IsType<OkObjectResult>(result.Result);
             Assert.Equal(NumberOfTestComments, resultObject.Count());
@@ -73,12 +81,13 @@ namespace UnitTests.Controllers
         public async Task PostCommentAsync_NewComment_ReturnsOkStatus()
         {
             //Arrange
-            var comment = CommentMockData.GetComment();
-            _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(true);
-            _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
+            var commentDTO = CommentMockData.GetCommentDTO();
+            var inputComment = CommentMockData.GetCommentDTO;
+            _commentService.Setup(service => service.AddCommentAsync(commentDTO)).ReturnsAsync(true);
+            _commentValidator.Setup(validator => validator.ValidateAsync(inputComment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
             //Act
-            var result = await _commentController.PostCommentAsync(comment);
+            var result = await _commentController.PostCommentAsync(inputComment);
 
             //Assert
             Assert.IsType<OkObjectResult>(result);
@@ -88,12 +97,65 @@ namespace UnitTests.Controllers
         public async Task PostCommentAsync_NewComment_ReturnsBadRequest()
         {
             //Arrange
-            var comment = CommentMockData.GetComment();
-            _commentService.Setup(service => service.AddCommentAsync(comment)).ReturnsAsync(false);
-            _commentValidator.Setup(validator => validator.ValidateAsync(comment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
+            var commentDTO = CommentMockData.GetCommentDTO();
+            var inputComment = CommentMockData.GetCommentDTO();
+            _commentService.Setup(service => service.AddCommentAsync(commentDTO)).ReturnsAsync(false);
+            _commentValidator.Setup(validator => validator.ValidateAsync(inputComment, It.IsAny<CancellationToken>())).ReturnsAsync(new ValidationResult());
 
             //Act
-            var result = await _commentController.PostCommentAsync(comment);
+            var result = await _commentController.PostCommentAsync(inputComment);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LikeCommentAsync_WithExistingComment_ReturnsOkStatus()
+        {
+            //Arrange
+            _commentService.Setup(service => service.LikeCommentAsync(TestCommentId)).ReturnsAsync(true);
+
+            //Act
+            var result = await _commentController.LikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task LikeCommentAsync_WithNonExistingComment_ReturnsBadRequest()
+        {
+            //Arrange
+            _commentService.Setup(service => service.LikeCommentAsync(TestCommentId)).ReturnsAsync(false);
+
+            //Act
+            var result = await _commentController.LikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DislikeCommentAsync_WithExistingComment_ReturnsOkStatus()
+        {
+            //Arrange
+            _commentService.Setup(service => service.DislikeCommentAsync(TestCommentId)).ReturnsAsync(true);
+
+            //Act
+            var result = await _commentController.DislikeCommentAsync(TestCommentId);
+
+            //Assert
+            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task DislikeCommentAsync_WithNonExistingComment_ReturnsBadRequest()
+        {
+            //Arrange
+            _commentService.Setup(service => service.DislikeCommentAsync(TestCommentId)).ReturnsAsync(false);
+
+            //Act
+            var result = await _commentController.DislikeCommentAsync(TestCommentId);
 
             //Assert
             Assert.IsType<BadRequestObjectResult>(result);

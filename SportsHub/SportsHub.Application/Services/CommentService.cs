@@ -36,6 +36,12 @@ namespace SportsHub.AppService.Services
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
+        public IQueryable<Comment> SortByLikes(int id, CategoryParameters categoryParameters)
+        {
+            return _unitOfWork.CommentRepository.SortByLikes(id,categoryParameters) ??
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
+        }
+
         public async Task<bool> AddCommentAsync(CreateCommentDTO commentInput)
         {
             var userExists = _unitOfWork.UserRepository.GetById(commentInput.AuthorId) != null;

@@ -1,10 +1,13 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
+using System.Net;
 
 namespace SportsHub.AppService.Services
 {
@@ -30,20 +33,20 @@ namespace SportsHub.AppService.Services
                    throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
         }
 
-        public async Task<bool> CreateArticleAsync(CreateArticleDTO adminInput)
+        public async Task<string> CreateArticleAsync(CreateArticleDTO adminInput)
         {
-            var articleExists = await GetByTitleAsync(adminInput.Title) != null;
+            var articleExists = await _unitOfWork.ArticleRepository.GetByTitleAsync(adminInput.Title) != null;
 
             if (articleExists)
             {
-                return false;
+                throw new BusinessLogicException(StatusCodeConstants.BadRequest, ValidationMessages.UnableToCreateArticle);
             }
 
             var categoryExists = GetCategoryById(adminInput.CategoryId);
 
             if(categoryExists == null)
             {
-                return false;
+                throw new BusinessLogicException(StatusCodeConstants.BadRequest, ValidationMessages.UnableToCreateArticle);
             }
 
             var article = new Article()
@@ -59,7 +62,7 @@ namespace SportsHub.AppService.Services
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
             await _unitOfWork.SaveChangesAsync();
 
-            return true;
+            return ValidationMessages.ArticleCreatedSuccessfully;
         }
 
         public async Task<bool> EditArticleAsync(CreateArticleDTO adminInput)

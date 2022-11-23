@@ -3,15 +3,19 @@ using AutoFixture.AutoMoq;
 using AutoFixture.Xunit2;
 using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using SportsHub.Api.Controllers;
+using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.Api.Mapping;
 using SportsHub.Api.Mapping.Models;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
+using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
+using SportsHub.Domain.Models.Constants;
 using UnitTests.MockData;
 using UnitTests.Utils;
 using Xunit;
@@ -102,17 +106,17 @@ namespace UnitTests.Controllers
         }
 
         [Fact]
-        public async Task CreateArticleAsync_ArticleAlreadyExists_ReturnsBadRequest()
+        public void CreateArticleAsync_ArticleAlreadyExists_ReturnsBadRequest()
         {
             //Arrange
             var article = _fixture.Build<CreateArticleDTO>().Create();
-            _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(false);
+            _articleService.Setup(service => service.CreateArticleAsync(article)).Throws<Exception>();
 
             //Act
-            var result = await _articleController.CreateArticleAsync(article);
+            var result = _articleController.CreateArticleAsync(article).GetAwaiter().GetResult;
 
             //Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.Throws<Exception>(result);
         }
 
         [Fact]
@@ -121,7 +125,7 @@ namespace UnitTests.Controllers
         {
             //Arrange
             var article = _fixture.Build<CreateArticleDTO>().Create();
-            _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(true);
+            _articleService.Setup(service => service.CreateArticleAsync(article)).ReturnsAsync(ValidationMessages.ArticleCreatedSuccessfully);
 
             //Act
             var result = await _articleController.CreateArticleAsync(article);

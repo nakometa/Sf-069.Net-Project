@@ -20,6 +20,10 @@ namespace SportsHub.DAL.Data
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Sport> Sports { get; set; }
+        public virtual DbSet<League> Leagues { get; set; }
+        public virtual DbSet<SubLeague> SubLeagues { get; set; }
+        public virtual DbSet<Team> Teams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

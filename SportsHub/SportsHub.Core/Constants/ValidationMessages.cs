@@ -16,5 +16,15 @@
         public const string ArticleUpdatedSuccessfully = "The article was updated successfully.";
         public const string UnableToUpdateArticle = "Unable to update the article.";
         public const string ArticleDeletedSuccessfully = "Articles is deleted successfully";
+        public const string NoSports = "No sports in the database";
+        public const string SportAddedSuccessfully = "Sport added successfully.";
+        public const string UnableToAddSport = "Unable to add sport.";
+        public const string SportNotFound = "Sport not found.";
+        public const string SportDeletedSuccessfully = "Sport deleted successfully."; 
+        public const string UnableToDeleteSport = "Unable to delete sport.";
+        public const string SportUpdatedSuccessfully = "The article was updated successfully.";
+        public const string UnableToUpdateSport = "Unable to update the article.";
+
+
     }
 }

@@ -8,6 +8,7 @@ namespace SportsHub.Domain.UOW
         IArticleRepository ArticleRepository { get; }
         ICommentRepository CommentRepository { get; }
         ICategoryRepository CategoryRepository { get; }
+        ISportRepository SportRepository { get; }
         Task SaveChangesAsync();
     }
 }

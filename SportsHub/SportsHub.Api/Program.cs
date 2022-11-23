@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Text;
 using SportsHub.Api.Exceptions;
 using SportsHub.Api;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -91,6 +92,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IArticleService, ArticleService>();
 builder.Services.AddTransient<ICommentService, CommentService>();
+builder.Services.AddTransient<ISportService, SportService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
 builder.Services.AddTransient<ExceptionHandler>();

@@ -105,7 +105,13 @@ namespace SportsHub.AppService.Services
                 throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
             }
 
-            _unitOfWork.UserRepository.DeleteArticle(articleForDelete);
+            var userHasArticle = await _unitOfWork.UserRepository.DeleteArticle(articleForDelete);
+
+            if (userHasArticle is false)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Article));
+            }
+
 
             _unitOfWork.ArticleRepository.DeleteArticle(articleForDelete);
             await _unitOfWork.SaveChangesAsync();

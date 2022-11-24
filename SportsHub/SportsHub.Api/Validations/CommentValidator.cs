@@ -11,8 +11,8 @@ namespace SportsHub.Api.Validations
         {
             RuleFor(x => x.Content)
                 .NotEmpty().WithMessage(ValidationMessages.CommentContentValidationNotEmptyMessage)
-                .Length(0, ConfigurationConstants.CommentContentMaxLength)
-                .WithMessage(ValidationMessages.CommentContentValidationLengthMessage.Replace("[0]", ConfigurationConstants.CommentContentMaxLength.ToString()));
+                .Length(0, ConfigurationConstants.CommentConstants.CommentContentMaxLength)
+                .WithMessage(ValidationMessages.CommentContentValidationLengthMessage.Replace("[0]", ConfigurationConstants.CommentConstants.CommentContentMaxLength.ToString()));
 
             RuleFor(x => x.AuthorId)
                 .NotEmpty().WithMessage("Author ID is required");

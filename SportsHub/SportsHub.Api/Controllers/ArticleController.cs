@@ -75,7 +75,7 @@ namespace SportsHub.Api.Controllers
 
             string createdSuccessful = await _articleService.CreateArticleAsync(adminInput);
 
-            return Ok(createdSuccessful);
+            return Created(String.Empty, createdSuccessful);
         }
         
         [Authorize(Roles = "Admin")]

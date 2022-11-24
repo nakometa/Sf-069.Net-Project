@@ -38,20 +38,15 @@ namespace SportsHub.DAL.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> DeleteArticle(Article article)
+        public async Task DeleteArticle(Article article)
         {
-            bool findArticle = false;
-            
             await foreach (var contextUser in _context.Users)
             {
                 if (contextUser.Articles.Any(x => x.Id == article.Id))
                 {
                     contextUser.Articles.Remove(article);
-                    findArticle = true;
                 }
             }
-
-            return findArticle;
         }
     }
 }

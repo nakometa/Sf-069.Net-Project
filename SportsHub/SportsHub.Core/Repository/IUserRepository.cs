@@ -8,6 +8,6 @@ namespace SportsHub.Domain.Repository
         public Task<User?> GetByEmailAsync(string email);
         public Task<User?> GetByUsernameOrEmailAsync(string usernameOrEmail);
         public Task SaveUserAsync(User user);
-        public Task<bool> DeleteArticle(Article article);
+        public Task DeleteArticle(Article article);
     }
 }

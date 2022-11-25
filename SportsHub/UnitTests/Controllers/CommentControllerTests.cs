@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using AutoFixture;
+using AutoFixture.AutoMoq;
+using AutoFixture.Kernel;
+using AutoFixture.Xunit2;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +13,7 @@ using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.AppService.Services;
 using SportsHub.Domain.Models;
+using System.Runtime.CompilerServices;
 using UnitTests.MockData;
 using UnitTests.Utils;
 using Xunit;
@@ -22,6 +27,7 @@ namespace UnitTests.Controllers
         private readonly Mock<ICommentService> _commentService;
         private readonly Mock<IValidator<CreateCommentDTO>> _commentValidator;
         private readonly Mock<IGenerateModelStateDictionary> _generateModelStateDictionary;
+        private readonly Fixture _fixture;
         private readonly int TestArticleId = 5;
         private readonly int TestCommentId = 1;
         private readonly int NumberOfTestComments = 3;
@@ -44,37 +50,37 @@ namespace UnitTests.Controllers
             _commentService = new Mock<ICommentService>();
             _commentValidator = new Mock<IValidator<CreateCommentDTO>>();
             _generateModelStateDictionary = new Mock<IGenerateModelStateDictionary>();
+            _fixture = new Fixture();
             _commentController = new CommentController(_commentService.Object, _mapper, _commentValidator.Object, _generateModelStateDictionary.Object);
         }
 
-        [Fact]
-        public async Task GetByArticleAsync_CommentsForProvidedActicleExist_ReturnsOkStatus()
+        [Theory]
+        [AutoMoqData]
+        public void GetByArticle_CommentsForProvidedActicleExist_ReturnsOkStatus([Frozen] Mock<ICommentService> commentService, [NoAutoProperties] CommentController commentController, int commentsCount)
         {
             //Arrange
-            var comments = CommentMockData.GetForArticle();
-            _commentService.Setup(service => service.GetByArticleAsync(TestArticleId)).ReturnsAsync(comments);
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            var comments = _fixture.Build<Comment>().CreateMany(commentsCount).ToList();
+            commentService.Setup(service => service.GetByArticle(It.IsAny<int>(), It.IsAny<CategoryParameters>())).Returns(comments);
 
             //Act
-            var result = await _commentController.GetByArticleAsync(TestArticleId);
+            var result = commentController.GetByArticle(It.IsAny<CategoryParameters>(), It.IsAny<int>()).Result; 
 
             //Assert
-            var resultObject = TestHelper.GetObjectResultContent<IEnumerable<CreateCommentRequest>>(result);
-
-            Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(NumberOfTestComments, resultObject.Count());
+            Assert.IsType<OkObjectResult>(result);
+            Assert.Equal(comments.Count(), commentsCount);
         }
 
-        [Fact]
-        public async Task GetByArticleAsync_CommentsForProvidedActicleDoNotExist_ReturnsOkStatus()
+        [Theory]
+        [AutoMoqData]
+        public void GetByArticleAsync_CommentsForProvidedActicleDoNotExist_ReturnsNotFound([Frozen] Mock<ICommentService> commentService, [NoAutoProperties] CommentController commentController)
         {
             //Arrange
-            _commentService.Setup(service => service.GetByArticleAsync(TestArticleId)).ReturnsAsync(new List<Comment>());
-
-            //Act
-            var result = await _commentController.GetByArticleAsync(TestArticleId);
+            _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            commentService.Setup(service => service.GetByArticle(It.IsAny<int>(), It.IsAny<CategoryParameters>())).Throws<Exception>();
 
             //Assert
-            Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Throws<Exception>(() => commentController.GetByArticle(It.IsAny<CategoryParameters>(), It.IsAny<int>()));
         }
 
         [Fact]

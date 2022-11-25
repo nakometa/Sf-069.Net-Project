@@ -18,27 +18,27 @@ namespace SportsHub.AppService.Services
             _mapper = mapper;
         }
 
-        public IQueryable<Comment> GetByArticle(int id, CategoryParameters categoryParameters)
+        public IEnumerable<Comment> GetByArticle(int id, CategoryParameters categoryParameters)
         {
-            return _unitOfWork.CommentRepository.GetByArticle(id, categoryParameters) ??
+            return _unitOfWork.CommentRepository.GetByArticle(id, categoryParameters).ToList() ??
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
-        public IQueryable<Comment> GetByArticleOrderByDate(int id, CategoryParameters categoryParameters)
+        public IEnumerable<Comment> GetByArticleOrderByDate(int id, CategoryParameters categoryParameters)
         {
-            return _unitOfWork.CommentRepository.OrderByDate(id, categoryParameters) ??
+            return _unitOfWork.CommentRepository.OrderByDate(id, categoryParameters).ToList() ??
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
-        public IQueryable<Comment> GetByArticleOrderByDateDescending(int id, CategoryParameters categoryParameters)
+        public IEnumerable<Comment> GetByArticleOrderByDateDescending(int id, CategoryParameters categoryParameters)
         {
-            return _unitOfWork.CommentRepository.OrderByDateDescending(id, categoryParameters) ??
+            return _unitOfWork.CommentRepository.OrderByDateDescending(id, categoryParameters).ToList() ??
                    throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 
-        public IQueryable<Comment> SortByLikes(int id, CategoryParameters categoryParameters)
+        public IEnumerable<Comment> SortByLikes(int id, CategoryParameters categoryParameters)
         {
-            return _unitOfWork.CommentRepository.SortByLikes(id,categoryParameters) ??
+            return _unitOfWork.CommentRepository.SortByLikes(id,categoryParameters).ToList() ??
                 throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.Comment));
         }
 

@@ -32,53 +32,33 @@ namespace SportsHub.Api.Controllers
         }
 
         [HttpGet("GetByArticle")]
-        public ActionResult<IQueryable<Comment>> GetByArticle([FromQuery] CategoryParameters categoryParameters, int articleId)
+        public ActionResult<IEnumerable<Comment>> GetByArticle([FromQuery] CategoryParameters categoryParameters, int articleId)
         {
             var comments = _commentService.GetByArticle(articleId, categoryParameters);
-
-            if (!comments.Any())
-            {
-                return Ok(ValidationMessages.NoCommentsForArticle);
-            }
 
             return Ok(comments);
         }
 
         [HttpGet("GetByArticleOrderByAsc")]
-        public ActionResult<IQueryable<Comment>> GetByArticleOrderByAscending([FromQuery] CategoryParameters categoryParameters, int articleId)
+        public ActionResult<IEnumerable<Comment>> GetByArticleOrderByAscending([FromQuery] CategoryParameters categoryParameters, int articleId)
         {
             var comments = _commentService.GetByArticleOrderByDate(articleId, categoryParameters);
-
-            if (!comments.Any())
-            {
-                return Ok(ValidationMessages.NoCommentsForArticle);
-            }
 
             return Ok(comments);
         }
 
         [HttpGet("GetByArticleOrderByDesc")]
-        public ActionResult<IQueryable<Comment>> GetByArticleOrderByDescending([FromQuery] CategoryParameters categoryParameters, int articleId)
+        public ActionResult<IEnumerable<Comment>> GetByArticleOrderByDescending([FromQuery] CategoryParameters categoryParameters, int articleId)
         {
             var comments = _commentService.GetByArticleOrderByDateDescending(articleId, categoryParameters);
-
-            if (!comments.Any())
-            {
-                return Ok(ValidationMessages.NoCommentsForArticle);
-            }
 
             return Ok(comments);
         }
 
         [HttpGet("GetByArticleSortByLikes")]
-        public ActionResult<IQueryable<Comment>> GetByArticleSortByLikes([FromQuery] CategoryParameters categoryParameters, int articleId)
+        public ActionResult<IEnumerable<Comment>> GetByArticleSortByLikes([FromQuery] CategoryParameters categoryParameters, int articleId)
         {
             var comments = _commentService.SortByLikes(articleId, categoryParameters);
-
-            if (!comments.Any())
-            {
-                return Ok(ValidationMessages.NoCommentsForArticle);
-            }
 
             return Ok(comments);
         }

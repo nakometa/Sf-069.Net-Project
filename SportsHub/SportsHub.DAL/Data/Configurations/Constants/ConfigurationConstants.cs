@@ -7,6 +7,10 @@
         {
             public const int SportNameMaxLength = 50;
             public const int SportDescriptionMaxLength = 250;
+            public const string SportNameIsRequired = "Sport name is required.";
+            public const string SportNameMaxLengthMessage = "The maximum length of Name is {0} characters";
+            public const string SportDescriptionMaxLengthMessage = "The maximum length of Description is {0} characters";
+
         }
 
         public static class LeagueConstants

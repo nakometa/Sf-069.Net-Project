@@ -9,13 +9,13 @@ namespace SportsHub.Api.Validations
         public SportValidation()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Sport name is required.")
+                .NotEmpty().WithMessage(ConfigurationConstants.SportConstants.SportNameIsRequired)
                 .MaximumLength(ConfigurationConstants.SportConstants.SportNameMaxLength)
-                .WithMessage($"The maximum length of Name is {ConfigurationConstants.SportConstants.SportNameMaxLength} characters");
+                .WithMessage(string.Format(ConfigurationConstants.SportConstants.SportNameMaxLengthMessage, ConfigurationConstants.SportConstants.SportNameMaxLength));
 
             RuleFor(x => x.Description)
                 .MaximumLength(ConfigurationConstants.SportConstants.SportDescriptionMaxLength)
-                .WithMessage($"The maximum length of Description is {ConfigurationConstants.SportConstants.SportDescriptionMaxLength} characters");
+                .WithMessage(string.Format(ConfigurationConstants.SportConstants.SportDescriptionMaxLengthMessage, ConfigurationConstants.SportConstants.SportDescriptionMaxLength));
         }
     }
 }

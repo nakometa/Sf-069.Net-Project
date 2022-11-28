@@ -20,9 +20,8 @@ namespace SportsHub.Api.Controllers
         private readonly IMapper _mapper;
 
         public SportController(IValidator<CreateSportDTO> sportValidator,
-                IGenerateModelStateDictionary generateModelStateDictionary,
-                ISportService sportService,
-                IMapper mapper)
+                               ISportService sportService,
+                               IMapper mapper)
         {
             _sportValidator = sportValidator;
             _sportService = sportService;

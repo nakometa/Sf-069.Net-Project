@@ -9,7 +9,7 @@ namespace SportsHub.Domain.Repository
         Task<Sport?> GetByNameAsync(string sport);
         Task AddSportAsync(Sport sport);
         void UpdateSport(Sport sport);
-        Task<bool> DeleteSportAsync(int id);
+        void DeleteSport(Sport sport);
 
     }
 }

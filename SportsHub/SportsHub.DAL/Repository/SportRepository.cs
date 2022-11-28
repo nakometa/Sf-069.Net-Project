@@ -43,18 +43,10 @@ namespace SportsHub.DAL.Repository
             _context.SaveChanges();
         }
 
-        public async Task<bool> DeleteSportAsync(int id)
+        public void DeleteSport(Sport sport)
         {
-            var sport = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (sport == null)
-            {
-                return false;
-            }
-            
             _context.Sports.Remove(sport);
             _context.SaveChanges();
-            return true;
         }
     }
 }

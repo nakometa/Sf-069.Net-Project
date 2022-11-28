@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.UOW;
 
@@ -24,21 +26,23 @@ namespace SportsHub.AppService.Services
 
         public async Task<Sport?> GetByIdAsync(int id)
         {
-            return await _unitOfWork.SportRepository.GetByIdAsync(id);
+            return await _unitOfWork.SportRepository.GetByIdAsync(id) ??
+                throw new NotFoundException(ValidationMessages.SportNotFound); 
         }
 
         public async Task<Sport?> GetByNameAsync(string sport)
         {
-            return await _unitOfWork.SportRepository.GetByNameAsync(sport);
+            return await _unitOfWork.SportRepository.GetByNameAsync(sport) ??
+                throw new NotFoundException(ValidationMessages.SportNotFound);
         }
 
-        public async Task<bool> CreateSportAsync(CreateSportDTO sportDTO)
+        public async Task CreateSportAsync(CreateSportDTO sportDTO)
         {
-            var sportExists = await GetByNameAsync(sportDTO.Name) != null;
+            var sportExists = await _unitOfWork.SportRepository.GetByNameAsync(sportDTO.Name) != null;
 
             if (sportExists)
             {
-                return false;
+                throw new BusinessLogicException(409, ValidationMessages.SportExists);
             }
 
             var sport = new Sport()
@@ -48,32 +52,26 @@ namespace SportsHub.AppService.Services
             };
 
             await _unitOfWork.SportRepository.AddSportAsync(sport);
-
-            return true;
         }
 
-        public async Task<bool> EditSportAsync(CreateSportDTO sportDTO)
+        public async Task EditSportAsync(CreateSportDTO sportDTO)
         {
-            var sport = await _unitOfWork.SportRepository.GetByNameAsync(sportDTO.Name);
-
-            if (sport == null)
-            {
-                return false;
-            }
+            var sport = await _unitOfWork.SportRepository.GetByNameAsync(sportDTO.Name) ??
+                throw new NotFoundException(ValidationMessages.SportNotFound);
 
             sport.Name = sportDTO.Name;
             sport.Description = sportDTO.Description;
 
             _unitOfWork.SportRepository.UpdateSport(sport);
             await _unitOfWork.SaveChangesAsync();
-
-            return true;
         }
 
-        public async Task<bool> DeleteSportAsync(int id)
+        public async Task DeleteSportAsync(int id)
         {
-            var removed = await _unitOfWork.SportRepository.DeleteSportAsync(id);
-            return removed;
+            var sport = await _unitOfWork.SportRepository.GetByIdAsync(id) ??
+                throw new NotFoundException(ValidationMessages.SportNotFound);
+
+            _unitOfWork.SportRepository.DeleteSport(sport);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace SportsHub.AppService.Services
         Task<IEnumerable<Sport>> GetAllAsync();
         Task<Sport?> GetByIdAsync(int id);
         Task<Sport?> GetByNameAsync(string sport);
-        Task<bool> CreateSportAsync(CreateSportDTO sportDTO);
-        Task<bool> EditSportAsync(CreateSportDTO sportDTO);
-        Task<bool> DeleteSportAsync(int id);
+        Task CreateSportAsync(CreateSportDTO sportDTO);
+        Task EditSportAsync(CreateSportDTO sportDTO);
+        Task DeleteSportAsync(int id);
     }
 }

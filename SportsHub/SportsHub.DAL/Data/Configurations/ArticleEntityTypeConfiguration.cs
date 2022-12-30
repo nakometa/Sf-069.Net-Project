@@ -24,7 +24,7 @@ namespace SportsHub.DAL.Data.Configurations
 
             article.Property(x => x.CreatedOn)
                 .IsRequired(true)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("now()");
 
             article.Property(x => x.PostedOn)
                 .IsRequired(false);
@@ -48,7 +48,8 @@ namespace SportsHub.DAL.Data.Configurations
             article.HasOne(x => x.State)
                 .WithMany(x => x.Articles);
 
-            article.Property(x => x.ArticlePicture)
+            article.Property(x => x.ArticlePicture) 
+                .HasColumnType("bytea")
                 .IsRequired(false);
         }
     }

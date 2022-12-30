@@ -44,6 +44,7 @@ namespace SportsHub.DAL.Data.Configurations
                 .IsUnicode(true);
 
             user.Property(x => x.ProfilePicture)
+                .HasColumnType("bytea")
                 .IsRequired(false);
 
             user.HasMany(x => x.Articles)

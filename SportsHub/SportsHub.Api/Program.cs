@@ -1,10 +1,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using SportsHub.Api.Mapping;
+using SportsHub.Api;
+using SportsHub.Api.Exceptions;
 using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
@@ -14,10 +14,7 @@ using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
 using SportsHub.Domain.PasswordHasher;
 using SportsHub.Domain.UOW;
-using System.Reflection;
 using System.Text;
-using SportsHub.Api.Exceptions;
-using SportsHub.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -85,7 +82,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IUserService, UserService>();

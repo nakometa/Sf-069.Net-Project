@@ -39,17 +39,9 @@ namespace SportsHub.AppService.Services
 
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var user = await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
-                       throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.User));
-
-            return new User()
-            {
-                Username = user.Username,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role
-            };
+            var user = GetByUsernameAsync(username).Result;
+            
+            return user;
         }
 
         public async Task SaveUserAsync(User user)

@@ -16,7 +16,7 @@ namespace SportsHub.DAL.Data.Configurations
 
             comment.Property(x => x.PostedOn)
                 .IsRequired(true)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("now()");
 
             comment.Property(x => x.AuthorId)
                 .IsRequired(true);

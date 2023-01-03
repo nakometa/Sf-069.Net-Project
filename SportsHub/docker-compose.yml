@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+
+  applicationdb:
+    image: postgres
+    
+  pgadmin:
+   image: dpage/pgadmin4
+
+  sportshub.api:
+    image: ${DOCKER_REGISTRY-}sportshubapi
+    build:
+      context: .
+      dockerfile: SportsHub.Api/Dockerfile
+
+
+
+volumes:
+ postgres_data:
+ pgadmin_data:

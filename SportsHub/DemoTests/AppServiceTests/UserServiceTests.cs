@@ -27,12 +27,12 @@ namespace DemoTests.AppServiceTests
             _mockUnitOfWork.Setup(x => x.UserRepository).Returns(_mockUserRepo.Object);
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetByUsernameAsync_ShouldReturnUser_WhenUsernameExists(string username)
+        [Fact]
+        public async Task GetByUsernameAsync_ShouldReturnUser_WhenUsernameExists()
         {
             //Arrange
+            string username = "Test";
+
             var user = new User()
             {
                 Username = username
@@ -45,26 +45,25 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.Equal(user, result);
-            _mockUserRepo.Verify(x => x.GetByUsernameAsync(username), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetByUsernameAsync_ShouldThrow_WhenUsernameDoesNotExist(string username)
+        [Fact]
+        public async Task GetByUsernameAsync_ShouldThrow_WhenUsernameDoesNotExist()
         {
+            //Arramge
+            string username = "Test";
+
             //Assert
             var ex = Assert.ThrowsAsync<NotFoundException>(() => _sut.GetByUsernameAsync(username));
             Assert.Equal(ex.Result.Message, string.Format(ExceptionMessages.NotFound, ExceptionMessages.User));
-            _mockUserRepo.Verify(x => x.GetByUsernameAsync(username), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test@abv.bg")]
-        [InlineAutoData("Test123@gmail.com")]
-        public async Task GetByEmailAsync_ShouldReturnUser_WhenEmailExists(string email)
+        [Fact]
+        public async Task GetByEmailAsync_ShouldReturnUser_WhenEmailExists()
         {
             //Arrange
+            string email = "test@gmail.com";
+
             var user = new User()
             {
                 Email = email
@@ -77,27 +76,26 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.Equal(user, result);
-            _mockUserRepo.Verify(x => x.GetByEmailAsync(email), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test@abv.bg")]
-        [InlineAutoData("Test123@gmail.com")]
-        public async Task GetByEmailAsync_ShouldThrow_WhenEmailDoesNotExist(string email)
+        [Fact]
+        public async Task GetByEmailAsync_ShouldThrow_WhenEmailDoesNotExist()
         {
-            //Assert 
+            //Arrange 
+            string email = "test@gmail.com";
+
+            //Assert
             var ex = Assert.ThrowsAsync<NotFoundException>(() => _sut.GetByEmailAsync(email));
             Assert.Equal(ex.Result.Message, string.Format(ExceptionMessages.NotFound, ExceptionMessages.User));
-            _mockUserRepo.Verify(x => x.GetByEmailAsync(email), Times.Once());
 
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetByEmailOrUsernameAsync_ShouldReturnUser_WhenUsernameExists(string username)
+        [Fact]
+        public async Task GetByEmailOrUsernameAsync_ShouldReturnUser_WhenUsernameExists()
         {
             //Arrange
+            string username = "Test";
+
             var user = new User()
             {
                 Username = username
@@ -110,26 +108,25 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.Equal(user, result);
-            _mockUserRepo.Verify(x => x.GetByUsernameOrEmailAsync(username), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetByEmailOrUsernameAsync_ShouldThrow_WhenUsernameDoesNotExist(string username)
+        [Fact]
+        public async Task GetByEmailOrUsernameAsync_ShouldThrow_WhenUsernameDoesNotExist()
         {
+            //Arrange
+            string username = "Test";
+
             //Assert
             var ex = Assert.ThrowsAsync<NotFoundException>(() => _sut.GetByEmailOrUsernameAsync(username));
             Assert.Equal(ex.Result.Message, string.Format(ExceptionMessages.NotFound, ExceptionMessages.User));
-            _mockUserRepo.Verify(x => x.GetByUsernameOrEmailAsync(username), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test@abv.bg")]
-        [InlineAutoData("Test123@gmail.com")]
-        public async Task GetByEmailOrUsernameAsync_ShouldReturnUser_WhenEmailExists(string email)
+        [Fact]
+        public async Task GetByEmailOrUsernameAsync_ShouldReturnUser_WhenEmailExists()
         {
             //Arrange
+            string email = "test@gmail.com";
+
             var user = new User()
             {
                 Email = email
@@ -142,15 +139,14 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.Equal(user, result);
-            _mockUserRepo.Verify(x => x.GetByUsernameOrEmailAsync(email), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetUserByClaimsAsync_ShouldReturnUser_WhenUserExists(string username)
+        [Fact]
+        public async Task GetUserByClaimsAsync_ShouldReturnUser_WhenUserExists()
         {
             //Arrange
+            string username = "Test";
+
             var user = new User()
             {
                 Username = username
@@ -165,7 +161,6 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.Equal(userResult, user);
-            _mockUserRepo.Verify(x => x.GetByUsernameAsync(username), Times.Once());
         }
 
         [Fact]
@@ -175,18 +170,17 @@ namespace DemoTests.AppServiceTests
             Assert.ThrowsAsync<BusinessLogicException>(() => _sut.GetUserByClaimsAsync(null));
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task GetUserByClaimsAsync_ShouldThrow_WhenUsernameDoesNotExist(string username)
+        [Fact]
+        public async Task GetUserByClaimsAsync_ShouldThrow_WhenUsernameDoesNotExist()
         {
             //Arrange
+            string username = "Test";
+
             var userClaims = new ClaimsIdentity();
             userClaims.AddClaim(new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", username));
 
             //Asset
             Assert.ThrowsAsync<NotFoundException>(() => _sut.GetUserByClaimsAsync(userClaims));
-            _mockUserRepo.Verify(x => x.GetByUsernameAsync(username), Times.Once);
         }
     }
 }

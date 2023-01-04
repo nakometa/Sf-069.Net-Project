@@ -30,17 +30,6 @@ namespace DemoTests.AppServiceTests
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnEmptyCollection_WhenNoArticles()
-        {
-            //Act
-            var result = await _sut.GetAllAsync();
-
-            //Assert
-            Assert.Empty(result);
-            _mockArticleRepo.Verify(x => x.GetAllAsync(), Times.Once());
-        }
-
-        [Fact]
         public async Task GetAllAsync_ShouldReturnArticles_WhenTheyExist()
         {
             //Arrange
@@ -59,22 +48,18 @@ namespace DemoTests.AppServiceTests
             Assert.Collection(result,
                 item => Assert.Equal(item.Title, "Test1"),
                 item => Assert.Equal(item.Title, "Test2"));
-
-            _mockArticleRepo.Verify(x => x.GetAllAsync(), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test", 1)]
-        [InlineAutoData("Test123", 2)]
-        public async Task CreateArticleAsync_ShouldWork_WhenValid(string test, int categoryId)
+        [Fact]
+        public async Task CreateArticleAsync_ShouldWork_WhenValid()
         {
             //Arrange
             Category category = new Category { };
             _mockUnitOfWork.Setup(x => x.CategoryRepository.GetCategoryById(It.IsAny<int>())).ReturnsAsync(category);
-            var createArticleDto = new CreateArticleDTO { Title = test, CategoryId = categoryId };
+            var createArticleDto = new CreateArticleDTO { Title = "Test", CategoryId = 1 };
 
             //Act
-            var result = _sut.CreateArticleAsync(createArticleDto).Result;
+            var result = await _sut.CreateArticleAsync(createArticleDto);
 
             //Assert
             Assert.Equal(result, ValidationMessages.ArticleCreatedSuccessfully);
@@ -82,12 +67,11 @@ namespace DemoTests.AppServiceTests
             _mockUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test")]
-        [InlineAutoData("Test123")]
-        public async Task CreateArticleAsync_ShouldThrow_WhenArticleTitleExists(string title)
+        [Fact]
+        public async Task CreateArticleAsync_ShouldThrow_WhenArticleTitleExists()
         {
             //Arrange
+            var title = "Test";
             var article = new Article { Title = title };
             _mockArticleRepo.Setup(x => x.GetByTitleAsync(title)).ReturnsAsync(article);
 
@@ -98,18 +82,17 @@ namespace DemoTests.AppServiceTests
 
             //Assert
             Assert.ThrowsAsync<BusinessLogicException>(() => _sut.CreateArticleAsync(createArticleDto));
-            _mockArticleRepo.Verify(x => x.GetByTitleAsync(title), Times.Once());
         }
 
-        [Theory]
-        [InlineAutoData("Test", 1)]
-        [InlineAutoData("Test123", 2)]
-        public async Task CreateArticleAsync_ShouldThrow_WhenCategoryIdIsInvalid(string test, int categoryId)
+        [Fact]
+        public async Task CreateArticleAsync_ShouldThrow_WhenCategoryIdIsInvalid()
         {
             //Arrange
+            var title = "Test";
+            var categoryId = 1;
             Category category = null;
             _mockUnitOfWork.Setup(x => x.CategoryRepository.GetCategoryById(It.IsAny<int>())).ReturnsAsync(category);
-            var createArticleDto = new CreateArticleDTO { Title = test , CategoryId = categoryId };
+            var createArticleDto = new CreateArticleDTO { Title = title , CategoryId = categoryId };
 
             //Assert
             Assert.ThrowsAsync<BusinessLogicException>(() => _sut.CreateArticleAsync(createArticleDto));

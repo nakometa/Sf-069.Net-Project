@@ -13,8 +13,7 @@ namespace SportsHub.DAL.Repository
 
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
-            return await DbSet
-                .ToListAsync();
+            return await FindAllAsync();
         }
 
         public async Task<Article?> GetByTitleAsync(string title)
@@ -26,9 +25,7 @@ namespace SportsHub.DAL.Repository
         
         public async Task<Article?> GetByIdAsync(int id)
         {
-            return await DbSet
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
+            return await FindByIdAsync(id);
         }
 
         public async Task AddArticleAsync(Article article)

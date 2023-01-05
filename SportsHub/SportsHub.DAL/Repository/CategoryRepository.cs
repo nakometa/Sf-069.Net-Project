@@ -14,9 +14,7 @@ namespace SportsHub.DAL.Repository
 
         public async Task<Category?> GetCategoryById(int categoryId)
         {
-            return await DbSet
-                .Where(x => x.Id == categoryId)
-                .FirstOrDefaultAsync();
+            return await FindByIdAsync(categoryId);
         }
     }
 }

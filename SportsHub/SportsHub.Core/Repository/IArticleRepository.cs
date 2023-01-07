@@ -4,6 +4,8 @@ namespace SportsHub.Domain.Repository
 {
     public interface IArticleRepository : IGenericRepository<Article>
     {
+
+        Task<Article?> GetById(int id);
         Task<IEnumerable<Article>> GetAllAsync();
         Task<Article?> GetByTitleAsync(string title);
         Task<Article?> GetByIdAsync(int id);

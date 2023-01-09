@@ -27,6 +27,7 @@ namespace SportsHub.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.UseSerialColumns();
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
     }

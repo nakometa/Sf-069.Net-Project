@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SportsHub.DAL.Data;
 
 #nullable disable
@@ -12,25 +12,26 @@ using SportsHub.DAL.Data;
 namespace SportsHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221026074407_ArticleAndRelatedEntities")]
-    partial class ArticleAndRelatedEntities
+    [Migration("20221221154533_InitialPostgres")]
+    partial class InitialPostgres
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            NpgsqlModelBuilderExtensions.UseSerialColumns(modelBuilder);
 
             modelBuilder.Entity("ArticleUser", b =>
                 {
                     b.Property<int>("ArticlesId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("AuthorsId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("ArticlesId", "AuthorsId");
 
@@ -43,34 +44,37 @@ namespace SportsHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("ArticlePicture")
+                        .HasColumnType("bytea");
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
 
                     b.Property<DateTime?>("PostedOn")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("StateId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -88,20 +92,20 @@ namespace SportsHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(250)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("character varying(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -112,26 +116,26 @@ namespace SportsHub.DAL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ArticleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(450)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("character varying(450)");
 
                     b.Property<DateTime>("PostedOn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
 
                     b.HasKey("Id");
 
@@ -142,93 +146,216 @@ namespace SportsHub.DAL.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("SportsHub.Domain.Models.League", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("SportId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("SportId");
+
+                    b.ToTable("League");
+                });
+
             modelBuilder.Entity("SportsHub.Domain.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("character varying(25)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("SportsHub.Domain.Models.Sport", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Sport");
+                });
+
             modelBuilder.Entity("SportsHub.Domain.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("Id");
 
                     b.ToTable("States");
                 });
 
+            modelBuilder.Entity("SportsHub.Domain.Models.SubLeague", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("SubLeague");
+                });
+
+            modelBuilder.Entity("SportsHub.Domain.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(250)");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("character varying(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Team");
+                });
+
             modelBuilder.Entity("SportsHub.Domain.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(75)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(75)");
+                        .HasColumnType("character varying(75)");
 
                     b.Property<byte[]>("ProfilePicture")
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("bytea");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -293,6 +420,39 @@ namespace SportsHub.DAL.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("SportsHub.Domain.Models.League", b =>
+                {
+                    b.HasOne("SportsHub.Domain.Models.Sport", "Sport")
+                        .WithMany("Leagues")
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sport");
+                });
+
+            modelBuilder.Entity("SportsHub.Domain.Models.SubLeague", b =>
+                {
+                    b.HasOne("SportsHub.Domain.Models.League", "League")
+                        .WithMany("SubLeagues")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("League");
+                });
+
+            modelBuilder.Entity("SportsHub.Domain.Models.Team", b =>
+                {
+                    b.HasOne("SportsHub.Domain.Models.League", "League")
+                        .WithMany("Teams")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("League");
+                });
+
             modelBuilder.Entity("SportsHub.Domain.Models.User", b =>
                 {
                     b.HasOne("SportsHub.Domain.Models.Role", "Role")
@@ -314,9 +474,21 @@ namespace SportsHub.DAL.Migrations
                     b.Navigation("Articles");
                 });
 
+            modelBuilder.Entity("SportsHub.Domain.Models.League", b =>
+                {
+                    b.Navigation("SubLeagues");
+
+                    b.Navigation("Teams");
+                });
+
             modelBuilder.Entity("SportsHub.Domain.Models.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("SportsHub.Domain.Models.Sport", b =>
+                {
+                    b.Navigation("Leagues");
                 });
 
             modelBuilder.Entity("SportsHub.Domain.Models.State", b =>

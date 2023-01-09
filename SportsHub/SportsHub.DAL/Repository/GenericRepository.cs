@@ -14,11 +14,6 @@ namespace SportsHub.DAL.Repository
             _context = context;
         }
 
-        public void Add(TEntity entity)
-        {
-            DbSet.Add(entity);
-        }
-
         public async Task AddAsync(TEntity entity)
         {
             await DbSet.AddAsync(entity);
@@ -29,14 +24,14 @@ namespace SportsHub.DAL.Repository
             DbSet.Remove(entity);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> FindAllAsync()
         {
-            return DbSet.ToList();
+            return await DbSet.ToListAsync();
         }
 
-        public TEntity? GetById(int id)
+        public async Task<TEntity?> FindByIdAsync(int id)
         {
-            return DbSet.Find(id);
+            return await DbSet.FindAsync(id);
         }
 
         protected DbSet<TEntity> DbSet => _context.Set<TEntity>();

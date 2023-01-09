@@ -11,12 +11,6 @@ namespace SportsHub.DAL.Repository
         {
         }
 
-        public async Task<Article?> GetById(int id)
-        {
-            return await DbSet
-                .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
         public async Task<IEnumerable<Article>> GetAllAsync()
         {
             return await FindAllAsync();

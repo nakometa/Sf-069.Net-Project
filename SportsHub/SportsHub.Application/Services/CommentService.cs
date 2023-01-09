@@ -26,8 +26,8 @@ namespace SportsHub.AppService.Services
 
         public async Task<bool> AddCommentAsync(CreateCommentDTO commentInput)
         {
-            var userExists = _unitOfWork.UserRepository.GetById(commentInput.AuthorId) != null;
-            var articleExists = _unitOfWork.ArticleRepository.GetById(commentInput.ArticleId) != null;
+            var userExists = await _unitOfWork.UserRepository.GetByIdAsync(commentInput.AuthorId) != null;
+            var articleExists = await _unitOfWork.ArticleRepository.GetByIdAsync(commentInput.ArticleId) != null;
 
             if (!userExists || !articleExists)
             {

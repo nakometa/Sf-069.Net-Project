@@ -11,5 +11,8 @@
 
         public int AuthorId { get; set; }
         public virtual User Author { get; set; }
+
+        public virtual ICollection<CommentLike> CommentsLikes { get; set; }
+        public virtual ICollection<CommentDislike> CommentsDislikes { get; set; }
     }
 }

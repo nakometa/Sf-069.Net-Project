@@ -17,7 +17,5 @@
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<CommentLike> CommentsLikes { get; set; }
-        public virtual ICollection<CommentDislike> CommentsDislikes { get; set; }
-
     }
 }

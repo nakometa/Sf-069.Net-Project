@@ -27,8 +27,6 @@ namespace SportsHub.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CommentLike>().HasKey(x => new { x.UserId, x.CommentId });
-            modelBuilder.Entity<CommentDislike>().HasKey(x => new { x.UserId, x.CommentId });
             modelBuilder.UseSerialColumns();
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }

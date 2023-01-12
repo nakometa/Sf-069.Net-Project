@@ -12,8 +12,8 @@ using SportsHub.DAL.Data;
 namespace SportsHub.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230109213451_AddedCommentLikes")]
-    partial class AddedCommentLikes
+    [Migration("20230112121113_AddCommentLike")]
+    partial class AddCommentLike
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,21 +146,6 @@ namespace SportsHub.DAL.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("SportsHub.Domain.Models.CommentDislike", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("CommentDislike");
-                });
-
             modelBuilder.Entity("SportsHub.Domain.Models.CommentLike", b =>
                 {
                     b.Property<int>("UserId")
@@ -168,6 +153,9 @@ namespace SportsHub.DAL.Migrations
 
                     b.Property<int>("CommentId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsLike")
+                        .HasColumnType("boolean");
 
                     b.HasKey("UserId", "CommentId");
 
@@ -450,25 +438,6 @@ namespace SportsHub.DAL.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("SportsHub.Domain.Models.CommentDislike", b =>
-                {
-                    b.HasOne("SportsHub.Domain.Models.Comment", "Comment")
-                        .WithMany("CommentsDislikes")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SportsHub.Domain.Models.User", "User")
-                        .WithMany("CommentsDislikes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SportsHub.Domain.Models.CommentLike", b =>
                 {
                     b.HasOne("SportsHub.Domain.Models.Comment", "Comment")
@@ -544,8 +513,6 @@ namespace SportsHub.DAL.Migrations
 
             modelBuilder.Entity("SportsHub.Domain.Models.Comment", b =>
                 {
-                    b.Navigation("CommentsDislikes");
-
                     b.Navigation("CommentsLikes");
                 });
 
@@ -574,8 +541,6 @@ namespace SportsHub.DAL.Migrations
             modelBuilder.Entity("SportsHub.Domain.Models.User", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("CommentsDislikes");
 
                     b.Navigation("CommentsLikes");
                 });

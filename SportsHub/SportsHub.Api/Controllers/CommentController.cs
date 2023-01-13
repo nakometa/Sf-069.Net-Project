@@ -59,5 +59,14 @@ namespace SportsHub.Api.Controllers
 
             return Created(ValidationMessages.CommentAddedSuccessfully, commentInput);
         }
+
+        [Authorize]
+        [HttpPost("LikeComment")]
+        public async Task<ActionResult> LikeCommentAsync([FromBody] LikeCommentDTO likeCommentDTO)
+        {
+            await _commentService.LikeCommentAsync(likeCommentDTO);
+
+            return Created(ValidationMessages.CommentLikedSuccessfully, likeCommentDTO);
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [Authorize]
-        [HttpPost("PostComment")]
+        [HttpPost("Post")]
         public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)
         {
             var validationResult = await _commentValidator.ValidateAsync(commentInput);
@@ -58,6 +58,15 @@ namespace SportsHub.Api.Controllers
             await _commentService.AddCommentAsync(commentInput);                       
 
             return Created(ValidationMessages.CommentAddedSuccessfully, commentInput);
+        }
+
+        [Authorize]
+        [HttpPost("Like")]
+        public async Task<ActionResult> LikeCommentAsync([FromBody] LikeCommentDTO likeCommentDTO)
+        {
+            await _commentService.LikeCommentAsync(likeCommentDTO);
+
+            return Created(ValidationMessages.CommentLikedSuccessfully, likeCommentDTO);
         }
     }
 }

@@ -16,6 +16,7 @@
         public const string CommentAddedSuccessfully = "Comment posted successfully";
         public const string CommentContentValidationNotEmptyMessage = "Content is required";
         public const string CommentContentValidationLengthMessage = $"Content should be less than [0] characters.";
+        public const string CommentLikedSuccessfully = $"Comment Liked Successfully.";
         public const string ArticleCreatedSuccessfully = "Article created successfully.";
         public const string UnableToCreateArticle = "Unable to create article.";
         public const string ArticleUpdatedSuccessfully = "The article was updated successfully.";

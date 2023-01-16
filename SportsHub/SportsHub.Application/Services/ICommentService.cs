@@ -7,5 +7,6 @@ namespace SportsHub.AppService.Services
     {
         Task<IEnumerable<Comment>> GetByArticleAsync(int id);
         Task<bool> AddCommentAsync(CreateCommentDTO commentInput);
+        Task LikeCommentAsync(LikeCommentDTO commentLike);
     }
 }

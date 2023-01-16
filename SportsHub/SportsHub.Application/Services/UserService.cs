@@ -26,10 +26,20 @@ namespace SportsHub.AppService.Services
                    throw new NotFoundException( string.Format(ExceptionMessages.NotFound,ExceptionMessages.User));
         }
 
+        public async Task<bool> CheckEmailAsync(string email)
+        {
+            return await _unitOfWork.UserRepository.GetByEmailAsync(email) != null;
+        }
+
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await _unitOfWork.UserRepository.GetByUsernameAsync(username)??
                    throw new NotFoundException( string.Format(ExceptionMessages.NotFound, ExceptionMessages.User));
+        }
+
+        public async Task<bool> CheckUsernameAsync(string username)
+        {
+            return await _unitOfWork.UserRepository.GetByUsernameAsync(username) != null;
         }
 
         public async Task<User?> GetUserByClaimsAsync(ClaimsIdentity identity)
@@ -39,7 +49,7 @@ namespace SportsHub.AppService.Services
 
             var userClaims = identity.Claims;
             var username = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var user = GetByUsernameAsync(username).Result;
+            var user = await GetByUsernameAsync(username);
             
             return user;
         }

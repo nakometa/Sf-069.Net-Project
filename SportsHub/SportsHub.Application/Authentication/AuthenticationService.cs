@@ -36,7 +36,7 @@ namespace SportsHub.AppService.Authentication
 
         public async Task<bool> RegisterUserAsync(UserRegisterDTO userInput)
         {
-            var usernameExists = await userService.GetByUsernameAsync(userInput.Username) != null;
+            var usernameExists = await userService.CheckUsernameAsync(userInput.Username);
 
             if (usernameExists) 
             {
@@ -44,7 +44,7 @@ namespace SportsHub.AppService.Authentication
                 return false; 
             }
 
-            var emailExists = await userService.GetByEmailAsync(userInput.Email) != null;
+            var emailExists = await userService.CheckUsernameAsync(userInput.Email);
 
             if (emailExists) 
             {

@@ -7,4 +7,5 @@ public static class ExceptionMessages
     public const string User = "User";
     public const string Article = "Article";
     public const string Comment = "Comment";
+    public const string CommentUser = "Comment/User";
 }

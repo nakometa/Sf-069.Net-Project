@@ -71,16 +71,15 @@ namespace SportsHub.AppService.Services
 
         private async Task<CommentLike?> GetLikeAsync(LikeCommentDTO commentLike)
         {
-            var checkIfUserAndCommentExist = await _unitOfWork.UserRepository.FindByIdAsync(commentLike.UserId) != null &&
+            var userAndCommentExist = await _unitOfWork.UserRepository.FindByIdAsync(commentLike.UserId) != null &&
                 await _unitOfWork.CommentRepository.FindByIdAsync(commentLike.CommentId) != null;
 
-            if (!checkIfUserAndCommentExist)
+            if (!userAndCommentExist)
             {
                 throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.CommentUser));
             }
 
-            var existingLike = await _unitOfWork.CommentLikeRepository.GetLikeAsync(commentLike.CommentId, commentLike.UserId);
-            return existingLike;
+            return await _unitOfWork.CommentLikeRepository.GetLikeAsync(commentLike.CommentId, commentLike.UserId);
         }
     }
 }

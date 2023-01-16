@@ -55,7 +55,7 @@ namespace SportsHub.AppService.Services
                 CategoryId = adminInput.CategoryId,
                 StateId = (int)StateEnums.Unpublished,
                 Content = adminInput.Content,
-                ArticlePicture = adminInput.ArticlePicture,
+                //ArticlePicture = adminInput.ArticlePicture,
                 CreatedOn = DateTime.UtcNow
             };
 

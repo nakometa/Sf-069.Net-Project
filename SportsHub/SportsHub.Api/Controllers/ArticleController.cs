@@ -61,12 +61,12 @@ namespace SportsHub.Api.Controllers
             return Ok(articleResponse);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("AddArticle")]
         public async Task<IActionResult> CreateArticleAsync([FromBody] CreateArticleDTO adminInput)
         {
             ValidationResult validationResult = await _articleValidator.ValidateAsync(adminInput);
-            if(!validationResult.IsValid)
+            if (!validationResult.IsValid)
             {
                 var response = _generateModelStateDictionary.modelStateDictionary(validationResult);
 

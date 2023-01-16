@@ -44,7 +44,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [Authorize]
-        [HttpPost("PostComment")]
+        [HttpPost("Post")]
         public async Task<ActionResult> PostCommentAsync([FromBody] CreateCommentDTO commentInput)
         {
             var validationResult = await _commentValidator.ValidateAsync(commentInput);
@@ -61,7 +61,7 @@ namespace SportsHub.Api.Controllers
         }
 
         [Authorize]
-        [HttpPost("LikeComment")]
+        [HttpPost("Like")]
         public async Task<ActionResult> LikeCommentAsync([FromBody] LikeCommentDTO likeCommentDTO)
         {
             await _commentService.LikeCommentAsync(likeCommentDTO);

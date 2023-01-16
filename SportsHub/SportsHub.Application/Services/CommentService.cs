@@ -47,12 +47,7 @@ namespace SportsHub.AppService.Services
 
         public async Task LikeCommentAsync(LikeCommentDTO commentLike)
         {
-            var checkIfUserAndCommentExist = await _unitOfWork.UserRepository.FindByIdAsync(commentLike.UserId) != null &&
-                await _unitOfWork.CommentRepository.FindByIdAsync(commentLike.CommentId) != null;
-
-            var existingLike = checkIfUserAndCommentExist ?
-                await _unitOfWork.CommentLikeRepository.GetLikeAsync(commentLike.CommentId, commentLike.UserId) :
-                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.CommentUser));
+            var existingLike = await GetLikeAsync(commentLike);
 
             if (existingLike == null)
             {
@@ -72,6 +67,20 @@ namespace SportsHub.AppService.Services
             }
 
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        private async Task<CommentLike?> GetLikeAsync(LikeCommentDTO commentLike)
+        {
+            var checkIfUserAndCommentExist = await _unitOfWork.UserRepository.FindByIdAsync(commentLike.UserId) != null &&
+                await _unitOfWork.CommentRepository.FindByIdAsync(commentLike.CommentId) != null;
+
+            if (!checkIfUserAndCommentExist)
+            {
+                throw new NotFoundException(string.Format(ExceptionMessages.NotFound, ExceptionMessages.CommentUser));
+            }
+
+            var existingLike = await _unitOfWork.CommentLikeRepository.GetLikeAsync(commentLike.CommentId, commentLike.UserId);
+            return existingLike;
         }
     }
 }

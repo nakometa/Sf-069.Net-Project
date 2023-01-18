@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Logging.AddConsole();
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
@@ -82,6 +84,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection(nameof(ProducerConfig)));
+builder.Services.AddScoped<IKafkaProducer, KafkaProducerService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();

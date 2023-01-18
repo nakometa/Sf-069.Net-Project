@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
 using SportsHub.Domain.Constants;
@@ -7,6 +8,7 @@ using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
+using System.Collections.Concurrent;
 using System.Net;
 
 namespace SportsHub.AppService.Services
@@ -15,11 +17,13 @@ namespace SportsHub.AppService.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IKafkaProducer _producer;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IKafkaProducer producer)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _producer = producer;
         }
 
         public async Task<IEnumerable<Article>> GetAllAsync()
@@ -58,10 +62,10 @@ namespace SportsHub.AppService.Services
                 //ArticlePicture = adminInput.ArticlePicture,
                 CreatedOn = DateTime.UtcNow
             };
-
+            
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
             await _unitOfWork.SaveChangesAsync();
-
+            await _producer.StartAsync(adminInput);
             return ValidationMessages.ArticleCreatedSuccessfully;
         }
 

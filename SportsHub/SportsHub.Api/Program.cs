@@ -10,6 +10,7 @@ using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
 using SportsHub.AppService.Authentication.PasswordHasher;
 using SportsHub.AppService.Kafka;
+using SportsHub.AppService.Kafka.Settings;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
@@ -99,6 +100,9 @@ builder.Services.AddTransient<IKafkaProducer, KafkaProducer>();
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.Configure<KafkaOptions>(
+    builder.Configuration.GetSection(KafkaOptions.Settings));
 
 builder.Services.Configure<JsonTokenOptions>(
     builder.Configuration.GetSection(JsonTokenOptions.Jwt));

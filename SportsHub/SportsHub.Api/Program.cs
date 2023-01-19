@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SportsHub.Api.Validations;
 using SportsHub.AppService.Authentication;
 using SportsHub.AppService.Authentication.Models.Options;
 using SportsHub.AppService.Authentication.PasswordHasher;
+using SportsHub.AppService.BackgroundServices;
 using SportsHub.AppService.Services;
 using SportsHub.DAL.Data;
 using SportsHub.DAL.UOW;
@@ -48,6 +50,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Logging.AddConsole();
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
@@ -82,16 +85,19 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddSingleton<IKafkaServiceChannel, KafkaServiceChannel>();
+builder.Services.AddHostedService<ProducerBackgroundService>();
+builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection(nameof(ProducerConfig)));
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString(SportsHubConstants.DbConnectionString)));
-builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IArticleService, ArticleService>();
-builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
-builder.Services.AddTransient<IJsonTokenService, JsonTokenService>();
-builder.Services.AddTransient<ExceptionHandler>();
-builder.Services.AddTransient<IGenerateModelStateDictionary, GenerateModelStateDictionary>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IJsonTokenService, JsonTokenService>();
+builder.Services.AddScoped<ExceptionHandler>();
+builder.Services.AddScoped<IGenerateModelStateDictionary, GenerateModelStateDictionary>();
 
 //Adding AutoMapper
 //Looks in the assembly the file is located for mapping profiles.

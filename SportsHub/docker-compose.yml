@@ -1,38 +1,23 @@
 version: "4.15"
 
 services:
-
-  postgres:
+  db:
+    image: postgres:14.4
     restart: always
-    image: postgres
-    container_name: demo-postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgrespw
-      - POSTGRES_DB=SportHub
-      - POSTGRES_PORT=5432
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - 5432:5432/tcp
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: FactoryModel
+    volumes: 
+      - db:/var/lib/postgresql/data
 
-  pgadmin:
-      image: dpage/pgadmin4
-      container_name: demo-pgadmin
-      depends_on:
-        - postgres
-      ports:
-        - "5051:80"
-      environment:
-        PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-        PGADMIN_DEFAULT_PASSWORD: root
-      restart: always
-         
   zookeeper:
-    image: 'bitnami/zookeeper:latest'
-    ports:
+     image: 'bitnami/zookeeper:latest'
+     ports:
       - '2181:2181'
-    environment:
+     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka:
     image: 'bitnami/kafka:latest'
@@ -45,8 +30,7 @@ services:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
-      - zookeeper
-
-
+      - zookeeper    
 volumes:
-  postgres_data:
+  db:
+    driver: local

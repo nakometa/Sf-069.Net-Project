@@ -1,12 +1,15 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.AppService.BackgroundServices;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
 using SportsHub.Domain.Models.Enumerations;
 using SportsHub.Domain.UOW;
+using System.Collections.Concurrent;
 using System.Net;
 
 namespace SportsHub.AppService.Services
@@ -15,11 +18,13 @@ namespace SportsHub.AppService.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IKafkaServiceChannel _channel;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IKafkaServiceChannel channel)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _channel = channel;
         }
 
         public async Task<IEnumerable<Article>> GetAllAsync()
@@ -58,10 +63,10 @@ namespace SportsHub.AppService.Services
                 //ArticlePicture = adminInput.ArticlePicture,
                 CreatedOn = DateTime.UtcNow
             };
-
+            
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
             await _unitOfWork.SaveChangesAsync();
-
+            await _channel.AddArticleToChannel(adminInput);
             return ValidationMessages.ArticleCreatedSuccessfully;
         }
 

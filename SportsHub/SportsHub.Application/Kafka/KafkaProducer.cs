@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SportsHub.AppService.Authentication.Models.Options;
@@ -12,26 +13,33 @@ namespace SportsHub.AppService.Kafka
     {
         private KafkaOptions _options;
 
-
         public KafkaProducer(IOptions<KafkaOptions> options)
         {
             _options = options.Value;
         }
 
-        public async Task ProduceArticle(Article output)
+        public Task ProduceArticle(Article output)
+        {
+            Task.Run(() => SendMessage(output));
+            return Task.CompletedTask;
+        }
+
+        private async Task SendMessage(Article article)
         {
             var articleResponseDTO = new KafkaArticleDTO
             {
-                Id = output.Id,
-                Title= output.Title,
-                Content= output.Content,
-                CreatedOn= output.CreatedOn,
-                PostedOn= output.PostedOn
+                Id = article.Id,
+                Title = article.Title,
+                Content = article.Content,
+                CreatedOn = article.CreatedOn,
+                PostedOn = article.PostedOn
             };
             var config = new ProducerConfig { BootstrapServers = _options.BootstrapServers };
             using var producer = new ProducerBuilder<Null, string>(config).Build();
             var response = await producer.ProduceAsync(_options.Topic,
                 new Message<Null, string> { Value = JsonConvert.SerializeObject(articleResponseDTO) });
+
+            Thread.Sleep(100000);
         }
     }
 }

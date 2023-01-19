@@ -67,7 +67,7 @@ namespace SportsHub.AppService.Services
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
             await _unitOfWork.SaveChangesAsync();
 
-            await _producer.ProduceArticle(article);
+            _producer.ProduceArticle(article);
             return ValidationMessages.ArticleCreatedSuccessfully;
         }
 

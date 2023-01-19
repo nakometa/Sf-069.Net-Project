@@ -3,7 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SportsHub.AppService.Authentication.Models.DTOs;
-using SportsHub.AppService.Services;
 using System.Text.Json;
 
 namespace SportsHub.AppService.BackgroundServices

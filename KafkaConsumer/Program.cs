@@ -1,31 +1,17 @@
-﻿using Confluent.Kafka;
-using Newtonsoft.Json;
+﻿using KafkaConsumer;
+using KafkaConsumer.ConsumerOptions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var config = new ConsumerConfig
-{
-    GroupId = "article-consumer-group",
-    BootstrapServers = "localhost:9092",
-    AutoOffsetReset = AutoOffsetReset.Earliest
-};
-
-var consumer = new ConsumerBuilder<Null, string>(config).Build();
-consumer.Subscribe("article-topic");
-
-CancellationTokenSource token = new();
-
-try
-{
-    while (true)
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((hostContext, services) =>
     {
-        var response = consumer.Consume(token.Token);
-        if (response != null)
-        {
-            var output = JsonConvert.DeserializeObject(response.Message.Value);
-            Console.WriteLine(output);
-        }
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-}
+        services.AddHostedService<Consumer>();
+        IConfiguration configuration = hostContext.Configuration;
+        ConsumerOptions options = configuration.GetSection("Kafka").Get<ConsumerOptions>();
+        services.AddSingleton(options);
+    })
+    .Build();
+
+await host.RunAsync();

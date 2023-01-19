@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SportsHub.Api.Exceptions.CustomExceptionModels;
 using SportsHub.AppService.Authentication.Models.DTOs;
+using SportsHub.AppService.BackgroundServices;
 using SportsHub.Domain.Constants;
 using SportsHub.Domain.Models;
 using SportsHub.Domain.Models.Constants;
@@ -17,13 +18,13 @@ namespace SportsHub.AppService.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IKafkaProducer _producer;
+        private readonly IKafkaServiceChannel _channel;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IKafkaProducer producer)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper, IKafkaServiceChannel channel)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _producer = producer;
+            _channel = channel;
         }
 
         public async Task<IEnumerable<Article>> GetAllAsync()
@@ -65,7 +66,8 @@ namespace SportsHub.AppService.Services
             
             await _unitOfWork.ArticleRepository.AddArticleAsync(article);
             await _unitOfWork.SaveChangesAsync();
-            await _producer.StartAsync(adminInput);
+            await _channel.AddArticleToChannel(adminInput);
+            //await _producer.StartAsync(adminInput);
             return ValidationMessages.ArticleCreatedSuccessfully;
         }
 

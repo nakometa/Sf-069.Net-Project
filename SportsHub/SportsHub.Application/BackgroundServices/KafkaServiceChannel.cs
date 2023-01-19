@@ -25,7 +25,7 @@ namespace SportsHub.AppService.BackgroundServices
           _channel.Reader.TryRead(out article);
         
 
-        public ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken)=>
+        public ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken) =>
             _channel.Reader.WaitToReadAsync(cancellationToken);
         
     }

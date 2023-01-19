@@ -42,7 +42,7 @@ namespace SportsHub.AppService.BackgroundServices
 
         private async Task ProduceToKafkaAsync(CreateArticleDTO article)
         {
-            _logger.LogInformation("The operation have started");
+            _logger.LogInformation("The producing to kafka have started");
 
             using var producer = new ProducerBuilder<string, string>(_producerConfig)
                 .SetKeySerializer(Serializers.Utf8)
